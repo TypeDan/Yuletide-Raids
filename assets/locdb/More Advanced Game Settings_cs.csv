@@ -1,7 +1,7 @@
 ID,SourceText,TranslatedText
 1,Advanced Game Settings,Yuletide Raids
-2,,"A festive game mode and tuning pack by Daniel (TypeDan). Select Yuletide Raids as BOTH the game mode and tuning pack. One invulnerable Father Christmas cart and nine invulnerable reindeer deliver presents. Collect golden presents to buy current-age elf raids, villagers or resources; ordinary presents give gold or resource deposits. Built on Advanced Game Settings by Zlatý Bludišťak and Joshua Sachtleben. Experimental build; see setup and test notes: https://github.com/TypeDan/Yuletide-Raids"
-3,,"Select Yuletide Raids as BOTH the game mode and tuning pack. Collect presents from an invulnerable Father Christmas convoy; spend golden presents on current-age elf raids, villagers or resources. Experimental build by Daniel (TypeDan), based on Advanced Game Settings."
+2,"Father Christmas delivers presents across the map. Collect golden presents and spend them on elf raids, villagers or resources. Raid units match your current age, and resource rewards increase as you age up. Ordinary presents give gold or resource deposits. Select Yuletide Raids as BOTH the game mode and tuning pack. Experimental build. Uses the Advanced Game Settings framework. Setup and credits: https://github.com/TypeDan/Yuletide-Raids","Father Christmas delivers presents across the map. Collect golden presents and spend them on elf raids, villagers or resources. Raid units match your current age, and resource rewards increase as you age up. Ordinary presents give gold or resource deposits. Select Yuletide Raids as BOTH the game mode and tuning pack. Experimental build. Uses the Advanced Game Settings framework. Setup and credits: https://github.com/TypeDan/Yuletide-Raids"
+3,"Father Christmas delivers presents across the map. Spend golden presents on current-age elf raids, villagers or resources. Select Yuletide Raids as BOTH the game mode and tuning pack. Experimental build.","Father Christmas delivers presents across the map. Spend golden presents on current-age elf raids, villagers or resources. Select Yuletide Raids as BOTH the game mode and tuning pack. Experimental build."
 4,,Podmínky pro výhru
 5,,Zničení
 6,,Zničte všechny nepřátele. Tato možnost je povinná
@@ -71,7 +71,7 @@ ID,SourceText,TranslatedText
 70,,Dobytí divu světa
 71,,Dobytí vyžaduje zničení zázraku k odstranění hráče
 72,,Náboženský časovač
-73,,Čas potřebný k udržení všech posvátných míst
+73,,Time required to hold all sacred sites
 74,,Okamžitý
 75,,1 minuta
 76,,2 minuty
@@ -89,7 +89,7 @@ ID,SourceText,TranslatedText
 88,,Časovač pokračuje od okamžiku
 89,,Časovač divú světa 
 90,,Čas potřebný k uspěšné obraně divú světa
-91,,Div sveta poslední stání
+91,,Wonder Last Stand
 92,,Destroying finished wonder will eliminate owner
 93,,Cena divu sveta
 94,,Škálujte náklady na zázrak na základě počtu hráčů. To definuje další množství všech zdrojů na hráče. Cena začíná na 3000 za každý zdroj.
@@ -138,8 +138,8 @@ ID,SourceText,TranslatedText
 137,,Nastavení soubouju
 138,,Zobrazit skóre
 139,,Skóre hráčů jsou viditelné
-140,,Skóre Zobrazit umístění
-141,,Zobrazit aktuální sólové místo v hodnocení režimu skóre. Skóre týmu se vyhodnocuje až na konci hry
+140,,Score Show Placement
+141,,"Show current solo place in score mode ranking. Team score is evaluated only at the end of the game, if team victory is allowed. Score victory condition does not use same metric as default score."
 142,,Časovač skóre
 143,,Čas
 144,,Minimální populační kapacita
@@ -206,7 +206,7 @@ ID,SourceText,TranslatedText
 205,,Rychlost simulace
 206,,Mění rychlost simulace hry. Tuto možnost nelze aktivovať ve hře pro více hráčů a bude zakázána.
 207,,Game Rates
-208,,Vynásobí všechny následující rychlosti shromažďování
+208,,"Multiplies all of the following gathering rates, construction speed, repair rate and production speed by selected value."
 209,,1-krát
 210,,2-krát
 211,,3-krát
@@ -394,7 +394,7 @@ ID,SourceText,TranslatedText
 393,,Nomádský turnaj AGS
 394,,Předkonfigurovaná verze Nomád pro The Nomadic Clash turnaj organizován MrMerlin.
 395,King of the Hill AGS,Král Kopce AGS
-396,"Provides quick way to play King of the Hill on any map.\n\nHelp, feedback, bug reports and contribution to mode can be done at:\nhttps://github.com/joshuasachtleben/AOE4-AdvancedGameSettings","Poskytuje rychlý způsob, jak hrát Král Kopce na jakékoli mapě.\n\nNápovědu, zpětnou vazbu, hlášení chyb a příspěvek k režimu lze provést na:\nhttps://github.com/TypeDan/Yuletide-Raids"
+396,"Provides quick way to play King of the Hill on any map.\n\nHelp, feedback, bug reports and contribution to mode can be done at:\nhttps://github.com/joshuasachtleben/AOE4-AdvancedGameSettings","Provides quick way to play King of the Hill on any map.\n\nHelp, feedback, bug reports and contribution to mode can be done at:\nhttps://github.com/TypeDan/Yuletide-Raids"
 397,Empowered Queen,Empowered Queen
 398,Spawns one Empowered Queen for each player when the Empowered Queen tuning pack is loaded. If the tuning pack is not loaded, this option is ignored.,Spawns one Empowered Queen for each player when the Empowered Queen tuning pack is loaded. If the tuning pack is not loaded, this option is ignored.
 410,,,,Handicap Option - Player 1 Economy,,Player 1

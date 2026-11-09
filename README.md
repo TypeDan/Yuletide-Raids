@@ -2,7 +2,7 @@
 
 ![Yuletide Raids](assets/mod.png)
 
-A festive Age of Empires IV mod by **Daniel / TypeDan**. An invulnerable Father Christmas convoy drops presents across the map. Collect golden presents and spend them on elf raids against a chosen enemy, villagers or resources.
+Father Christmas delivers presents across the map with an invulnerable reindeer convoy. Collect golden presents and spend them on elf raids against a chosen enemy, villagers or resources.
 
 **Select Yuletide Raids as BOTH the game mode and tuning pack.** The game mode runs the events and shop; the tuning pack supplies the custom unit and present definitions. Both are supplied by this one extension archive. Start a new match after updating.
 
@@ -44,4 +44,4 @@ The current build uses a native trade cart, reindeer, smaller human soldiers and
 
 ## Credits
 
-Built from Daniel's More Advanced Game Settings, based on [Woprok's original Advanced Game Settings](https://github.com/Woprok/AOE4-AdvancedGameSettings) and [Joshua Sachtleben's continuation](https://github.com/joshuasachtleben/AOE4-AdvancedGameSettings). See [CREDITS.md](CREDITS.md) and the retained [GPL-3.0 license](LICENSE.md).
+Uses the match setup, settings, victory-condition, diplomacy and civilization helper code from More Advanced Game Settings, based on [Woprok's original Advanced Game Settings](https://github.com/Woprok/AOE4-AdvancedGameSettings) and [Joshua Sachtleben's continuation](https://github.com/joshuasachtleben/AOE4-AdvancedGameSettings). The Christmas convoy, present rewards, golden-present shop and elf raids were added for Yuletide Raids. See [CREDITS.md](CREDITS.md) and the retained [GPL-3.0 license](LICENSE.md).
