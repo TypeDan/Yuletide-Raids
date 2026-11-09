@@ -1,0 +1,30 @@
+<instance version="6" description="" template="attachments\attachment_lists">
+  <group name="attachment_lists">
+    <list name="attachment_lists">
+      <template_reference name="attachment_lists" value="attachments\attachment_list" List.ItemID="774657495" List.ParentItemID="774657495">
+        <list name="attachment_list" overrideParent="True">
+          <template_reference name="attachments" value="options\attachment_types\animator_merge_mesh_attachment" List.ItemID="-290440539">
+            <list name="meshes">
+              <file name="animator0" value="art\civilizations\english\humans\eng_infantry_armor_age01\eng_infantry_armor_age01" overrideParent="True" List.ItemID="-989732014" />
+            </list>
+            <bool name="is_selectable" value="True" />
+          </template_reference>
+          <template_reference name="attachments" value="options\attachment_types\animator_sim_attachment" List.ItemID="-526260192">
+            <file name="animator" value="art\civilizations\english\weapons\eng_shield_heater_age03\eng_shield_heater_age03" overrideParent="True" />
+            <template_reference name="attach_data" value="attachments\attach_data">
+              <string name="marker_name_parent" value="MetaRig_LArmPalmSocket" />
+              <string name="parent_rigidbody_target_name" value="" />
+              <enum name="game_object_attachment_type" value="scenegraph" />
+            </template_reference>
+            <bool name="add_to_pathfinding" value="False" />
+            <enum name="inventory_item_category" value="" />
+            <bool name="is_selectable" value="True" />
+          </template_reference>
+        </list>
+      </template_reference>
+    </list>
+    <file name="parent_animator" value="art\civilizations\common\humans\archetypes\base_swordsman\base_swordsman" overrideParent="True" />
+  </group>
+  <uniqueid name="pbgid" value="1073742730" />
+  <instance_reference name="parent_pbg" value="attachments\attachment_lists\civilizations\core\units\core_infantry" />
+</instance>

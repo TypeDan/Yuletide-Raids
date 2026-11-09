@@ -1,0 +1,93 @@
+---------------------------------------------------------------------------------------------------
+-- Authors:
+-- Relic
+-- Woprock
+-- Joshua Sachtleben
+--
+-- Description:
+-- Alters players population limits.
+---------------------------------------------------------------------------------------------------
+
+AGS_POPULATION_CAPACITY_MODULE = "AGS_PopulationCapacity"
+
+---------------------------------------------------------------------------------------------------
+-- Delegates:
+---------------------------------------------------------------------------------------------------
+
+Core_RegisterModule(AGS_POPULATION_CAPACITY_MODULE)	
+
+function AGS_PopulationCapacity_UpdateModuleSettings()
+	AGS_Print("AGS_PopulationCapacity_UpdateModuleSettings")
+	if AGS_GLOBAL_SETTINGS.MaximumPopulation == 200 and AGS_GLOBAL_SETTINGS.MinimumPopulation == 0 and not AGS_PopulationCapacity_HasPlayerOverrides() then
+		Core_UnregisterModule(AGS_POPULATION_CAPACITY_MODULE)
+	end
+end
+
+function AGS_PopulationCapacity_AdjustSettings()
+	AGS_Print("AGS_PopulationCapacity_AdjustSettings")
+	if AGS_GLOBAL_SETTINGS.MinimumPopulation > AGS_GLOBAL_SETTINGS.MaximumPopulation then
+		AGS_GLOBAL_SETTINGS.MinimumPopulation = AGS_GLOBAL_SETTINGS.MaximumPopulation
+	end
+end
+
+function AGS_PopulationCapacity_PresetFinalize()
+	AGS_Print("AGS_PopulationCapacity_PresetFinalize")
+	AGS_PopulationCapacity_Change()
+end
+
+---------------------------------------------------------------------------------------------------
+-- Functions:
+---------------------------------------------------------------------------------------------------
+
+function AGS_PopulationCapacity_Change()
+	for _, player in pairs(PLAYERS) do
+		local maxPopulation = AGS_PopulationCapacity_GetPlayerMaximum(player)
+		AGS_PopulationCapacity_ApplyMaxCapPopulation(player, maxPopulation)
+		AGS_PopulationCapacity_SetMinPopulation(player, AGS_GLOBAL_SETTINGS.MinimumPopulation, maxPopulation)
+	end
+end
+
+function AGS_PopulationCapacity_HasPlayerOverrides()
+	local slots = AGS_GLOBAL_SETTINGS.PlayerPopulationCaps
+	return slots.FirstSlot ~= 0 or slots.SecondSlot ~= 0 or slots.ThirdSlot ~= 0 or slots.FourthSlot ~= 0
+		or slots.FifthSlot ~= 0 or slots.SixthSlot ~= 0 or slots.SeventhSlot ~= 0 or slots.EighthSlot ~= 0
+end
+
+function AGS_PopulationCapacity_GetPlayerMaximum(player)
+	local slots = AGS_GLOBAL_SETTINGS.PlayerPopulationCaps
+	local slotCaps = {
+		slots.FirstSlot, slots.SecondSlot, slots.ThirdSlot, slots.FourthSlot,
+		slots.FifthSlot, slots.SixthSlot, slots.SeventhSlot, slots.EighthSlot
+	}
+	local slotCap = slotCaps[player.slotIndex]
+	if slotCap ~= nil and slotCap > 0 then
+		return slotCap
+	end
+	return AGS_GLOBAL_SETTINGS.MaximumPopulation
+end
+
+function AGS_PopulationCapacity_SetMinPopulation(player, pop_size, max_population)
+	local value = pop_size
+	if value > max_population then
+		value = max_population
+	end
+
+	-- Mongols receive always maximum to maintain their unique bonus.
+	if player.raceName == AGS_CIV_MONGOL then
+		if AGS_GLOBAL_SETTINGS.MinimumPopulationReset then
+			value = value - 200
+		else
+			value = max_population - 200
+		end
+	end
+	AGS_PopulationCapacity_ApplyMinPopulation(player, value)
+end
+
+function AGS_PopulationCapacity_ApplyMinPopulation(player, pop_size)
+	Modifier_ApplyToPlayer(Modifier_Create(MAT_Player, "personnel_cap_player_modifier", MUT_Addition, false, pop_size, ""), player.id, 0)
+end
+
+function AGS_PopulationCapacity_ApplyMaxCapPopulation(player, pop_size)
+	local value = - (200 - pop_size)
+	Modifier_ApplyToPlayer(Modifier_Create(MAT_Player, "max_personnel_cap_player_modifier", MUT_Addition, false, value, ""), player.id, 0)
+end

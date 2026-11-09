@@ -1,0 +1,36 @@
+-- Villagers belong to the buyer and use that civilization's native blueprint.
+function Yule_FindTownCentre(player)
+    local result=nil
+    local bestID=nil
+    local entities=Player_GetAllEntities(player)
+    EGroup_ForEach(entities,function(g,i,e)
+        if Entity_IsAlive(e) and Entity_IsOfType(e,AGS_BP_TC) then
+            local id=Entity_GetID(e)
+            if bestID==nil or id<bestID then result=e; bestID=id end
+        end
+    end)
+    return result
+end
+function Yule_CanReceiveVillagers(buyer,count)
+    if buyer==nil or Yule_FindTownCentre(buyer.id)==nil then return false end
+    local ebp=AGS_GetCivilizationEntity(buyer.raceName,AGS_BP_VILLAGER)
+    for _,cap in ipairs({CT_Personnel,CT_Vehicle,CT_Medic}) do
+        local needed=EBP_PopulationCost(ebp,buyer.id,cap)*count
+        if needed>0 and Player_GetCurrentPopulation(buyer.id,cap)+needed>Player_GetCurrentPopulationCap(buyer.id,cap) then
+            return false
+        end
+    end
+    return true
+end
+function Yule_DeployVillagers(buyer,count)
+    local tc=Yule_FindTownCentre(buyer.id)
+    if tc==nil or not Yule_CanReceiveVillagers(buyer,count) then return false end
+    YULE.reinforcements=(YULE.reinforcements or 0)+1
+    local group=SGroup_CreateIfNotFound("yule_villagers_"..YULE.reinforcements)
+    UnitEntry_DeploySquads(buyer.id,group,{{sbp=AGS_GetCivilizationUnit(buyer.raceName,AGS_BP_VILLAGER),numSquads=count}},
+        Yule_PositionNear(Entity_GetPosition(tc),10))
+    if SGroup_CountSpawned(group)~=count then Yule_DestroyGroup(group); return false end
+    -- Release only the temporary group. The purchased villagers remain alive.
+    SGroup_Destroy(group)
+    return true
+end

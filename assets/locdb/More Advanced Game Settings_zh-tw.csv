@@ -1,0 +1,70 @@
+ID,SourceText,TranslatedText
+397,Empowered Queen,Empowered Queen
+398,Spawns one Empowered Queen for each player when the Empowered Queen tuning pack is loaded. If the tuning pack is not loaded, this option is ignored.,Spawns one Empowered Queen for each player when the Empowered Queen tuning pack is loaded. If the tuning pack is not loaded, this option is ignored.
+410,,,,Handicap Option - Player 1 Economy,,Player 1
+411,,,,Handicap Option - Player 1 Military,,Player 1
+412,,,,Handicap Option - Player 2 Economy,,Player 2
+413,,,,Handicap Option - Player 2 Military,,Player 2
+414,,,,Handicap Option - Player 3 Economy,,Player 3
+415,,,,Handicap Option - Player 3 Military,,Player 3
+416,,,,Handicap Option - Player 4 Economy,,Player 4
+417,,,,Handicap Option - Player 4 Military,,Player 4
+418,,,,Handicap Option - Player 5 Economy,,Player 5
+419,,,,Handicap Option - Player 5 Military,,Player 5
+420,,,,Handicap Option - Player 6 Economy,,Player 6
+421,,,,Handicap Option - Player 6 Military,,Player 6
+422,,,,Handicap Option - Player 7 Economy,,Player 7
+423,,,,Handicap Option - Player 7 Military,,Player 7
+424,,,,Handicap Option - Player 8 Economy,,Player 8
+425,,,,Handicap Option - Player 8 Military,,Player 8
+426,,,,Population Override Section,,Population Cap
+427,,,,Population Override - Player 1,,Player 1
+428,,,,Population Override - Player 2,,Player 2
+429,,,,Population Override - Player 3,,Player 3
+430,,,,Population Override - Player 4,,Player 4
+431,,,,Population Override - Player 5,,Player 5
+432,,,,Population Override - Player 6,,Player 6
+433,,,,Population Override - Player 7,,Player 7
+434,,,,Population Override - Player 8,,Player 8
+435,,,,Population Override,,Use Global Cap
+436,,,,Population Override,,Overrides this player's maximum population. Use Global Cap follows Max Population Capacity in Match Settings.
+328,,,,Handicap Option,,Economic Handicap
+437,,,,Handicap Option,,Military Handicap
+438,,,,Handicap Option,,Economic Handicap
+2001,,,,,,The elves are raiding! Protect your villagers.
+2002,,,,,,Father Christmas is arriving! Look for presents along his route.
+2003,,,,,,A present awarded gold to its opener!
+2004,,,,,,A mischievous present awarded gold to the opener's enemies!
+2005,,,,,,A present revealed a gold deposit!
+2006,,,,,,A present revealed a stone deposit!
+2007,,,,,,This mischievous present found no living enemies to reward.
+2010,,,,,,Christmas Present
+2011,,,,,,"Move a unit nearby to open. Equal chances: gold for you, gold for your enemies, a gold deposit, or a stone deposit."
+2012,,,,,,Elf Raider
+2013,,,,,,A hostile festive raider. Defend your villagers!
+2014,,,,,,Father Christmas
+2015,,,,,,"Father Christmas and his reindeer race across the map, scattering ordinary and golden presents."
+2020,,Golden Present
+2021,,Collect to earn one golden present. Spend it in the Golden presents menu.
+2030,,Dasher
+2031,,Dancer
+2032,,Prancer
+2033,,Vixen
+2034,,Comet
+2035,,Cupid
+2036,,Donner
+2037,,Blitzen
+2038,,Rudolph
+2039,,One of Father Christmas's nine magical reindeer. Carries no food.
+2101,,Age 1 Archer Elf
+2102,,Age 2 Archer Elf
+2103,,Age 3 Archer Elf
+2104,,Age 4 Archer Elf
+2105,,Age 1 Spear Elf
+2106,,Age 2 Spear Elf
+2107,,Age 3 Spear Elf
+2108,,Age 4 Spear Elf
+2109,,Age 1 Armoured Elf
+2110,,Age 2 Armoured Elf
+2111,,Age 3 Armoured Elf
+2112,,Age 4 Armoured Elf

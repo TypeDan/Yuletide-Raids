@@ -1,0 +1,451 @@
+ID,SourceText,TranslatedText
+1,,Yuletide Raids
+2,,"A festive game mode and tuning pack by Daniel (TypeDan). Select Yuletide Raids as BOTH the game mode and tuning pack. One invulnerable Father Christmas cart and nine invulnerable reindeer deliver presents. Collect golden presents to buy current-age elf raids, villagers or resources; ordinary presents give gold or resource deposits. Built on Advanced Game Settings by Woprok and Joshua Sachtleben. Experimental build; see setup and test notes: https://github.com/TypeDan/Yuletide-Raids"
+3,,"Select Yuletide Raids as BOTH the game mode and tuning pack. Collect presents from an invulnerable Father Christmas convoy; spend golden presents on current-age elf raids, villagers or resources. Experimental build by Daniel (TypeDan), based on Advanced Game Settings."
+4,,Условия победы
+5,,Аннигиляция
+6,,Уничтожьте всех врагов. Эта опция обязательна если только вы не хотите чтобы игрок не выбывал даже если он потеряет все.
+7,,Ликвидация
+8,,Отключение этои опции предотвратит завершение матча если последнии соперник выидет из игры.
+9,,Капитуляция
+10,,Отмена капитуляции. Отключение этои опции предотвратит завершение матча если последнии противник сдастся.
+11,,Завоевание
+12,,Уничтожить все вражеские достопримечательности.
+13,,Цареубииство
+14,,Уничтожить всех вражеских королеи
+15,,Религия
+16,,Контролировать все святыни
+17,,Чудо света
+18,,Построить и защитить чудо света
+19,,Счет
+20,,Достигните наивысшего счета до окончания таимера
+21,,Условия игры
+22,,Поселение
+23,,Изначальное поселение
+24,,Кочевники (nomad)
+25,,Кочевники вместе (поселенцы рядом)
+26,,Поселение
+27,,Мироное время
+28,,Период мира
+29,,Отключено
+30,,5 минут
+31,,10 минут
+32,,15 минут
+33,,20 минут
+34,,25 минут
+35,,30 минут
+36,,35 минут
+37,,40 минут
+38,,45 минут
+39,,50 минут
+40,,55 минут
+41,,60 минут
+42,,65 минут
+43,,70 минут
+44,,75 минут
+45,,80 минут
+46,,85 минут
+47,,90 минут
+48,,95 минут
+49,,100 минут
+50,,105 минут
+51,,110 минут
+52,,115 минут
+53,,120 минут
+54,,Победа команды
+55,,Позволяет командам выиграть игру
+56,,Свободно для всех
+57,,Изначальные команды
+58,,Динамические команды
+59,,Командная солидарность
+60,,Один за всех и все за одного
+61,,Настроики победы
+62,,Завоюите столицу
+63,,Уничтожьте первыи городскои центр чтобы уничтожить игрока
+64,,Уничтожьте достопримечательности
+65,,Уничтожьте все достопримечательности для уничтожения игрока
+66,,Уничтожьте все городские центры
+67,,Требуется разрушить все городские центры чтобы уничтожить игрока
+68,,Уничтожьте Донжоны
+69,,Требуется разрушить все донжоны чтобы уничтожить игрока
+70,,Уничтожьте Чудо Света
+71,,Требуется разрушить Чудо Света чтобы уничтожить игрока
+72,,Таимер религии
+73,,Время необходимое для удержания всех святилищ
+74,,Мгновенно
+75,,1 минута
+76,,2 минуты
+77,,3 минуты
+78,,4 минуты
+79,,6 минут
+80,,7 минут
+81,,8 минут
+82,,9 минут
+83,,11 минут
+84,,12 минут
+85,,13 минут
+86,,14 минут
+87,,Восстановление таймера Религии
+88,,Таймер продолжается с момента когда он был прерван при повторном захвате.
+89,,Таимер Чуда Света
+90,,Время необходимое для защиты Чуда Света
+91,,Чудо света
+92,,Уничтожение готового Чуда Света уничтожит его владельца
+93,,Увеличение цены на Чудо Света
+94,,Рассчитывайте стоимость чуда в зависимости от количества игроков. Это определяет дополнительное количество всех ресурсов за каждого игрока. Цена начинается от 3000 каждого ресурса.
+95,,0 за каждого игрока
+96,,250 за каждого игрока
+97,,375 за каждого игрока
+98,,500 за каждого игрока
+99,,750 за каждого игрока
+100,,1000 за каждого игрока
+101,,1500 за каждого игрока
+102,,2000 за каждого игрока
+103,,Настроики игры
+104,,Дань
+105,,Игроки могут отправлять ресурсы союзникам
+106,,Дипломатия
+107,,Игроки могут создавать свои собственные альянсы
+108,,Видимость команды
+109,,Общее видение между союзниками
+110,,Нет
+111,,Требуется рынок
+112,,Всегда
+113,,Обзор карты
+114,,Стартовыи обзор карты
+115,,Скрытыи
+116,,Исследованныи
+117,,Раскрытыи
+118,,Стартовая эпоха
+119,,Стартовая эпоха для всех игроков
+120,,Темное время
+121,,Феодальная эпоха
+122,,Замковая эпохка
+123,,Имперская эпоха
+124,,Поздняя Имперская эпоха
+125,,Финальная эпоха
+126,,Финальная эпоха для всего игроков
+127,,Эпоха технологии
+128,,Первоначальные технологии исследованы для всех игроков
+129,,Начальные ресурсы
+130,,Начальные ресурсы для всех игроков
+131,,Нормально
+132,,Много
+133,,Очень много
+134,,Максимум
+135,,Показать FOW при ликвидации
+136,,Удаляет FOW для выбывшего игрока
+137,,Настроики матча
+138,,Показывать счет
+139,,Очки игрока видны когда включена информация о закрепленном игроке.
+140,,Показать расположение счета
+141,,Показать текущее соло-место в реитинге режима очков. Командныи счет оценивается только в конце игры если допускается командная победа. Условие победы в счете не использует ту же метрику что и счет по умолчанию.
+142,,Таимер счета
+143,,Время после которого игра завершится по счету
+144,,Минимальная численность населения
+145,,Изменяет начальную численность населения без домов. Не превысит максимальную вместимость населения.
+146,,Максимальная численность населения
+147,,Изменяет максимальную вместимость населения. Требуются дома чтобы добраться до него.
+148,,0
+149,,25
+150,,50
+151,,75
+152,,100
+153,,125
+154,,150
+155,,175
+156,,200
+157,,225
+158,,250
+159,,275
+160,,300
+161,,350
+162,,400
+163,,450
+164,,500
+165,,550
+166,,600
+167,,650
+168,,700
+169,,750
+170,,800
+171,,850
+172,,900
+173,,950
+174,,1000
+175,,10000
+176,,Начальные поселенцы
+177,,Изменяет начальное количество поселенцев для каждого игрока
+178,,1
+179,,2
+180,,3
+181,,4
+182,,5
+183,,6
+184,,7
+185,,8
+186,,9
+187,,10
+188,,15
+189,,20
+190,,30
+191,,35
+192,,40
+193,,45
+194,,Начальныи Донжон
+195,,Каждыи игрок начинает с Донжоном около старта
+196,,Устаревшие настроики
+197,,Король
+198,,Каждыи игрок начинает с Королем
+199,,Динг
+200,,Пасхальное яицо
+201,,Раннии рынок
+202,,Позволяет построить рынок в Темнои эпохе
+203,,Бомбардировка дерева
+204,,Позволяет осадному орудию и кораблям уничтожать деревья
+205,,Скорость симуляции
+206,,Изменяет тики симуляции игры. Эту опцию нельзя использовать в мультиплеере и она будет отключена.
+207,,Игровые реиты
+208,,Умножает все следующие скорости сбора строительства ремонта и производства на выбранное значение.
+209,,1x
+210,,2x
+211,,3x
+212,,4x
+213,,5x
+214,,6x
+215,,7x
+216,,8x
+217,,9x
+218,,10x
+219,,0.95x
+220,,0.90x
+221,,0.85x
+222,,0.80x
+223,,0.75x
+224,,20x
+225,,Ограничение Городского совета
+226,,Отключает возможность построики дополнительного городского совета
+227,,Нет
+228,,Нормально
+229,,Достопримечательности
+230,,Защитите своих товарищеи по команде.
+231,,%1PLAYER_NAME% сдался в знак солидарности с товарищем по команде
+232,,Осталось %1MINUTES_REMAINING% до окончания мирного времени
+233,,Мирное время закончилось. Готовьтесь к кровопролитию.
+234,,Отношения
+235,,Дружелюбие
+236,,Неитральность
+237,,Враждебность
+238,,Текущее состояние
+239,,Подружиться с %1PLAYER_NAME%
+240,,Неитралитет с %1PLAYER_NAME%
+241,,Стать врагами с %1PLAYER_NAME%
+242,,Рассеянныи старт
+243,,Усиленный король
+244,,Король будеь иметь дополнительные бонусы и способности.
+245,,Баланс команд
+246,,Если команда потеряет игрока оставшиеся члены разделят его численность населения и ресурсы. Динамические команды не имеют права на это.
+247,,Население
+248,,Население и ресурсы
+249,,Нет доков
+250,,Отключает строительство доков в любои эпохе не рекомендуется использовать на картах разделяющих игроков только по воде.
+251,,Среднии
+252,,Сражаитесь до победного конца.
+253,,Продержитесь до конца
+254,,Монарх не подчиняется никакои земнои власти получая свое право управлять непосредственно из воли Бога. Только не спрашиваи его!
+255,,Король
+256,,Укрепление
+257,,Не удалось защитить %1PLAYER_NAME%.
+258,,Все остальные команды развалились.
+259,,Аннигилируите всех
+260,,Включить замену ИИ
+261,,Вышедшие игроки будут заменены ИИ а не уничтожены.
+262,,Ваш истинный король
+263,,Не удалось защитить короля.
+264,,%1PLAYER_NAME% убит
+265,,Враг атакует короля %1PLAYER_NAME%
+266,,Король под атакои!
+267,,%1PLAYER_NAME% завоеван
+268,,Ваша империя была завоевана.
+269,,Завоеваны все враги.
+270,,Выживи и затми всех.
+271,,Твоя империя забыта историеи.
+272,,Твоя империя сияет ярче всех.
+273,,%1PLAYER_NAME% все еще ждет Годо.
+274,,%1PLAYER_NAME% не выдержал славы Чуда Света
+275,,Создание Чуда Света
+276,,Достопримечательность уничтожена
+277,,Провал сдерживания Чуда Света.
+278,,Настроики игроков
+279,,Принудительные цвета
+280,,Исправляет цвета для дипломатии. Это не предназначено для выбора цвета (но его можно использовать в качестве одного из них). Вызывает автоматическое обновление цветов для каждого слота всякии раз когда игра вызывает конфликтующие изменения. Конфликтующие настроики разрешаются автоматически.
+281,,Используются Принудительые цвета для определения цвета используемого этим слотом. Требуется включить Принудительные цвета
+282,,Синии
+283,,Красныи
+284,,Желтыи
+285,,Зеленыи
+286,,Бирюзовыи
+287,,Фиолетовыи
+288,,Оранжевыи
+289,,Розовыи
+290,,Серыи
+291,,Цвет игрока 1
+292,,Цвет игрока 2
+293,,Цвет игрока 3
+294,,Цвет игрока 4
+295,,Цвет игрока 5
+296,,Цвет игрока 6
+297,,Цвет игрока 7
+298,,Цвет игрока 8
+299,,Реиты Юнитов
+300,,Умножает максимальную скорость движения юнита на выбранное значение.
+301,,1.05x
+302,,1.10x
+303,,1.15x
+304,,1.20x
+305,,1.25x
+306,,1 минута до окончания Мирного времени
+307,,Приготовьтесь к воине.
+308,,Этого не должно было случиться.
+309,,Ручка — деиствительно сильнеишее оружие в истории.
+310,,%1MINUTES_REMAINING% минут до конца игры
+311,,1 минута до конца игры
+312,,Выживи и затми всех. Ранк %1RANK_POSITION%.
+313,,%1PLAYER_NAME% склонился перед новым богом
+314,,1.50x
+315,,1.75x
+316,,Переключить цели
+317,,Переключение между отображением целеи и их временным скрытием.
+318,,Расширенные настроики игры
+319,,Отзывы
+320,,Настроики матча
+321,,Версия мода:
+322,,Mod Title,,AGS Nomad
+323,,Mod Gamemode Description,,"AGS Nomad is alternative version to well known nomad that provides diplomacy and few options that stays true to nomad nature.\n\nHelp, feedback, bug reports and contribution to mode can be done at:\nhttps://github.com/TypeDan/Yuletide-Raids"
+324,,Wonder Construction
+325,,Enables Wonder construction without Wonder win condition or Conquest win condition with Conquest Wonder selected.
+326,,Double Workers
+327,,"Halves the cost and production speed of all economic units: villager, trader, fishing boat for all players."
+328,,Handicap Settings
+329,,Handicap Type
+330,,"If not disabled, provides to each player slot level of bonus specified for that slot. Bonus type is either Economic, Military or Both."
+331,,Both
+332,,Military
+333,,Economic
+334,,Slot 1 Handicap
+335,,Determines value of bonus provided by handicap to player on this slot in lobby.
+336,,10%
+337,,20%
+338,,30%
+339,,40%
+340,,50%
+341,,60%
+342,,70%
+343,,80%
+344,,90%
+345,,100%
+346,,150%
+347,,200%
+348,,250%
+349,,300%
+350,,Slot 2 Handicap
+351,,Slot 3 Handicap
+352,,Slot 4 Handicap
+353,,Slot 5 Handicap
+354,,Slot 6 Handicap
+355,,Slot 7 Handicap
+356,,Slot 8 Handicap
+357,,Treasures
+358,,Few treasures will appear randomly around the map.
+359,,Low
+360,,Conquer majority of city-states to ensure victory. Each players starts with few monks and has to find and takeover city.\n\n Civilization choice has no effect. Population is limited to 150. Team that controls 75% of cities will win the game.
+361,,City-State Wars
+362,,Control majority of cities
+363,,City %1NAMEORNUMBER% 
+364,,%1PLAYER_NAME% was assimilated
+365,,You are approaching Culture Victory
+366,,Your team is approaching Culture Victory
+367,,Enemy is approaching Culture Victory
+368,,Capturing City-State
+369,,Ally capturing City-State
+370,,Enemy capturing City-State
+371,,City-State captured
+372,,Ally captured City-State
+373,,Enemy captured City-State
+374,,Contesting City-State
+375,,Ally contesting City-State
+376,,Enemy contesting City-State
+377,,Liberated City-State
+378,,Ally liberated City-State
+379,,City-State lost
+380,,Liberating City-State
+381,,Ally liberating City-State
+382,,Enemy liberating City-State
+397,Empowered Queen,Empowered Queen
+398,Spawns one Empowered Queen for each player when the Empowered Queen tuning pack is loaded. If the tuning pack is not loaded, this option is ignored.,Spawns one Empowered Queen for each player when the Empowered Queen tuning pack is loaded. If the tuning pack is not loaded, this option is ignored.
+410,,,,Handicap Option - Player 1 Economy,,Player 1
+411,,,,Handicap Option - Player 1 Military,,Player 1
+412,,,,Handicap Option - Player 2 Economy,,Player 2
+413,,,,Handicap Option - Player 2 Military,,Player 2
+414,,,,Handicap Option - Player 3 Economy,,Player 3
+415,,,,Handicap Option - Player 3 Military,,Player 3
+416,,,,Handicap Option - Player 4 Economy,,Player 4
+417,,,,Handicap Option - Player 4 Military,,Player 4
+418,,,,Handicap Option - Player 5 Economy,,Player 5
+419,,,,Handicap Option - Player 5 Military,,Player 5
+420,,,,Handicap Option - Player 6 Economy,,Player 6
+421,,,,Handicap Option - Player 6 Military,,Player 6
+422,,,,Handicap Option - Player 7 Economy,,Player 7
+423,,,,Handicap Option - Player 7 Military,,Player 7
+424,,,,Handicap Option - Player 8 Economy,,Player 8
+425,,,,Handicap Option - Player 8 Military,,Player 8
+426,,,,Population Override Section,,Population Cap
+427,,,,Population Override - Player 1,,Player 1
+428,,,,Population Override - Player 2,,Player 2
+429,,,,Population Override - Player 3,,Player 3
+430,,,,Population Override - Player 4,,Player 4
+431,,,,Population Override - Player 5,,Player 5
+432,,,,Population Override - Player 6,,Player 6
+433,,,,Population Override - Player 7,,Player 7
+434,,,,Population Override - Player 8,,Player 8
+435,,,,Population Override,,Use Global Cap
+436,,,,Population Override,,Overrides this player's maximum population. Use Global Cap follows Max Population Capacity in Match Settings.
+437,,,,Handicap Option,,Military Handicap
+438,,,,Handicap Option,,Economic Handicap
+2001,,,,,,The elves are raiding! Protect your villagers.
+2002,,,,,,Father Christmas is arriving! Look for presents along his route.
+2003,,,,,,A present awarded gold to its opener!
+2004,,,,,,A mischievous present awarded gold to the opener's enemies!
+2005,,,,,,A present revealed a gold deposit!
+2006,,,,,,A present revealed a stone deposit!
+2007,,,,,,This mischievous present found no living enemies to reward.
+2010,,,,,,Christmas Present
+2011,,,,,,"Move a unit nearby to open. Equal chances: gold for you, gold for your enemies, a gold deposit, or a stone deposit."
+2012,,,,,,Elf Raider
+2013,,,,,,A hostile festive raider. Defend your villagers!
+2014,,,,,,Father Christmas
+2015,,,,,,"Father Christmas and his reindeer race across the map, scattering ordinary and golden presents."
+2020,,Golden Present
+2021,,Collect to earn one golden present. Spend it in the Golden presents menu.
+2030,,Dasher
+2031,,Dancer
+2032,,Prancer
+2033,,Vixen
+2034,,Comet
+2035,,Cupid
+2036,,Donner
+2037,,Blitzen
+2038,,Rudolph
+2039,,One of Father Christmas's nine magical reindeer. Carries no food.
+2101,,Age 1 Archer Elf
+2102,,Age 2 Archer Elf
+2103,,Age 3 Archer Elf
+2104,,Age 4 Archer Elf
+2105,,Age 1 Spear Elf
+2106,,Age 2 Spear Elf
+2107,,Age 3 Spear Elf
+2108,,Age 4 Spear Elf
+2109,,Age 1 Armoured Elf
+2110,,Age 2 Armoured Elf
+2111,,Age 3 Armoured Elf
+2112,,Age 4 Armoured Elf

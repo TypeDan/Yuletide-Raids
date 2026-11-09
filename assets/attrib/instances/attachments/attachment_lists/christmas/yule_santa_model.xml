@@ -1,0 +1,33 @@
+<instance version="6" description="" template="attachments\attachment_lists">
+  <group name="attachment_lists">
+    <list name="attachment_lists" overrideParent="True">
+      <template_reference name="attachment_lists" value="attachments\attachment_list" List.ItemID="1047032152">
+        <list name="attachment_list" overrideParent="True">
+          <template_reference name="attachments" value="options\attachment_types\animator_skin_attachment" List.ItemID="1268286909">
+            <file name="animator" value="art\civilizations\english\animals\eng_horse_combined_trade_age02\eng_horse_combined_trade_age02" overrideParent="True" />
+            <enum name="inventory_item_category" value="" />
+            <bool name="is_selectable" value="True" />
+          </template_reference>
+        </list>
+        <string name="attachment_category" value="riderMale" overrideParent="True" />
+        <string name="attachment_speaker_code" value="villagerMale" overrideParent="True" />
+        <string name="inventory_category" value="default" />
+      </template_reference>
+      <template_reference name="attachment_lists" value="attachments\attachment_list" List.ItemID="-339576826">
+        <list name="attachment_list" overrideParent="True">
+          <template_reference name="attachments" value="options\attachment_types\animator_skin_attachment" List.ItemID="932915942">
+            <file name="animator" value="art\civilizations\english\animals\eng_horse_combined_trade_female_age02\eng_horse_combined_trade_female_age02" overrideParent="True" />
+            <enum name="inventory_item_category" value="" />
+            <bool name="is_selectable" value="True" />
+          </template_reference>
+        </list>
+        <string name="attachment_category" value="riderFemale" />
+        <string name="attachment_speaker_code" value="villagerFemale" />
+        <string name="inventory_category" value="default" />
+      </template_reference>
+    </list>
+    <file name="parent_animator" value="art\civilizations\common\animals\archetypes\base_horse_combined\base_horse_combined" overrideParent="True" />
+  </group>
+  <uniqueid name="pbgid" value="1073742731" />
+  <instance_reference name="parent_pbg" value="attachments\attachment_lists\civilizations\core\units\core_trade_cart" />
+</instance>

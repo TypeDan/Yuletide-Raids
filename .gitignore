@@ -1,0 +1,11 @@
+# Content Editor generated state and local backups
+.aoe4/
+cache/
+archives/
+*.bak
+*.log
+*.tmp
+__pycache__/
+.DS_Store
+BUILD_STATUS.txt
+mod-identity.txt

@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='utf-8'?>
+<instance version="6" template="weapon" description="Neutral elf age upgrades">
+  <uniqueid name="pbgid" value="1073743122" />
+  <instance_reference name="parent_pbg" value="weapon\races\common\melee\weapon_manatarms_2" />
+  <group name="weapon_bag">
+    <group name="damage">
+      <float name="min" value="11" overrideParent="True" />
+      <float name="max" value="11" overrideParent="True" />
+    </group>
+  </group>
+</instance>

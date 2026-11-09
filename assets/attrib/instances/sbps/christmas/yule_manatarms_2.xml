@@ -1,0 +1,26 @@
+<?xml version='1.0' encoding='utf-8'?>
+<instance version="6" template="sbps" description="Neutral manatarms elf, age 2; native human animation setup">
+  <uniqueid name="pbgid" value="1073742845" />
+  <instance_reference name="parent_pbg" value="sbps\races\english\unit_manatarms_2_eng" />
+  <list name="extensions">
+    <template_reference name="squadexts" value="sbpextensions\squad_loadout_ext" List.ItemID="1336235242" List.ParentItemID="1336235242">
+      <list name="unit_list">
+        <group name="loadout_data" List.ItemID="1233639378" List.ParentItemID="1233639378">
+          <instance_reference name="type" value="ebps\christmas\yule_manatarms_2" overrideParent="True" mod="7a91e5eaf5e04afb92278936ca4d8a0c" />
+        </group>
+      </list>
+    </template_reference>
+    <template_reference name="squadexts" value="sbpextensions\squad_ui_ext" List.ItemID="905650936" List.ParentItemID="905650936">
+      <list name="race_list">
+        <group name="race_data" List.ItemID="1979727231" List.ParentItemID="1979727231">
+          <group name="info">
+            <locstring name="screen_name" value="2110" mod="7a91e5eaf5e04afb92278936ca4d8a0c" overrideParent="True" />
+            <locstring name="brief_text" value="0" overrideParent="True" />
+            <locstring name="extra_text" value="0" overrideParent="True" />
+            <locstring name="help_text" value="0" overrideParent="True" />
+          </group>
+        </group>
+      </list>
+    </template_reference>
+  </list>
+</instance>

@@ -1,0 +1,27 @@
+<instance version="6" description="Father Christmas using the existing horse-drawn trade cart" template="sbps">
+  <list name="extensions">
+    <template_reference name="squadexts" value="sbpextensions\squad_ui_ext" List.ItemID="792309686" List.ParentItemID="792309686">
+      <list name="race_list">
+        <group name="race_data" List.ItemID="911229892" List.ParentItemID="911229892">
+          <group name="info">
+            <locstring name="screen_name" value="2014" mod="7a91e5eaf5e04afb92278936ca4d8a0c" overrideParent="True" />
+            <locstring name="help_text" value="2015" mod="7a91e5eaf5e04afb92278936ca4d8a0c" overrideParent="True" />
+            <locstring name="extra_text" value="0" overrideParent="True" />
+          </group>
+        </group>
+      </list>
+    </template_reference>
+    <template_reference name="squadexts" value="sbpextensions\squad_loadout_ext" List.ItemID="-1530163112" List.ParentItemID="-1530163112">
+      <list name="unit_list" overrideParent="True">
+        <group name="loadout_data" List.ItemID="189005174">
+          <float name="num" value="1" />
+          <instance_reference name="type" value="ebps\christmas\yule_santa" mod="7a91e5eaf5e04afb92278936ca4d8a0c" />
+          <list name="unit_attachments" />
+          <bool name="is_default_unit" value="True" />
+        </group>
+      </list>
+    </template_reference>
+  </list>
+  <uniqueid name="pbgid" value="1073742721" />
+  <instance_reference name="parent_pbg" value="sbps\races\english\unit_trade_cart_eng" />
+</instance>

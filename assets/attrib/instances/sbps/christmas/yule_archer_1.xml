@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='utf-8'?>
+<instance version="6" template="sbps" description="Neutral archer elf, age 1; native human animation setup">
+  <uniqueid name="pbgid" value="1073742803" />
+  <instance_reference name="parent_pbg" value="sbps\races\english\unit_archer_2_eng" />
+  <list name="extensions">
+    <template_reference name="squadexts" value="sbpextensions\squad_loadout_ext" overrideParent="True" List.ItemID="-1479400647" List.ParentItemID="-1479400647">
+      <list name="unit_list">
+        <group name="loadout_data" List.ItemID="742236260">
+          <float name="num" value="1" />
+          <instance_reference name="type" value="ebps\christmas\yule_archer_1" mod="7a91e5eaf5e04afb92278936ca4d8a0c" />
+          <list name="unit_attachments">
+					</list>
+          <bool name="is_default_unit" value="True" />
+        </group>
+      </list>
+      <float name="squad_female_chance" value="0" />
+    </template_reference>
+    <template_reference name="squadexts" value="sbpextensions\squad_ui_ext" List.ItemID="71247335" List.ParentItemID="71247335">
+      <list name="race_list">
+        <group name="race_data" List.ItemID="1131010880" List.ParentItemID="1131010880">
+          <group name="info">
+            <locstring name="screen_name" value="2101" mod="7a91e5eaf5e04afb92278936ca4d8a0c" overrideParent="True" />
+            <locstring name="brief_text" value="0" overrideParent="True" />
+            <locstring name="extra_text" value="0" overrideParent="True" />
+            <locstring name="help_text" value="0" overrideParent="True" />
+          </group>
+        </group>
+      </list>
+    </template_reference>
+  </list>
+</instance>

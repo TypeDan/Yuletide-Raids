@@ -1,0 +1,230 @@
+import("christmas/yuletide_shop.scar")
+import("christmas/yuletide_units.scar")
+import("christmas/yuletide_convoy.scar")
+YULE_LOC = "$7a91e5eaf5e04afb92278936ca4d8a0c:"
+YULE_MOD = "7a91e5eaf5e04afb92278936ca4d8a0c:"
+-- Yuletide Raids. Simulation uses World_GetRand and stable player order.
+-- Existing human/cart visuals; stock notification sound pending custom audio support.
+Core_RegisterModule("Yule")
+
+YULE_CONFIG = {
+    goldenChance = 20, maxActiveRaids = 8,
+    firstVisit = 60, visitMin = 300, visitMax = 480, visitDuration = 36,
+    giftsPerVisit = 10, openRadius = 5, gold = 300, maxPresents = 24,
+    presentLifetime = 600, raidLifetime = 300,
+}
+YULE = { time = 0, wallets = {}, nextVisit = 60, visits = 0,
+    waves = 0, presents = {}, raids = {}, santa = nil, running = false }
+
+function Yule_LivePlayers()
+    local players = {}
+    for i = 1, World_GetPlayerCount() do
+        local p = Core_GetPlayersTableEntryFromIndex(i)
+        if p ~= nil and not p.isEliminated then table.insert(players, p) end
+    end
+    return players
+end
+
+function Yule_Notify(key)
+    print("Yuletide event " .. tostring(key) .. " at " .. tostring(YULE.time))
+    UI_CreateEventCue(YULE_LOC .. tostring(key), Loc_Empty(), "medium_priority", "",
+        "sfx_ui_event_queue_med_priority_play", ECV_Title, 5)
+end
+
+function Yule_ResolveBlueprint(getter, name, id, kind)
+    for _, candidate in ipairs({YULE_MOD .. name, YULE_MOD .. tostring(id),
+        YULE_MOD .. kind .. "\\christmas\\" .. name,
+        "christmas\\" .. name, name}) do
+        local ok, blueprint = pcall(getter, candidate)
+        if ok and blueprint ~= nil then
+            print("Yuletide blueprint resolved: " .. candidate)
+            return blueprint
+        end
+    end
+    error("Yuletide blueprint missing: " .. name .. ". Select the Yuletide Raids tuning pack.")
+end
+
+function Yule_OnPlay()
+    YULE.blueprints = { elves = {} }
+    YULE.blueprints.present = Yule_ResolveBlueprint(BP_GetEntityBlueprint, "yule_present", 1073742720, "ebps")
+    YULE.blueprints.golden = Yule_ResolveBlueprint(BP_GetEntityBlueprint, "yule_golden_present", 1073742740, "ebps")
+    YULE.blueprints.santa = Yule_ResolveBlueprint(BP_GetSquadBlueprint, "yule_santa", 1073742721, "sbps")
+    for tier = 1,4 do
+        YULE.blueprints.elves[tier] = Yule_ResolveBlueprint(BP_GetSquadBlueprint, "yule_elf_" .. tier, 1073742710 + tier, "sbps")
+    end
+    Yule_ConvoyBlueprints()
+    -- Art is loaded through the game mode's declarative PrecacheList.
+    YULE.running = true
+    print("Yuletide initialized")
+    Network_RegisterEvent("Yule_PurchaseNetwork")
+    Yule_CreateShop()
+    YULE.nextVisit = YULE_CONFIG.firstVisit
+    Rule_AddInterval(Yule_Tick, 1)
+    Rule_AddInterval(Yule_Flight, 0.1)
+end
+
+function Yule_DestroyGroup(group)
+    SGroup_DestroyAllSquads(group)
+    SGroup_Destroy(group)
+end
+
+function Yule_OnGameOver()
+    YULE.running = false
+    Rule_Remove(Yule_Tick)
+    Rule_Remove(Yule_Flight)
+    Yule_EndVisit()
+    for _, raid in ipairs(YULE.raids) do Yule_DestroyGroup(raid.group) end
+    YULE.raids = {}
+    for _, present in ipairs(YULE.presents) do
+        if Entity_IsValid(present.id) then Entity_Destroy(present.entity) end
+    end
+    YULE.presents = {}
+end
+
+function Yule_PositionNear(position, distance)
+    local angle = World_GetRand(0, 359) * math.pi / 180
+    local x = math.max(-World_GetWidth()/2+12, math.min(World_GetWidth()/2-12, position.x + math.cos(angle)*distance))
+    local z = math.max(-World_GetLength()/2+12, math.min(World_GetLength()/2-12, position.z + math.sin(angle)*distance))
+    return World_Pos(x, World_GetHeightAt(x,z), z)
+end
+
+-- Hostile neutral entities use native werewolf AI; the buyer receives no vision.
+YULE_RAIDS_VERIFIED = true
+function Yule_DeployPurchasedRaid(buyer,target,offer)
+    local tc=Yule_FindTownCentre(target.id)
+    if tc==nil then return false end
+    local name="yule_"..offer.kind.."_"..offer.tier
+    local blueprint=BP_GetSquadBlueprint(YULE_MOD..name)
+    YULE.waves=YULE.waves+1
+    local group=SGroup_CreateIfNotFound("yule_purchased_raid_"..YULE.waves)
+    local position=Yule_PositionNear(Entity_GetPosition(tc),18)
+    local deployment=UnitEntry_DeploySquads(buyer.id,group,{{sbp=blueprint,numSquads=offer.count}},position,{createButDontSpawn=true})
+    -- Native entity behaviour drives neutral units; player command wrappers do not.
+    for _,unit in ipairs(deployment.units) do Squad_SetWorldOwned(unit.squadID) end
+    UnitEntry_StartDeployment(deployment)
+    SGroup_SetWorldOwned(group)
+    if SGroup_CountSpawned(group)~=offer.count then Yule_DestroyGroup(group); return false end
+    SGroup_ForEach(group,function(g,i,squad)
+        local entity=Squad_GetFirstEntity(squad)
+        StateTree_QueueGlobalStateTreeEntity(false,"unit_werewolf_behaviour",entity)
+        Entity_SetStateModelBool(entity,"moon_rush_signal",true)
+    end)
+    table.insert(YULE.raids,{group=group,expires=YULE.time+YULE_CONFIG.raidLifetime})
+    return true
+end
+
+function Yule_DropPresent(position,players)
+    print("Yuletide dropping present")
+    if #YULE.presents >= YULE_CONFIG.maxPresents then return false end
+    local golden = World_GetRand(1,100) <= YULE_CONFIG.goldenChance
+    local blueprint = golden and YULE.blueprints.golden or YULE.blueprints.present
+    local entity = Entity_CreateENVFacing(blueprint, position, position, false)
+    local safe = World_GetSpawnablePosition(position, entity)
+    if not Yule_DropAreaClear(safe,players or Yule_LivePlayers()) then
+        Entity_Destroy(entity)
+        return false
+    end
+    Entity_Spawn(entity)
+    Entity_WarpToPos(entity, safe)
+    table.insert(YULE.presents, { entity = entity, id = Entity_GetID(entity),
+        position = safe, golden = golden, expires = YULE.time + YULE_CONFIG.presentLifetime })
+    return true
+end
+
+-- Exactly four equiprobable outcomes. Enemy gold is one total pot, not per enemy.
+function Yule_Reward(opener, position, outcome, players)
+    if outcome == 1 then
+        Player_AddResource(opener.id, RT_Gold, YULE_CONFIG.gold)
+    elseif outcome == 2 then
+        local enemies = {}
+        for _, player in ipairs(players) do
+            if player.id ~= opener.id and AGS_IsMutualRelation(opener.id, player.id, R_ENEMY) then
+                table.insert(enemies, player)
+            end
+        end
+        if #enemies == 0 then
+            -- No eligible living enemies: preserve the roll, award nobody.
+            Yule_Notify(2007)
+            return
+        end
+        local share = math.floor(YULE_CONFIG.gold / #enemies)
+        local remainder = YULE_CONFIG.gold - share * #enemies
+        for i, enemy in ipairs(enemies) do
+            Player_AddResource(enemy.id, RT_Gold, share + (i <= remainder and 1 or 0))
+        end
+    elseif outcome == 3 or outcome == 4 then
+        local name = outcome == 3 and "resource_gold_deposit_small" or "resource_stone_deposit_small"
+        local entity = Entity_CreateENVFacing(BP_GetEntityBlueprint(name), position, position, false)
+        -- Resolve collision with the unit opening the present; stay near its location.
+        local safe = World_GetSpawnablePosition(position, entity)
+        Entity_Spawn(entity)
+        Entity_WarpToPos(entity, safe)
+    else
+        error("Invalid Yuletide present outcome")
+    end
+    Yule_Notify(2002 + outcome)
+end
+
+function Yule_FindOpener(present, players)
+    local opener = nil
+    local bestDistance = YULE_CONFIG.openRadius * YULE_CONFIG.openRadius + 1
+    -- Mobile units belong to squads; use the squad proximity query so scouts
+    -- and villagers are included by the engine's spatial lookup.
+    local nearby = SGroup_CreateIfNotFound("yule_pickup_query")
+    for _, player in ipairs(players) do
+        Player_GetAllSquadsNearMarker(player.id, nearby, present.position, YULE_CONFIG.openRadius)
+        SGroup_ForEach(nearby, function(gid, idx, squad)
+            local entity = Squad_GetFirstEntity(squad)
+            if not Yule_IsConvoySquad(squad) and Entity_IsAlive(entity) and Entity_IsOfType(entity, AGS_BP_UNIT_CLASS)
+                and not Entity_IsOfType(entity, AGS_BP_BUILDING) then
+                local p = Entity_GetPosition(entity)
+                local distance = (p.x-present.position.x)^2 + (p.z-present.position.z)^2
+                if distance < bestDistance then bestDistance = distance; opener = player end
+            end
+        end)
+    end
+    return opener
+end
+
+function Yule_Tick()
+    if not YULE.running then return end
+    YULE.time = YULE.time + 1
+    Yule_RefreshShop()
+    local players = Yule_LivePlayers()
+    if #players == 0 then return end
+    if YULE.santa == nil and YULE.time >= YULE.nextVisit then
+        Yule_StartVisit(players)
+        YULE.nextVisit = YULE.time + World_GetRand(YULE_CONFIG.visitMin, YULE_CONFIG.visitMax)
+    end
+    Yule_UpdateVisit(players)
+    for i = #YULE.presents, 1, -1 do
+        local present = YULE.presents[i]
+        if not Entity_IsValid(present.id) then
+            table.remove(YULE.presents, i)
+        elseif YULE.time >= present.expires then
+            Entity_Destroy(present.entity)
+            table.remove(YULE.presents, i)
+        else
+            local opener = Yule_FindOpener(present, players)
+            if opener ~= nil then
+                -- Consume first: a present cannot reward two players in the same tick.
+                table.remove(YULE.presents, i)
+                Entity_Destroy(present.entity)
+                if present.golden then
+                    local slot = Yule_PlayerSlot(opener.id)
+                    YULE.wallets[slot] = (YULE.wallets[slot] or 0) + 1
+                else
+                    Yule_Reward(opener, present.position, World_GetRand(1,4), players)
+                end
+            end
+        end
+    end
+    for i = #YULE.raids, 1, -1 do
+        local raid = YULE.raids[i]
+        if YULE.time >= raid.expires or SGroup_CountSpawned(raid.group) == 0 then
+            Yule_DestroyGroup(raid.group)
+            table.remove(YULE.raids, i)
+        end
+    end
+end
+

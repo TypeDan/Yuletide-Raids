@@ -1,0 +1,132 @@
+<?xml version='1.0' encoding='utf-8'?>
+<instance version="6" template="ebps" description="Neutral archer elf, age 2">
+  <uniqueid name="pbgid" value="1073742804" />
+  <instance_reference name="parent_pbg" value="ebps\races\english\units\unit_archer_2_eng" />
+  <list name="extensions">
+    <template_reference name="exts" value="ebpextensions\entity_blueprint_ext" List.ItemID="-914024362" List.ParentItemID="-914024362">
+      <float name="animator_scale" value="85" overrideParent="True" />
+    </template_reference>
+    <template_reference name="exts" value="ebpextensions\action_tree_ext" List.ItemID="-1909184748" List.ParentItemID="-1909184748">
+      <state_tree_node name="ActionTree_OpeningBranch" value="unit_entity" overrideParent="True" />
+    </template_reference>
+    <template_reference name="exts" value="ebpextensions\statemodel_ext" List.ItemID="1239744591" List.ParentItemID="1239744591">
+      <instance_reference name="schema" value="statemodel_schema\christmas\yule_archer" overrideParent="True" mod="7a91e5eaf5e04afb92278936ca4d8a0c" />
+    </template_reference>
+    <template_reference name="exts" value="ebpextensions\population_ext" List.ItemID="1518633321" List.ParentItemID="1518633321">
+      <float name="personnel_pop" value="0" overrideParent="True" />
+    </template_reference>
+    <template_reference name="exts" value="ebpextensions\type_ext" List.ItemID="-1451740830" List.ParentItemID="-1451740830">
+      <list name="unit_type_list">
+        <enum name="unit_type" value="wolf" List.ItemID="1610000029" List.ListAction="Append" />
+        <enum name="unit_type" value="werewolf" List.ItemID="1610000030" List.ListAction="Append" />
+      </list>
+      <list name="attack_target_restriction_on_victim">
+        <enum name="unit_type" value="wolf" List.ItemID="1630000013" List.ListAction="Append" />
+        <enum name="unit_type" value="werewolf" List.ItemID="1630000014" List.ListAction="Append" />
+      </list>
+    </template_reference>
+    <template_reference name="exts" value="ebpextensions\combat_ext" List.ItemID="1786737891" List.ParentItemID="1786737891">
+      <group name="combat_scan_intervals">
+        <group name="attack_move_scan_intervals">
+          <float name="interval_with_invalid_target" value="1" overrideParent="True" />
+          <float name="interval_with_valid_target" value="2" overrideParent="True" />
+          <float name="frequent_scan_radius" value="0" overrideParent="True" />
+        </group>
+      </group>
+      <string name="combat_choice_tree" value="entity_combat_manager" overrideParent="True" />
+      <group name="attack_move">
+        <float name="attack_move_targeting_range" value="75" overrideParent="True" />
+        <float name="attack_move_priority_per_distance_meter" value="-0.2" overrideParent="True" />
+      </group>
+      <group name="idle_targeting">
+        <float name="idle_targeting_range" value="75" overrideParent="True" />
+      </group>
+      <list name="hardpoints" overrideParent="True">
+        <group name="hardpoint" List.ItemID="-1929829615">
+          <float name="parent_hardpoint" value="-1" />
+          <list name="weapon_table" overrideParent="True">
+            <group name="weapon" List.ItemID="-160489467">
+              <group name="heading">
+                <float name="x" value="0" />
+                <float name="y" value="0" />
+                <float name="z" value="1" />
+              </group>
+              <float name="length" value="0" />
+              <group name="origin" overrideParent="True">
+                <float name="x" value="0" />
+                <float name="y" value="1.75" />
+                <float name="z" value="1" />
+              </group>
+              <enum name="type" value="default" />
+              <template_reference name="weapon_entity_attachment" value="" overrideParent="True">
+							</template_reference>
+              <template_reference name="non_entity_weapon_wrapper" value="non_entity_weapon_wrapper" overrideParent="True">
+                <instance_reference name="non_entity_weapon_wrapper_pbg" value="weapon\christmas\yule_archer_2_weapon_1073743102" overrideParent="True" mod="7a91e5eaf5e04afb92278936ca4d8a0c" />
+                <instance_reference name="animator_attachments" value="attachments\attachment_lists\races\english\weapons\wpn_range_archer_2_eng" overrideParent="True" />
+                <string name="marker_name_parent" value="MetaRig_LArmPalmSocket" overrideParent="True" />
+              </template_reference>
+            </group>
+            <group name="weapon" List.ItemID="-177029726">
+              <group name="heading">
+                <float name="x" value="0" />
+                <float name="y" value="0" />
+                <float name="z" value="1" />
+              </group>
+              <float name="length" value="0" />
+              <group name="origin" overrideParent="True">
+                <float name="x" value="0" />
+                <float name="y" value="1.75" />
+                <float name="z" value="1" />
+              </group>
+              <enum name="type" value="default" />
+              <template_reference name="weapon_entity_attachment" value="" overrideParent="True">
+							</template_reference>
+              <template_reference name="non_entity_weapon_wrapper" value="non_entity_weapon_wrapper" overrideParent="True">
+                <instance_reference name="non_entity_weapon_wrapper_pbg" value="weapon\christmas\yule_archer_2_weapon_1073743103" overrideParent="True" mod="7a91e5eaf5e04afb92278936ca4d8a0c" />
+                <instance_reference name="animator_attachments" value="attachments\attachment_lists\races\english\weapons\wpn_range_archer_2_eng" overrideParent="True" />
+                <string name="marker_name_parent" value="MetaRig_LArmPalmSocket" overrideParent="True" />
+              </template_reference>
+            </group>
+            <group name="weapon" overrideParent="True" List.ItemID="908359657">
+              <group name="heading">
+                <float name="x" value="0" />
+                <float name="y" value="0" />
+                <float name="z" value="1" />
+              </group>
+              <float name="length" value="0" />
+              <group name="origin">
+                <float name="x" value="0" />
+                <float name="y" value="1.75" />
+                <float name="z" value="1" />
+              </group>
+              <enum name="type" value="default" />
+              <template_reference name="weapon_entity_attachment" value="">
+							</template_reference>
+              <template_reference name="non_entity_weapon_wrapper" value="non_entity_weapon_wrapper">
+                <instance_reference name="non_entity_weapon_wrapper_pbg" value="weapon\races\english\ranged\weapon_longbowman_incendiary_building_fire_eng" overrideParent="True" />
+                <instance_reference name="animator_attachments" value="attachments\attachment_lists\races\english\weapons\wpn_range_archer_2_eng" />
+                <string name="marker_name_parent" value="MetaRig_LArmPalmSocket" />
+              </template_reference>
+            </group>
+          </list>
+          <bool name="receives_attack_commands" value="True" />
+          <string name="base_marker" value="" />
+          <list name="preferred_inventory_item_categories">
+          </list>
+          <list name="firing_offset_markers">
+          </list>
+          <bool name="initialize_weapons_on_creation" value="True" />
+          <string name="offhand_marker" value="" />
+        </group>
+      </list>
+    </template_reference>
+    <template_reference name="exts" value="ebpextensions\health_ext" List.ItemID="-123081057" List.ParentItemID="-123081057">
+      <enum name="allegiance_override" value="enemy_to_all" overrideParent="True" />
+      <float name="hitpoints" value="70" overrideParent="True" />
+      <enum_table name="armor_scaler_by_damage_type">
+        <float name="Melee" value="1" overrideParent="True" />
+        <float name="Ranged" value="1" overrideParent="True" />
+      </enum_table>
+    </template_reference>
+  </list>
+</instance>

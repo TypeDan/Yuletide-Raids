@@ -1,0 +1,155 @@
+---------------------------------------------------------------------------------------------------
+-- Authors:
+-- More Advanced Game Settings
+--
+-- Description:
+-- Optionally spawns one Empowered Queen for each player.
+-- The Queen blueprint is supplied by the separate "Empowered Queen" tuning pack.
+-- If the tuning pack is not loaded, the option is ignored safely.
+---------------------------------------------------------------------------------------------------
+
+AGS_STARTING_QUEEN_MODULE = "AGS_StartingQueen"
+
+---------------------------------------------------------------------------------------------------
+-- Delegates:
+---------------------------------------------------------------------------------------------------
+
+Core_RegisterModule(AGS_STARTING_QUEEN_MODULE)
+
+function AGS_StartingQueen_UpdateModuleSettings()
+	AGS_Print("AGS_StartingQueen_UpdateModuleSettings", AGS_GLOBAL_SETTINGS.EmpoweredQueen)
+	-- Keep this module registered. The checkbox is checked again at PresetExecute.
+	-- This avoids timing/order problems while remaining a no-op when disabled.
+end
+
+function AGS_StartingQueen_PresetExecute()
+	AGS_Print("AGS_StartingQueen_PresetExecute", AGS_GLOBAL_SETTINGS.EmpoweredQueen)
+	if AGS_GLOBAL_SETTINGS.EmpoweredQueen then
+		AGS_StartingQueen_Create()
+	end
+end
+
+---------------------------------------------------------------------------------------------------
+-- Functions:
+---------------------------------------------------------------------------------------------------
+
+-- BP_GetSquadBlueprint throws when a blueprint does not exist.  Use pcall so selecting the
+-- lobby option without the Empowered Queen tuning pack does not stop the match with a SCAR error.
+function AGS_StartingQueen_TryGetBlueprint()
+	-- Custom tuning-pack blueprints can resolve differently depending on how
+	-- the Attribute burner registered them. Try the useful forms safely.
+	local candidates = {
+		"empoweredqueen",
+		"races\\common\\units\\empoweredqueen",
+		"sbps\\races\\common\\units\\empoweredqueen",
+		"d78fe8d8a6a54c2f9df0f7edf6e9b0e2:empoweredqueen",
+		"d78fe8d8a6a54c2f9df0f7edf6e9b0e2:1073741824",
+	}
+
+	for _, blueprint_name in ipairs(candidates) do
+		local success, blueprint = pcall(function()
+			return BP_GetSquadBlueprint(blueprint_name)
+		end)
+
+		if success and blueprint ~= nil then
+			AGS_Print("Empowered Queen blueprint resolved as", blueprint_name)
+			return blueprint
+		end
+	end
+
+	AGS_Print("Empowered Queen is enabled, but its squad blueprint could not be resolved. Spawn skipped safely.")
+	return nil
+end
+
+function AGS_StartingQueen_TryGetEntityBlueprint()
+	local candidates = {
+		"empoweredqueen",
+		"races\\common\\units\\empoweredqueen",
+		"ebps\\races\\common\\units\\empoweredqueen",
+		"d78fe8d8a6a54c2f9df0f7edf6e9b0e2:empoweredqueen",
+		"d78fe8d8a6a54c2f9df0f7edf6e9b0e2:1073741823",
+	}
+
+	for _, blueprint_name in ipairs(candidates) do
+		local success, blueprint = pcall(function()
+			return BP_GetEntityBlueprint(blueprint_name)
+		end)
+
+		if success and blueprint ~= nil then
+			AGS_Print("Empowered Queen entity blueprint resolved as", blueprint_name)
+			return blueprint
+		end
+	end
+
+	AGS_Print("Empowered Queen entity blueprint could not be resolved; runtime Queen stat modifiers skipped.")
+	return nil
+end
+
+function AGS_StartingQueen_ApplyModifier(player_id, ebp_queen, modifier_name, value)
+	local success, modifier_or_error = pcall(function()
+		local modifier = Modifier_Create(
+			MAT_EntityType,
+			modifier_name,
+			MUT_Addition,
+			false,
+			value,
+			ebp_queen
+		)
+		Modifier_ApplyToPlayer(modifier, player_id, 0.0)
+		return modifier
+	end)
+
+	if not success then
+		AGS_Print("Empowered Queen modifier failed", modifier_name, modifier_or_error)
+	end
+end
+
+function AGS_StartingQueen_Empower(sid, player, ebp_queen)
+	if ebp_queen == nil then
+		return
+	end
+
+	-- Core unit_horsearcher_3 baseline:
+	-- 135 HP, 0 melee/ranged armour, 6.5 movement, 10/34 sight.
+	-- Restore the custom Queen values:
+	-- 1000 HP, 6/6 armour, 7.6 movement, 20/44 sight.
+	AGS_StartingQueen_ApplyModifier(player.id, ebp_queen, "health_maximum_modifier", 865)
+	AGS_StartingQueen_ApplyModifier(player.id, ebp_queen, "armor_scalar_for_melee_damage", 6)
+	AGS_StartingQueen_ApplyModifier(player.id, ebp_queen, "armor_scalar_for_ranged_damage", 6)
+	AGS_StartingQueen_ApplyModifier(player.id, ebp_queen, "speed_maximum_modifier", 1.1)
+	AGS_StartingQueen_ApplyModifier(player.id, ebp_queen, "sight_radius_modifier", 10)
+
+	-- Fill the newly enlarged health pool.
+	pcall(function()
+		Squad_SetHealth(sid, 1.0)
+	end)
+end
+
+function AGS_StartingQueen_Create()
+	local sbp_queen = AGS_StartingQueen_TryGetBlueprint()
+	if sbp_queen == nil then
+		return
+	end
+
+	local ebp_queen = AGS_StartingQueen_TryGetEntityBlueprint()
+
+	for _, player in pairs(PLAYERS) do
+		local sname_queen = AGS_SGroupName(player.id, "empoweredqueen")
+		local start_adjusted_pos = AGS_Starts_GetStartPosition(player.id)
+
+		local sg_queen = AGS_SpawnSquad(
+			player.id,
+			sname_queen,
+			sbp_queen,
+			start_adjusted_pos,
+			World_Pos(0, 0, -15),
+			1
+		)
+
+		if sg_queen ~= nil then
+			for i = 1, SGroup_CountSpawned(sg_queen) do
+				AGS_StartingQueen_Empower(SGroup_GetSquadAt(sg_queen, i), player, ebp_queen)
+			end
+		end
+	end
+end

@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='utf-8'?>
+<instance version="6" template="ebps" description="Father Christmas reindeer; no harvestable food">
+  <list name="extensions">
+    <template_reference name="exts" value="ebpextensions\resource_deposit_ext" List.ItemID="1804863216" List.ParentItemID="1804863216">
+      <float name="initial_amount" value="0" overrideParent="True" />
+    </template_reference>
+    <template_reference name="exts" value="ebpextensions\moving_ext" List.ItemID="-1623018241" List.ParentItemID="-1623018241">
+      <enum_table name="speed_scaling_table">
+        <float name="default_speed" value="20" overrideParent="True" />
+        <float name="max_speed" value="24" overrideParent="True" />
+      </enum_table>
+    </template_reference>
+    <template_reference name="exts" value="ebpextensions\sight_ext" List.ItemID="-354523391" List.ParentItemID="-354523391">
+      <group name="sight_package">
+        <float name="inner_radius" value="0" overrideParent="True" />
+        <float name="outer_radius" value="0" overrideParent="True" />
+      </group>
+      <float name="reveal_area_on_death_time" value="0" overrideParent="True" />
+    </template_reference>
+    <template_reference name="exts" value="ebpextensions\health_ext" List.ItemID="675827046" List.ParentItemID="675827046">
+      <bool name="not_default_attackable" value="True" overrideParent="True" />
+    </template_reference>
+    <template_reference name="exts" value="ebpextensions\action_tree_ext" List.ItemID="-1225176921" List.ParentItemID="-1225176921">
+      <state_tree_node name="ActionTree_OpeningBranch" value="unit_entity" overrideParent="True" />
+    </template_reference>
+  </list>
+  <uniqueid name="pbgid" value="1073742750" />
+  <instance_reference name="parent_pbg" value="ebps\gaia\animals\gaia_huntable_reindeer" />
+</instance>

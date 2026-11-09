@@ -1,0 +1,26 @@
+<?xml version='1.0' encoding='utf-8'?>
+<instance version="4" description="" template="sbps">
+  <list name="extensions" removedIds="153670721">
+    <template_reference name="squadexts" value="sbpextensions\squad_ui_ext" List.ItemID="1306010790" List.ParentItemID="1306010790">
+      <list name="race_list">
+        <group name="race_data" List.ItemID="1299925371" List.ParentItemID="1299925371">
+          <group name="info">
+            <locstring name="help_text" value="2039" overrideParent="True" mod="7a91e5eaf5e04afb92278936ca4d8a0c" />
+            <file name="icon_name" value="gaia\animals\reindeer" overrideParent="True" />
+            <locstring name="screen_name" value="2035" overrideParent="True" mod="7a91e5eaf5e04afb92278936ca4d8a0c" />
+            <string name="selection_group" value="reindeer" overrideParent="True" />
+          </group>
+        </group>
+      </list>
+    </template_reference>
+    <template_reference name="squadexts" value="sbpextensions\squad_loadout_ext" List.ItemID="-904726506" List.ParentItemID="-904726506">
+      <list name="unit_list">
+        <group name="loadout_data" List.ItemID="238549949" List.ParentItemID="238549949">
+          <instance_reference name="type" value="ebps\christmas\yule_reindeer" overrideParent="True" mod="7a91e5eaf5e04afb92278936ca4d8a0c" />
+        </group>
+      </list>
+    </template_reference>
+  </list>
+  <uniqueid name="pbgid" value="1073742756" />
+  <instance_reference name="parent_pbg" value="sbps\races\gaia\animals\gaia_huntable_deer" />
+</instance>

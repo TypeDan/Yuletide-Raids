@@ -1,0 +1,103 @@
+<?xml version='1.0' encoding='utf-8'?>
+<instance version="6" template="statemodel_schema" description="Human unit with neutral raid behaviour state">
+  <uniqueid name="pbgid" value="1073742901" />
+  <instance_reference name="parent_pbg" value="statemodel_schema\units\spearman" />
+  <group name="schema_bag">
+    <list name="bool_properties">
+      <template_reference name="boolean" value="statemodel_bool_property" List.ItemID="1610000035" List.ListAction="Append">
+        <bool name="default" value="False" />
+        <enum name="bool_property_id" value="gaia_hunters_bounty_rus" />
+      </template_reference>
+      <template_reference name="boolean" value="statemodel_bool_property" List.ItemID="1610000036" List.ListAction="Append">
+        <bool name="default" value="False" />
+        <enum name="bool_property_id" value="boar_killed_sul" />
+      </template_reference>
+      <template_reference name="boolean" value="statemodel_bool_property" List.ItemID="1610000037" List.ListAction="Append">
+        <bool name="default" value="False" />
+        <enum name="bool_property_id" value="improved_resource_deposit_abb" />
+      </template_reference>
+      <template_reference name="boolean" value="statemodel_bool_property" List.ItemID="1610000038" List.ListAction="Append">
+        <bool name="default" value="False" />
+        <enum name="bool_property_id" value="gold_deposit_is_claimed" />
+      </template_reference>
+      <template_reference name="boolean" value="statemodel_bool_property" List.ItemID="1610000039" List.ListAction="Append">
+        <bool name="default" value="False" />
+        <enum name="bool_property_id" value="herded_by_scout" />
+      </template_reference>
+      <template_reference name="boolean" value="statemodel_bool_property" List.ItemID="1610000040" List.ListAction="Append">
+        <bool name="default" value="False" />
+        <enum name="bool_property_id" value="disable_retaliate" />
+      </template_reference>
+      <template_reference name="boolean" value="statemodel_bool_property" comment="is this entity being carried by a scout&#13;&#10;" List.ItemID="1610000041" List.ListAction="Append">
+        <bool name="default" value="False" />
+        <enum name="bool_property_id" value="is_being_carried" />
+      </template_reference>
+      <template_reference name="boolean" value="statemodel_bool_property" List.ItemID="1610000042" List.ListAction="Append">
+        <bool name="default" value="True" overrideParent="True" />
+        <enum name="bool_property_id" value="moon_rush_signal" overrideParent="True" />
+      </template_reference>
+    </list>
+    <list name="float_properties">
+      <template_reference name="float" value="statemodel_float_property" List.ItemID="1610000043" List.ListAction="Append">
+        <float name="default" value="5" />
+        <enum name="float_property_id" value="Gaia_Wander_Distance_To_Wander_Min" />
+      </template_reference>
+      <template_reference name="float" value="statemodel_float_property" List.ItemID="1610000044" List.ListAction="Append">
+        <float name="default" value="30" />
+        <enum name="float_property_id" value="Gaia_Wander_Distance_To_Wander_Max" />
+      </template_reference>
+      <template_reference name="float" value="statemodel_float_property" List.ItemID="1610000045" List.ListAction="Append">
+        <float name="default" value="-1" />
+        <enum name="float_property_id" value="gaia_wander_leash_distance" />
+      </template_reference>
+      <template_reference name="float" value="statemodel_float_property" List.ItemID="1610000046" List.ListAction="Append">
+        <float name="default" value="0.5" />
+        <enum name="float_property_id" value="gaia_wander_delay_probability" />
+      </template_reference>
+      <template_reference name="float" value="statemodel_float_property" List.ItemID="1610000047" List.ListAction="Append">
+        <float name="default" value="2" />
+        <enum name="float_property_id" value="resource_depleted_delay_before_delete" />
+      </template_reference>
+      <template_reference name="float" value="statemodel_float_property" comment="Used to prevent deer from fleeing past cliffs; bandaid fix, this property should be removed when a proper programming fix is added." List.ItemID="1610000048" List.ListAction="Append">
+        <float name="default" value="4" />
+        <enum name="float_property_id" value="max_flee_time" />
+      </template_reference>
+      <template_reference name="float" value="statemodel_float_property" List.ItemID="1610000049" List.ListAction="Append">
+        <float name="default" value="25" overrideParent="True" />
+        <enum name="float_property_id" value="werewolf_towncenter_proximity" overrideParent="True" />
+      </template_reference>
+      <template_reference name="float" value="statemodel_float_property" comment="How much % of killable squads should remain for the werewolf to stop attacking (0-1.0)" List.ItemID="1610000050" List.ListAction="Append">
+        <float name="default" value="0.3" overrideParent="True" />
+        <enum name="float_property_id" value="werewolf_pop_kill_treshold" overrideParent="True" />
+      </template_reference>
+    </list>
+    <list name="int_properties">
+      <template_reference name="int" value="statemodel_int_property" comment="IN TICKS" List.ItemID="1610000051" List.ListAction="Append">
+        <int name="default" value="8" />
+        <enum name="int_property_id" value="gaia_wander_delay_min" />
+      </template_reference>
+      <template_reference name="int" value="statemodel_int_property" List.ItemID="1610000052" List.ListAction="Append">
+        <int name="default" value="10" />
+        <enum name="int_property_id" value="gaia_wander_delay_max" />
+      </template_reference>
+      <template_reference name="int" value="statemodel_int_property" List.ItemID="1610000053" List.ListAction="Append">
+        <int name="default" value="0" />
+        <enum name="int_property_id" value="land_pop_snapshot" overrideParent="True" />
+      </template_reference>
+    </list>
+    <list name="target_properties">
+      <template_reference name="target" value="statemodel_target_property" List.ItemID="1610000054" List.ListAction="Append">
+        <enum name="target_property_id" value="claiming_gold_deposit" />
+      </template_reference>
+      <template_reference name="target" value="statemodel_target_property" List.ItemID="1610000055" List.ListAction="Append">
+        <enum name="target_property_id" value="werewolf_targeted_towncenter" overrideParent="True" />
+      </template_reference>
+      <template_reference name="target" value="statemodel_target_property" List.ItemID="1610000056" List.ListAction="Append">
+        <enum name="target_property_id" value="werewolf_spawn" overrideParent="True" />
+      </template_reference>
+      <template_reference name="target" value="statemodel_target_property" List.ItemID="1610000057" List.ListAction="Append">
+        <enum name="target_property_id" value="target_player" overrideParent="True" />
+      </template_reference>
+    </list>
+  </group>
+</instance>
