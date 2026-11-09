@@ -30,6 +30,8 @@ Villagers match the buyer's civilization and respect population limits. Failed w
 
 ## Installation and source build
 
+[Subscribe through the Age of Empires IV mod catalogue](https://www.ageofempires.com/mods/details/583206/), or search for **Yuletide Raids** by **TypeEkcyall** in the game.
+
 Download `Yuletide_Raids.sga` from [Releases](https://github.com/TypeDan/Yuletide-Raids/releases). Put it in a `Yuletide Raids` folder inside your AoE IV user-data `mods/extension/local` directory. Select it in **both** lobby selectors: Game Mode and Tuning Pack.
 
 To build from source, open `Yuletide Raids.aoe4mod` in the AoE IV Content Editor and choose **Build Mod (F7)**. The archive is written under `archives/`. Close the editor before launching the game on the Xbox/Store installation.
