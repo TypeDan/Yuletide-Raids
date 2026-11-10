@@ -10,6 +10,7 @@ Father Christmas drops presents across the map. Spend golden presents on elf rai
 
 - One Father Christmas trade cart per visit, with nine named reindeer. All ten are invulnerable, unselectable and controlled by the script, with zero sight and population. The convoy cannot collect its own gifts.
 - The first visit begins after 60 seconds; later visits are 5–8 minutes apart. Each visit lasts 36 seconds and attempts up to ten drops. Native pathfinding and movement animations are used.
+- Each visit starts at a random land location and follows random destinations across the map, dropping presents along the way. Player bases, team sizes and lobby order do not determine the route. Drops avoid water, buildings and nearby presents; a safety margin keeps the convoy away from the map boundary.
 - Bring an eligible unit near a present to open it. Twenty percent are golden presents stored in your wallet.
 - Ordinary presents give one of four equally likely outcomes: 300 gold to the opener, 300 gold shared among living enemies, a gold deposit, or a stone deposit.
 

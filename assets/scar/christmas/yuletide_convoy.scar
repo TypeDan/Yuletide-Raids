@@ -10,19 +10,20 @@ end
 function Yule_ConvoyBounds()
     return math.max(1,World_GetWidth()/2-24),math.max(1,World_GetLength()/2-24)
 end
-function Yule_RandomWaypoint(origin)
+-- Sample the map independently of player positions, team sizes or lobby order.
+function Yule_RandomMapPosition()
     local w,h=Yule_ConvoyBounds()
-    local best=origin; local bestDistance=0
-    for attempt=1,24 do
+    for attempt=1,64 do
         local x=World_GetRand(-math.floor(w),math.floor(w))
         local z=World_GetRand(-math.floor(h),math.floor(h))
         if World_GetTerrainCellType(x,z)==1 then
-            local distance=(x-origin.x)^2+(z-origin.z)^2
-            if distance>bestDistance then best=World_Pos(x,World_GetHeightAt(x,z),z); bestDistance=distance end
-            if distance>=math.max(w,h)^2 then return best end
+            return World_Pos(x,World_GetHeightAt(x,z),z)
         end
     end
-    return best
+    return nil
+end
+function Yule_RandomWaypoint(origin)
+    return Yule_RandomMapPosition() or origin
 end
 function Yule_ConvoyMember(owner,blueprint,name,position)
     local group=SGroup_CreateIfNotFound("yule_convoy_"..YULE.visits.."_"..name)
@@ -33,26 +34,25 @@ function Yule_ConvoyMember(owner,blueprint,name,position)
     return group
 end
 function Yule_StartVisit(players)
+    if #players==0 then return false end
+    local origin=Yule_RandomMapPosition()
+    if origin==nil then return false end
     YULE.visits=YULE.visits+1
-    -- Rotate starting areas fairly; route and subsequent drops are random.
-    if YULE.visitOffset==nil then
-        YULE.visitOffset=0
-        for i,p in ipairs(players) do if Player_IsHuman(p.id) then YULE.visitOffset=i-1; break end end
-    end
-    local first=((YULE.visits-1+YULE.visitOffset)%#players)+1
-    local origin=Yule_PositionNear(Player_GetStartingPosition(players[first].id),18)
-    local group=Yule_ConvoyMember(players[first].id,YULE.blueprints.santa,"santa",origin)
+    -- A technical owner is needed for native movement; it grants no sight or control.
+    local owner=players[1].id
+    local group=Yule_ConvoyMember(owner,YULE.blueprints.santa,"santa",origin)
     origin=SGroup_GetPosition(group)
     local members={}
     for i,name in ipairs(YULE_REINDEER) do
         local row=math.floor((i-1)/2)
-        members[i]={group=Yule_ConvoyMember(players[first].id,YULE.blueprints.reindeer[i],name,origin),
+        members[i]={group=Yule_ConvoyMember(owner,YULE.blueprints.reindeer[i],name,origin),
             forward=i==9 and 12 or 4+row*2,side=i==9 and 0 or (i%2==1 and -1.5 or 1.5)}
     end
     YULE.santa={group=group,members=members,position=origin,destination=Yule_RandomWaypoint(origin),
-        owner=players[first].id, nextCommand=YULE.time+3, lastRoute=YULE.time,
+        owner=owner, nextCommand=YULE.time+3, lastRoute=YULE.time,
         launchAt=YULE.time+3,ends=YULE.time+YULE_CONFIG.visitDuration,nextDrop=YULE.time+1,drops=0}
     Yule_Notify(2002)
+    return true
 end
 function Yule_EndVisit()
     local santa=YULE.santa
