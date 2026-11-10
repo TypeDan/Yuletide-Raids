@@ -131,7 +131,7 @@ function Yule_RefreshShop()
     for i=1,4 do data.pages["age"..i]=i==page and "Visible" or "Collapsed" end
     UI_SetDataContext("YuleShop",data)
 end
--- Prices have one shared heading; each purchase displays just its numeric cost.
+-- Each purchase displays its numeric cost beneath the shared Cost heading.
 function Yule_ShopPurchaseButton(key,label,cost,bound)
     local text=bound and ('{Binding ['..label..']}') or label
     return '<Grid Margin="0,3,0,0"><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="28"/></Grid.ColumnDefinitions><Button Content="'..text..'" Command="{Binding [buy]}" CommandParameter="'..key..'" IsEnabled="{Binding [enabled]['..key..']}" Style="{StaticResource PrimaryRaisedTextButton}"/><TextBlock Grid.Column="1" Text="'..cost..'" Foreground="#FFE4B85A" FontSize="16" HorizontalAlignment="Right" VerticalAlignment="Center"/></Grid>'
@@ -145,7 +145,7 @@ function Yule_CreateShop()
     <StackPanel>
     <TextBlock Text="{Binding [wallet]}" FontSize="16" Foreground="#FFE4B85A" Margin="0,0,0,8" />
     <UniformGrid Columns="2"><Button Content="Supplies" Command="{Binding [selectTab]}" CommandParameter="supplies" Style="{StaticResource PrimaryRaisedTextButton}"/><Button Content="Raids" Command="{Binding [selectTab]}" CommandParameter="raids" Style="{StaticResource PrimaryRaisedTextButton}"/></UniformGrid>
-    <Grid Margin="0,8,0,0"><TextBlock Text="Prices in golden presents" Foreground="#FFB9C6BC" FontSize="12"/><TextBlock Text="Cost" Foreground="#FFE4B85A" HorizontalAlignment="Right" FontSize="12"/></Grid>
+    <TextBlock Text="Cost" Foreground="#FFE4B85A" HorizontalAlignment="Right" FontSize="12" Margin="0,8,0,0"/>
     <ScrollViewer MaxHeight="370" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled"><StackPanel>
     <StackPanel Visibility="{Binding [suppliesVisible]}">
     <TextBlock Text="{Binding [resourceLabel]}" FontSize="14" Foreground="White" Margin="0,7,0,4"/>]]
