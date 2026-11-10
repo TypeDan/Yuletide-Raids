@@ -20,12 +20,10 @@ function Yule_VillagerCount(player)
     return Yule_CurrentAge(player)+1
 end
 
--- Use stable, explicitly one-based lobby slots, including eliminated players.
+-- The lobby slot is one-based and can differ from World_GetPlayerAt order.
+-- Use the same stable slot for target labels, network requests and wallets.
 function Yule_PlayerSlot(player)
-    for index=1,World_GetPlayerCount() do
-        if World_GetPlayerAt(index)==player then return index end
-    end
-    return 0
+    return Player_GetSlotIndex(player)
 end
 
 function Yule_PurchaseNetwork(sender, message)
@@ -83,6 +81,7 @@ function Yule_ShopNextTarget()
         end
     end
     if #enemies == 0 then YULE_SHOP_UI.targetIndex=0; return end
+    table.sort(enemies)
     local nextIndex=1
     for i,index in ipairs(enemies) do
         if index==YULE_SHOP_UI.targetIndex then nextIndex=i % #enemies+1; break end
@@ -104,7 +103,13 @@ function Yule_RefreshShop()
     local age=Yule_CurrentAge(player)
     local page=age
     local buyer=nil
-    for _,p in ipairs(Yule_LivePlayers()) do if p.id==player then buyer=p end end
+    local targetValid=false
+    for _,p in ipairs(Yule_LivePlayers()) do
+        if p.id==player then buyer=p end
+        if p.id~=player and Yule_PlayerSlot(p.id)==YULE_SHOP_UI.targetIndex
+            and AGS_IsMutualRelation(player,p.id,R_ENEMY) then targetValid=true end
+    end
+    if not targetValid then YULE_SHOP_UI.targetIndex=0 end
     local data={toggle=YULE_SHOP_UI.toggle,buy=YULE_SHOP_UI.buy,target=YULE_SHOP_UI.target,selectTab=YULE_SHOP_UI.selectTab,
         visibility=YULE_SHOP_UI.open and "Visible" or "Collapsed",
         wallet="Golden presents: "..balance,

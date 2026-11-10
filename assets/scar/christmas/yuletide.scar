@@ -12,6 +12,7 @@ YULE_CONFIG = {
     firstVisit = 60, visitMin = 300, visitMax = 480, visitDuration = 36,
     giftsPerVisit = 10, openRadius = 5, gold = 300, maxPresents = 24,
     presentLifetime = 600, raidLifetime = 300,
+    presentWeights = {40, 40, 10, 10}, -- collector gold, enemy gold, gold deposit, stone deposit
 }
 YULE = { time = 0, wallets = {}, nextVisit = 60, visits = 0,
     waves = 0, presents = {}, raids = {}, santa = nil, running = false }
@@ -131,7 +132,17 @@ function Yule_DropPresent(position,players)
     return true
 end
 
--- Exactly four equiprobable outcomes. Enemy gold is one total pot, not per enemy.
+function Yule_RollPresentOutcome()
+    local total = 0
+    for _, weight in ipairs(YULE_CONFIG.presentWeights) do total = total + weight end
+    local roll = World_GetRand(1, total)
+    for outcome, weight in ipairs(YULE_CONFIG.presentWeights) do
+        roll = roll - weight
+        if roll <= 0 then return outcome end
+    end
+end
+
+-- Weighted ordinary-present outcomes. Enemy gold is one total pot, not per enemy.
 function Yule_Reward(opener, position, outcome, players)
     if outcome == 1 then
         Player_AddResource(opener.id, RT_Gold, YULE_CONFIG.gold)
@@ -214,7 +225,7 @@ function Yule_Tick()
                     local slot = Yule_PlayerSlot(opener.id)
                     YULE.wallets[slot] = (YULE.wallets[slot] or 0) + 1
                 else
-                    Yule_Reward(opener, present.position, World_GetRand(1,4), players)
+                    Yule_Reward(opener, present.position, Yule_RollPresentOutcome(), players)
                 end
             end
         end

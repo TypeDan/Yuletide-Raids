@@ -9,10 +9,10 @@ Father Christmas drops presents across the map. Spend golden presents on elf rai
 ## Presents and convoy
 
 - One Father Christmas trade cart per visit, with nine named reindeer. All ten are invulnerable, unselectable and controlled by the script, with zero sight and population. The convoy cannot collect its own gifts.
-- The first visit begins after 60 seconds; later visits are 5–8 minutes apart. Each visit lasts 36 seconds and attempts up to ten drops. Native pathfinding and movement animations are used.
+- The first visit begins after 60 seconds; later visits start 5–8 minutes after the previous visit began. Each visit lasts 36 seconds, with up to ten presents and a drop attempt every 2–4 seconds. Blocked locations and the limit of 24 unopened presents can reduce the number dropped. Uncollected presents expire after ten minutes. Native pathfinding and movement animations are used.
 - Each visit starts at a random land location and follows random destinations across the map, dropping presents along the way. Player bases, team sizes and lobby order do not determine the route. Drops avoid water, buildings and nearby presents; a safety margin keeps the convoy away from the map boundary.
 - Bring an eligible unit near a present to open it. Twenty percent are golden presents stored in your wallet.
-- Ordinary presents give one of four equally likely outcomes: 300 gold to the opener, 300 gold shared among living enemies, a gold deposit, or a stone deposit.
+- Ordinary presents give 300 gold to the opener (40%), 300 gold shared among living enemies (40%), a gold deposit (10%), or a stone deposit (10%). These chances apply to ordinary presents; the separate 20% chance of a golden shop-token present is unchanged.
 
 ## Golden-present shop
 
@@ -28,6 +28,8 @@ Only choices for your **current age** appear. Server checks reject purchases fro
 | Golden-present cost per wave | 1 | 2 | 3 | 4 |
 
 Villagers match the buyer's civilization and respect population limits. Failed wave deployments refund their purchase.
+
+The enemy selector uses the actual lobby slot number, in ascending order. Empty slots and eliminated players do not renumber the remaining targets.
 
 ## Installation and source build
 
