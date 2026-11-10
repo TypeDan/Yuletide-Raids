@@ -2,7 +2,7 @@
 
 ![Yuletide Raids](assets/mod.png)
 
-Father Christmas delivers presents across the map with an invulnerable reindeer convoy. Collect golden presents and spend them on elf raids against a chosen enemy, villagers or resources.
+Father Christmas drops presents across the map. Spend golden presents on elf raids, villagers or resources, with options for each age.
 
 **Select Yuletide Raids as BOTH the game mode and tuning pack.** The game mode runs the events and shop; the tuning pack supplies the custom unit and present definitions. Both are supplied by this one extension archive. Start a new match after updating.
 
