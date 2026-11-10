@@ -31,11 +31,21 @@ Villagers match the buyer's civilization and respect population limits. Failed w
 
 ## Installation and source build
 
-[Subscribe through the Age of Empires IV mod catalogue](https://www.ageofempires.com/mods/details/583206/), or search for **Yuletide Raids** by **TypeEkcyall** in the game.
+[Subscribe through the Age of Empires IV mod catalogue](https://www.ageofempires.com/mods/details/583260/), or search for **Yuletide Raids** by **TypeEkcyall** in the game. This replaces the earlier listing; existing users must subscribe to this new entry.
 
 Download `Yuletide_Raids.sga` from [Releases](https://github.com/TypeDan/Yuletide-Raids/releases). Put it in a `Yuletide Raids` folder inside your AoE IV user-data `mods/extension/local` directory. Select it in **both** lobby selectors: Game Mode and Tuning Pack.
 
 To build from source, open `Yuletide Raids.aoe4mod` in the AoE IV Content Editor and choose **Build Mod (F7)**. The archive is written under `archives/`. Close the editor before launching the game on the Xbox/Store installation.
+
+### Updating the published mod
+
+1. Edit this existing project and keep its project ID unchanged. Back up or commit the changes.
+2. With AoE IV closed, build in Content Editor with **F7** and check for build errors. Copy the resulting `archives/Yuletide_Raids.sga` into `Documents/My Games/Age of Empires IV/mods/extension/local/Yuletide Raids/` if the build has not deployed it there. Include the thumbnail alongside it.
+3. Close Content Editor, launch AoE IV and test a new match with Yuletide selected as both Game Mode and Tuning Pack.
+4. Open **Mods → My Mods → Mod Publisher**. Select Yuletide and choose **Update Mod**. Confirm completion and check that the existing catalogue entry has updated.
+5. Keep the source and release on GitHub in sync. After checking the subscribed archive, keep one installed copy of Yuletide; retain the project and build archives outside the game's mod folders.
+
+**If an existing mod shows “Publish Mod” instead of “Update Mod”, stop before uploading.** AoE IV can forget the publication association after restarting and create another listing. “By Unknown” can accompany this fault; it does not change the source project's authorship. Deleting and republishing is a last resort that resets the listing and requires subscribers to subscribe again. The current listing above was recreated on 10 November 2026 with the owner's approval because this fault blocked updates. Do not delete it as a routine update step.
 
 ## Experimental status
 
