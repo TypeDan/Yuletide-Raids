@@ -8,9 +8,9 @@ YULE_MOD = "7a91e5eaf5e04afb92278936ca4d8a0c:"
 Core_RegisterModule("Yule")
 
 YULE_CONFIG = {
-    goldenChance = 20, maxActiveRaids = 8,
+    goldenChance = 40, maxActiveRaids = 8,
     firstVisit = 60, visitMin = 300, visitMax = 480, visitDuration = 36,
-    giftsPerVisit = 10, openRadius = 5, gold = 300, maxPresents = 24,
+    minGiftsPerVisit = 5, giftsPerVisit = 10, openRadius = 5, gold = 300, maxPresents = 24,
     presentLifetime = 600, raidLifetime = 300,
     presentWeights = {40, 40, 10, 10}, -- collector gold, enemy gold, gold deposit, stone deposit
 }
@@ -204,8 +204,12 @@ function Yule_Tick()
     local players = Yule_LivePlayers()
     if #players == 0 then return end
     if YULE.santa == nil and YULE.time >= YULE.nextVisit then
-        Yule_StartVisit(players)
-        YULE.nextVisit = YULE.time + World_GetRand(YULE_CONFIG.visitMin, YULE_CONFIG.visitMax)
+        if Yule_StartVisit(players) then
+            YULE.nextVisit = YULE.time + World_GetRand(YULE_CONFIG.visitMin, YULE_CONFIG.visitMax)
+        else
+            -- Wait for enough present capacity or usable land before announcing a visit.
+            YULE.nextVisit = YULE.time + 5
+        end
     end
     Yule_UpdateVisit(players)
     for i = #YULE.presents, 1, -1 do

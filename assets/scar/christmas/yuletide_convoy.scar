@@ -35,6 +35,8 @@ function Yule_ConvoyMember(owner,blueprint,name,position)
 end
 function Yule_StartVisit(players)
     if #players==0 then return false end
+    local capacity=YULE_CONFIG.maxPresents-#(YULE.presents or {})
+    if capacity<YULE_CONFIG.minGiftsPerVisit then return false end
     local origin=Yule_RandomMapPosition()
     if origin==nil then return false end
     YULE.visits=YULE.visits+1
@@ -50,7 +52,8 @@ function Yule_StartVisit(players)
     end
     YULE.santa={group=group,members=members,position=origin,destination=Yule_RandomWaypoint(origin),
         owner=owner, nextCommand=YULE.time+3, lastRoute=YULE.time,
-        launchAt=YULE.time+3,ends=YULE.time+YULE_CONFIG.visitDuration,nextDrop=YULE.time+1,drops=0}
+        launchAt=YULE.time+3,ends=YULE.time+YULE_CONFIG.visitDuration,nextDrop=YULE.time+1,drops=0,
+        dropTarget=World_GetRand(YULE_CONFIG.minGiftsPerVisit,math.min(YULE_CONFIG.giftsPerVisit,capacity))}
     Yule_Notify(2002)
     return true
 end
@@ -119,13 +122,20 @@ end
 function Yule_UpdateVisit(players)
     local santa=YULE.santa
     if santa==nil then return end
-    if YULE.time>=santa.ends or SGroup_CountSpawned(santa.group)==0 then Yule_EndVisit(); return end
+    if SGroup_CountSpawned(santa.group)==0 then Yule_EndVisit(); return end
+    -- A blocked route may extend the visit; never end normally below its 5-10 target.
+    if YULE.time>=santa.ends and santa.drops>=santa.dropTarget then Yule_EndVisit(); return end
     if YULE.time<santa.nextDrop then return end
-    if santa.drops<YULE_CONFIG.giftsPerVisit then
-        local position=Yule_PositionNear(santa.position,World_GetRand(2,6))
+    if santa.drops>=santa.dropTarget then return end
+    -- Bounded searches around the moving convoy; keep water/building/spacing checks.
+    for attempt=1,8 do
+        local position=Yule_PositionNear(santa.position,World_GetRand(2,6)+(attempt-1)*3)
         if Yule_DropAreaClear(position,players) and Yule_DropPresent(position,players) then
             santa.drops=santa.drops+1
+            print("Yuletide visit "..YULE.visits.." present "..santa.drops.."/"..santa.dropTarget)
+            santa.nextDrop=YULE.time+World_GetRand(2,4)
+            return
         end
     end
-    santa.nextDrop=YULE.time+World_GetRand(2,4)
+    santa.nextDrop=YULE.time+1
 end

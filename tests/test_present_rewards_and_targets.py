@@ -56,7 +56,7 @@ assert(counts[1]==40 and counts[2]==40 and counts[3]==10 and counts[4]==10)
 assert(paid[11]==12000 and paid[22]==6000 and paid[33]==6000)
 assert(paid[44]==nil and paid[55]==nil)
 assert(deposits.resource_gold_deposit_small==10 and deposits.resource_stone_deposit_small==10)
-assert(YULE_CONFIG.goldenChance==20)
+assert(YULE_CONFIG.goldenChance==40)
 
 -- UI, request payload, receiver and wallet must all agree on the lobby slot.
 YULE={running=true,time=0,nextVisit=999,wallets={[5]=20},raids={},presents={}}
@@ -102,4 +102,4 @@ YULE.presents={{id=102,entity=102,position={x=0,z=0},expires=100,golden=false}}
 Yule_Tick(); assert(paid[22]==150 and paid[33]==150 and paid[11]==nil)
 Yule_Tick(); assert(pickupRolls==1 and paid[22]==150 and YULE.wallets[5]==19)
 ''')
-print('PASS: exact 40/40/10/10 rewards, unchanged golden tokens, reordered/gapped lobby slots, correct raid recipients, eliminated targets, wallet and pickup consistency.')
+print('PASS: exact 40/40/10/10 ordinary rewards, 40% golden-token setting, reordered/gapped lobby slots, correct raid recipients, eliminated targets, wallet and pickup consistency.')

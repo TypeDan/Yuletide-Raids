@@ -9,10 +9,10 @@ Father Christmas drops presents across the map. Spend golden presents on elf rai
 ## Presents and convoy
 
 - One Father Christmas trade cart per visit, with nine named reindeer. All ten are invulnerable, unselectable and controlled by the script, with zero sight and population. The convoy cannot collect its own gifts.
-- The first visit begins after 60 seconds; later visits start 5–8 minutes after the previous visit began. Each visit lasts 36 seconds, with up to ten presents and a drop attempt every 2–4 seconds. Blocked locations and the limit of 24 unopened presents can reduce the number dropped. Uncollected presents expire after ten minutes. Native pathfinding and movement animations are used.
+- The first visit is due after 60 seconds; later visits are due 5–8 minutes after the previous visit began. Each visit chooses a target of **5–10 presents** and normally lasts 36 seconds, with drops every 2–4 seconds. Santa searches nearby clear locations and retries blocked drops; he stays longer if needed to finish his target. A visit waits if fewer than five slots remain under the limit of 24 unopened presents, then starts once enough are collected or expire. Uncollected presents expire after ten minutes. Native pathfinding and movement animations are used.
 - Each visit starts at a random land location and follows random destinations across the map, dropping presents along the way. Player bases, team sizes and lobby order do not determine the route. Drops avoid water, buildings and nearby presents; a safety margin keeps the convoy away from the map boundary.
-- Bring an eligible unit near a present to open it. Twenty percent are golden presents stored in your wallet.
-- Ordinary presents give 300 gold to the opener (40%), 300 gold shared among living enemies (40%), a gold deposit (10%), or a stone deposit (10%). These chances apply to ordinary presents; the separate 20% chance of a golden shop-token present is unchanged.
+- Bring an eligible unit near a present to open it. **Forty percent** are golden presents stored in your wallet.
+- Ordinary presents give 300 gold to the opener (40%), 300 gold shared among living enemies (40%), a gold deposit (10%), or a stone deposit (10%). These chances apply to the remaining 60% of presents that are not golden shop tokens.
 
 ## Golden-present shop
 
