@@ -6,7 +6,7 @@ Father Christmas drops presents across the map. Spend golden presents on elf rai
 
 **Select Yuletide Raids as BOTH the game mode and tuning pack.** The game mode runs the events and shop; the tuning pack supplies the custom unit and present definitions. Both are supplied by this one extension archive. Start a new match after updating.
 
-**19 November update: live checks passed; release builds and publication are in progress.** See [update status](docs/2026-11-19-update.md). The catalogue and release download have not yet been updated.
+**19 November build available on [GitHub Releases](https://github.com/TypeDan/Yuletide-Raids/releases/tag/v2026.11.19-neutral).** Native builds and live checks passed. The AoE catalogue update is still pending; the store entry was last verified as the 11 November version. See [update status](docs/2026-11-19-update.md).
 
 ## Presents and convoy
 
@@ -50,14 +50,14 @@ To build from source, open `Yuletide Raids.aoe4mod` in the AoE IV Content Editor
 1. Edit this existing project and keep its project ID unchanged. Back up or commit the changes.
 2. With AoE IV closed, build in Content Editor with **F7** and check for build errors. Copy the resulting `archives/Yuletide_Raids.sga` into `Documents/My Games/Age of Empires IV/mods/extension/local/Yuletide Raids/` if the build has not deployed it there. Include the thumbnail alongside it.
 3. Close Content Editor, launch AoE IV and test a new match with Yuletide selected as both Game Mode and Tuning Pack.
-4. Open **Mods → My Mods → Mod Publisher**. Select Yuletide and choose **Update Mod**. Confirm completion and check that the existing catalogue entry has updated.
+4. Open **Mods → My Mods → Mod Publisher**. Select the existing local project and publish its update. Confirm completion and check the existing catalogue entry's version and downloaded archive.
 5. Keep the source and release on GitHub in sync. After checking the subscribed archive, enable only the published copy of Yuletide. Keep any local publishing copy disabled, and retain the source project and build archives outside the game's mod folders.
 
-**If an existing mod shows “Publish Mod” instead of “Update Mod”, stop before uploading.** AoE IV can forget the publication association after restarting and create another listing. “By Unknown” can accompany this fault; it does not change the source project's authorship. Deleting and republishing is a last resort that resets the listing and requires subscribers to subscribe again. The current listing above was recreated on 11 November 2026 with the owner's approval because this fault blocked updates. Do not delete it as a routine update step.
+Keep this project's GUID unchanged for updates; a genuinely separate mod needs a different GUID. The [official publishing guide](https://support.ageofempires.com/hc/en-us/articles/4416968609044-Publishing-and-Using-Mods) says publishing the local project overwrites its published version. Button wording alone is not proof of success or failure. On 19 November the local entry showed “By Unknown” while the catalogue correctly showed TypeEkcyall, and upload finalization did not confirm an update. Check the catalogue and download before deleting anything or publishing again. The current listing was recreated on 11 November 2026 with the owner's approval after earlier update failures; deletion is not a routine update step.
 
 ## Experimental status
 
-The 19 November changes are being built and tested against game version **17.0.12303**. Automated checks cover age restrictions, rewards, refunds, neutral raid deployment, all twelve unit variants, convoy invulnerability/movement/cleanup and pickup exclusions. Live tests have shown Age I melee and ranged attacks, reindeer running, the shop panel and ordinary-present collection. Scots and Vikings blueprint support is included.
+The 19 November release was built with the native Content Editor for game version **17.0.12303**, with zero build errors or warnings. Automated checks cover age restrictions, rewards, refunds, neutral raid deployment, all twelve unit variants, convoy invulnerability/movement/cleanup and pickup exclusions. Live tests have shown Age I melee and ranged attacks, reindeer running, the shop panel and ordinary-present collection. Scots and Vikings blueprint support is included.
 
 A complete natural golden-present pickup → purchase → enemy attack sequence, all higher-age animations, deposit mining, multiplayer and save/load still need full in-game validation. Convoy spacing and route access can vary by map, and the cart horse's animation has not been separately confirmed close up.
 
