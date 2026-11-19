@@ -63,7 +63,7 @@ function AGS_BonusHUD_Create()
     if UI_IsReplay() then return end
     if not AGS_BONUS_HUD.created then
         local xaml=[[<TextBlock xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-            HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="18,0,0,408"
+            HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="18,0,0,250"
             IsHitTestVisible="False" Visibility="{Binding [visibility]}"
             Text="{Binding [text]}" Foreground="{Binding [colour]}"
             FontSize="11" LineHeight="14" MaxWidth="180" TextTrimming="CharacterEllipsis">
