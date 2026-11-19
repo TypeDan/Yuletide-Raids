@@ -10,12 +10,13 @@ Core_RegisterModule("Yule")
 
 YULE_CONFIG = {
     goldenChance = 40, maxActiveRaids = 8,
-    firstVisit = 60, visitMin = 300, visitMax = 480, visitDuration = 36,
+    firstVisit = 300, visitMin = 300, visitMax = 480, visitDuration = 36,
+    dropMin = 6, dropMax = 9, dropStallTimeout = 20,
     minGiftsPerVisit = 8, giftsPerVisit = 12, openRadius = 5, gold = 300, maxPresents = 24,
     presentLifetime = 600, raidLifetime = 300,
     presentWeights = {40, 40, 10, 10}, -- collector-team gold, enemy gold, gold deposit, stone deposit
 }
-YULE = { time = 0, wallets = {}, nextVisit = 60, visits = 0,
+YULE = { time = 0, wallets = {}, nextVisit = YULE_CONFIG.firstVisit, visits = 0,
     waves = 0, presents = {}, raids = {}, santa = nil, running = false }
 
 function Yule_LivePlayers()
@@ -123,7 +124,7 @@ function Yule_DropPresent(position,players)
     local blueprint = golden and YULE.blueprints.golden or YULE.blueprints.present
     local entity = Entity_CreateENVFacing(blueprint, position, position, false)
     local safe = World_GetSpawnablePosition(position, entity)
-    if not Yule_DropAreaClear(safe,players or Yule_LivePlayers()) then
+    if safe == nil or not Yule_DropAreaClear(safe,players or Yule_LivePlayers()) then
         Entity_Destroy(entity)
         return false
     end
@@ -131,7 +132,7 @@ function Yule_DropPresent(position,players)
     Entity_WarpToPos(entity, safe)
     table.insert(YULE.presents, { entity = entity, id = Entity_GetID(entity),
         position = safe, golden = golden, expires = YULE.time + YULE_CONFIG.presentLifetime })
-    return true
+    return true, safe
 end
 
 function Yule_RollPresentOutcome()

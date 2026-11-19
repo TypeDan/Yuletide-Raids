@@ -30,22 +30,22 @@ end
 local realDrop=Yule_DropPresent
 local checks,successes=0,0
 Yule_DropAreaClear=function() checks=checks+1; return true end
-Yule_DropPresent=function()
+Yule_DropPresent=function(position)
     successes=successes+1
     YULE.presents[#YULE.presents+1]={}
-    return true
+    return true,position
 end
 for target=8,12 do
     reset(target,0); successes=0
     assert(Yule_StartVisit(players) and YULE.santa.dropTarget==target)
-    for time=1,60 do YULE.time=time; Yule_UpdateVisit(players) end
+    for time=1,120 do YULE.time=time; Yule_UpdateVisit(players) end
     assert(successes==target and #YULE.presents==target and YULE.santa==nil)
 end
 
 -- A busy map reserves only the room available, always at least eight presents.
 reset(12,16); successes=0
 assert(Yule_StartVisit(players) and YULE.santa.dropTarget==8)
-for time=1,60 do YULE.time=time; Yule_UpdateVisit(players) end
+for time=1,120 do YULE.time=time; Yule_UpdateVisit(players) end
 assert(successes==8 and #YULE.presents==24 and YULE.santa==nil)
 for existing=17,24 do
     reset(12,existing)
@@ -55,17 +55,18 @@ end
 -- Blockage is retried with bounded work and cannot end a visit below its target.
 reset(10,0); successes=0; checks=0
 assert(Yule_StartVisit(players))
+checks=0
 Yule_DropAreaClear=function() checks=checks+1; return false end
 for time=1,50 do YULE.time=time; Yule_UpdateVisit(players) end
-assert(checks==8*50 and successes==0 and YULE.santa~=nil)
+assert(checks==8*50+2*64 and successes==0 and YULE.santa~=nil)
 -- Even an apparently clear point may fail its engine-resolved spawn position.
 Yule_DropAreaClear=function() return true end
 local resolvedAttempts=0
 Yule_DropPresent=function() resolvedAttempts=resolvedAttempts+1; return false end
 YULE.time=51; Yule_UpdateVisit(players)
 assert(resolvedAttempts==8 and YULE.santa.drops==0)
-Yule_DropPresent=function() successes=successes+1; return true end
-for time=52,90 do YULE.time=time; Yule_UpdateVisit(players) end
+Yule_DropPresent=function(position) successes=successes+1; return true,position end
+for time=52,150 do YULE.time=time; Yule_UpdateVisit(players) end
 assert(successes==10 and YULE.santa==nil)
 
 -- Full capacity or unavailable land retries in five seconds, not another cycle.

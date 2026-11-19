@@ -20,10 +20,14 @@ Yule_ConvoyMember=function(owner,blueprint,name,position)
     return {owner=owner,position=position}
 end
 SGroup_GetPosition=function(group) return group.position end
+EGroup_CreateIfNotFound=function() return {} end
+EGroup_Clear=function() end
+Player_GetAllEntitiesNearMarker=function() end
+EGroup_ForEach=function() end
 
 local function routes(players)
     math.randomseed(7241)
-    YULE={visits=0,time=0,blueprints={santa=1,reindeer={1,2,3,4,5,6,7,8,9}}}
+    YULE={visits=0,time=0,presents={},blueprints={santa=1,reindeer={1,2,3,4,5,6,7,8,9}}}
     local result={}
     for i=1,40 do
         assert(Yule_StartVisit(players))

@@ -53,13 +53,7 @@ function Yule_ConvoyMember(owner,blueprint,name,position,route,forward,side)
     SGroup_SetInvulnerable(group,true)
     return group
 end
-function Yule_StartVisit(players)
-    if #players==0 then return false end
-    local capacity=YULE_CONFIG.maxPresents-#(YULE.presents or {})
-    if capacity<YULE_CONFIG.minGiftsPerVisit then return false end
-    local origin=Yule_RandomMapPosition()
-    if origin==nil then return false end
-    YULE.visits=YULE.visits+1
+function Yule_SpawnConvoy(players,origin)
     local route={}
     local waypoint=origin
     for i=1,64 do waypoint=Yule_RandomWaypoint(waypoint);route[i]=waypoint end
@@ -74,8 +68,18 @@ function Yule_StartVisit(players)
         local side=i==9 and 0 or (i%2==1 and -1.5 or 1.5)
         members[i]={group=Yule_ConvoyMember(owner,YULE.blueprints.reindeer[i],name,origin,route,forward,side)}
     end
-    YULE.santa={group=group,members=members,position=origin,destination=route[1],
-        ends=YULE.time+YULE_CONFIG.visitDuration,nextDrop=YULE.time+1,drops=0,
+    return {group=group,members=members,position=origin,destination=route[1]}
+end
+function Yule_StartVisit(players)
+    if #players==0 then return false end
+    local capacity=YULE_CONFIG.maxPresents-#(YULE.presents or {})
+    if capacity<YULE_CONFIG.minGiftsPerVisit then return false end
+    local origin=Yule_FindDeliveryArea(players)
+    if origin==nil then return false end
+    YULE.visits=YULE.visits+1
+    local convoy=Yule_SpawnConvoy(players,origin)
+    YULE.santa={group=convoy.group,members=convoy.members,position=convoy.position,destination=convoy.destination,
+        ends=YULE.time+YULE_CONFIG.visitDuration,nextDrop=YULE.time,drops=0,dropSites={},lastProgress=YULE.time,
         dropTarget=World_GetRand(YULE_CONFIG.minGiftsPerVisit,math.min(YULE_CONFIG.giftsPerVisit,capacity))}
     Yule_Notify(2002)
     return true
@@ -102,10 +106,21 @@ function Yule_Flight()
     if santa==nil or not YULE.running or SGroup_CountSpawned(santa.group)==0 then return end
     santa.position=SGroup_GetPosition(santa.group)
 end
+-- Scale separation to the map, not to the number or position of players.
+function Yule_DropSpacing()
+    local w,h=Yule_ConvoyBounds()
+    return math.max(24,math.min(80,math.min(w,h)*0.3))
+end
 function Yule_DropAreaClear(position,players)
+    if position==nil then return false end
     if World_GetTerrainCellType(position.x,position.z)~=1 then return false end
-    for _,present in ipairs(YULE.presents) do
-        if (position.x-present.position.x)^2+(position.z-present.position.z)^2<144 then return false end
+    local spacing=Yule_DropSpacing()^2
+    for _,present in ipairs(YULE.presents or {}) do
+        if (position.x-present.position.x)^2+(position.z-present.position.z)^2<spacing then return false end
+    end
+    -- Collected/expired presents still count for the remainder of this visit.
+    for _,site in ipairs(YULE.santa and YULE.santa.dropSites or {}) do
+        if (position.x-site.x)^2+(position.z-site.z)^2<spacing then return false end
     end
     local nearby=EGroup_CreateIfNotFound("yule_drop_clearance")
     local blocked=false
@@ -118,6 +133,28 @@ function Yule_DropAreaClear(position,players)
     end
     return not blocked
 end
+function Yule_FindDeliveryArea(players)
+    for attempt=1,64 do
+        local position=Yule_RandomMapPosition()
+        if position==nil then return nil end
+        if Yule_DropAreaClear(position,players) then return position end
+    end
+    return nil
+end
+function Yule_ResumeDelivery(players)
+    local santa=YULE.santa
+    local origin=Yule_FindDeliveryArea(players)
+    santa.lastProgress=YULE.time -- bounded retry interval even on crowded maps
+    if origin==nil then return false end
+    -- A blocked/unreachable native route must not unload at one spot forever.
+    -- Remove the old convoy first: exactly one Santa, neutral again in this callback.
+    for _,member in ipairs(santa.members or {}) do Yule_DestroyGroup(member.group) end
+    Yule_DestroyGroup(santa.group)
+    local convoy=Yule_SpawnConvoy(players,origin)
+    santa.group=convoy.group;santa.members=convoy.members
+    santa.position=convoy.position;santa.destination=convoy.destination
+    return true
+end
 function Yule_UpdateVisit(players)
     local santa=YULE.santa
     if santa==nil then return end
@@ -126,14 +163,23 @@ function Yule_UpdateVisit(players)
     if YULE.time>=santa.ends and santa.drops>=santa.dropTarget then Yule_EndVisit(); return end
     if YULE.time<santa.nextDrop then return end
     if santa.drops>=santa.dropTarget then return end
-    -- Bounded searches around the moving convoy; keep water/building/spacing checks.
+    santa.position=SGroup_GetPosition(santa.group)
+    if YULE.time-santa.lastProgress>=YULE_CONFIG.dropStallTimeout then
+        Yule_ResumeDelivery(players)
+    end
+    -- Drop beside the cart only when it has reached a distinct delivery area.
     for attempt=1,8 do
-        local position=Yule_PositionNear(santa.position,World_GetRand(2,6)+(attempt-1)*3)
-        if Yule_DropAreaClear(position,players) and Yule_DropPresent(position,players) then
-            santa.drops=santa.drops+1
-            print("Yuletide visit "..YULE.visits.." present "..santa.drops.."/"..santa.dropTarget)
-            santa.nextDrop=YULE.time+World_GetRand(2,4)
-            return
+        local position=Yule_PositionNear(santa.position,World_GetRand(2,6))
+        if Yule_DropAreaClear(position,players) then
+            local dropped,actual=Yule_DropPresent(position,players)
+            if dropped then
+                santa.drops=santa.drops+1
+                table.insert(santa.dropSites,actual)
+                santa.lastProgress=YULE.time
+                print("Yuletide visit "..YULE.visits.." present "..santa.drops.."/"..santa.dropTarget.." at "..actual.x..","..actual.z)
+                santa.nextDrop=YULE.time+World_GetRand(YULE_CONFIG.dropMin,YULE_CONFIG.dropMax)
+                return
+            end
         end
     end
     santa.nextDrop=YULE.time+1
