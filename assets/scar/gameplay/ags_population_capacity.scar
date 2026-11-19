@@ -35,6 +35,17 @@ function AGS_PopulationCapacity_PresetFinalize()
 	AGS_PopulationCapacity_Change()
 end
 
+function AGS_PopulationCapacity_OnPlay()
+	-- Apply explicit limits after native starting-age/player initialization.
+	-- The engine's cap override takes precedence over max-pop modifiers.
+	for _, player in pairs(PLAYERS) do
+		local maximum = AGS_PopulationCapacity_GetPlayerMaximum(player)
+		if AGS_GLOBAL_SETTINGS.MaximumPopulation ~= 200 or AGS_PopulationCapacity_GetSlotMaximum(player) > 0 then
+			Player_SetPopCapOverride(player.id, maximum)
+		end
+	end
+end
+
 ---------------------------------------------------------------------------------------------------
 -- Functions:
 ---------------------------------------------------------------------------------------------------
@@ -53,13 +64,17 @@ function AGS_PopulationCapacity_HasPlayerOverrides()
 		or slots.FifthSlot ~= 0 or slots.SixthSlot ~= 0 or slots.SeventhSlot ~= 0 or slots.EighthSlot ~= 0
 end
 
-function AGS_PopulationCapacity_GetPlayerMaximum(player)
+function AGS_PopulationCapacity_GetSlotMaximum(player)
 	local slots = AGS_GLOBAL_SETTINGS.PlayerPopulationCaps
 	local slotCaps = {
 		slots.FirstSlot, slots.SecondSlot, slots.ThirdSlot, slots.FourthSlot,
 		slots.FifthSlot, slots.SixthSlot, slots.SeventhSlot, slots.EighthSlot
 	}
-	local slotCap = slotCaps[player.slotIndex]
+	return slotCaps[Player_GetSlotIndex(player.id)] or 0
+end
+
+function AGS_PopulationCapacity_GetPlayerMaximum(player)
+	local slotCap = AGS_PopulationCapacity_GetSlotMaximum(player)
 	if slotCap ~= nil and slotCap > 0 then
 		return slotCap
 	end

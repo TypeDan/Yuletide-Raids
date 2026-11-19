@@ -4,6 +4,7 @@ YULE_OFFERS = {
     food={cost=1,age=1,resource="food"}, wood={cost=1,age=1,resource="wood"},
     gold={cost=1,age=1,resource="gold"}, stone={cost=1,age=1,resource="stone"},
     villagers={cost=1,age=1,villagers=true},
+    cheer={cost=1,age=1,buff="festive_cheer"},
 }
 for age=1,4 do
     YULE_OFFERS["archers"..age]={cost=age,age=age,tier=age,kind="archer",count=age+2}
@@ -26,6 +27,25 @@ function Yule_PlayerSlot(player)
     return Player_GetSlotIndex(player)
 end
 
+-- Display names are UI-only. Purchases continue to identify targets by lobby slot.
+function Yule_PlayerName(player)
+    local display = Player_GetDisplayName(player)
+    local name = display and display.LocString
+    if name == nil or name == "" then return "Player "..Yule_PlayerSlot(player) end
+    return name
+end
+
+function Yule_TargetName(target, players)
+    local name = Yule_PlayerName(target.id)
+    for _, other in ipairs(players) do
+        if other.id ~= target.id and Yule_PlayerName(other.id) == name then
+            -- Duplicate names (especially AI) must remain distinguishable.
+            return name.." (P"..Yule_PlayerSlot(target.id)..")"
+        end
+    end
+    return name
+end
+
 function Yule_PurchaseNetwork(sender, message)
     if not YULE.running or type(message) ~= "string" or #message > 48 then return false end
     local key, targetIndex = string.match(message, "^([%a%d]+):(%d+)$")
@@ -43,7 +63,7 @@ function Yule_PurchaseNetwork(sender, message)
     local walletSlot = Yule_PlayerSlot(sender)
     local balance = YULE.wallets[walletSlot] or 0
     if balance < offer.cost then return false end
-    if offer.resource == nil and not offer.villagers then
+    if offer.tier then
         if target == nil or target.id == sender or not AGS_IsMutualRelation(sender, target.id, R_ENEMY)
             or #YULE.raids >= YULE_CONFIG.maxActiveRaids then return false end
         if not YULE_RAIDS_VERIFIED then return false end
@@ -54,6 +74,11 @@ function Yule_PurchaseNetwork(sender, message)
     if offer.resource ~= nil then
         local resources = {food=RT_Food, wood=RT_Wood, gold=RT_Gold, stone=RT_Stone}
         Player_AddResource(sender, resources[offer.resource], Yule_ExchangeAmount(sender))
+    elseif offer.buff then
+        if not Yule_ApplyFestiveCheer(buyer) then
+            YULE.wallets[walletSlot]=YULE.wallets[walletSlot]+offer.cost
+            return false
+        end
     elseif offer.villagers then
         if not Yule_DeployVillagers(buyer,Yule_VillagerCount(sender)) then
             YULE.wallets[walletSlot]=YULE.wallets[walletSlot]+offer.cost
@@ -80,7 +105,7 @@ function Yule_ShopNextTarget()
             table.insert(enemies,Yule_PlayerSlot(player.id))
         end
     end
-    if #enemies == 0 then YULE_SHOP_UI.targetIndex=0; return end
+    if #enemies == 0 then YULE_SHOP_UI.targetIndex=0; Yule_RefreshShop(); return end
     table.sort(enemies)
     local nextIndex=1
     for i,index in ipairs(enemies) do
@@ -94,7 +119,7 @@ function Yule_ShopBuy(key)
     Network_CallEvent("Yule_PurchaseNetwork",key .. ":" .. tostring(YULE_SHOP_UI.targetIndex))
 end
 function Yule_ShopSelectTab(value)
-    if value=="supplies" or value=="raids" then YULE_SHOP_UI.tab=value; Yule_RefreshShop() end
+    if value=="supplies" or value=="raids" or value=="buffs" then YULE_SHOP_UI.tab=value; Yule_RefreshShop() end
 end
 function Yule_RefreshShop()
     if not YULE_SHOP_UI.created then return end
@@ -104,21 +129,29 @@ function Yule_RefreshShop()
     local page=age
     local buyer=nil
     local targetValid=false
-    for _,p in ipairs(Yule_LivePlayers()) do
+    local targetName=nil
+    local players=Yule_LivePlayers()
+    for _,p in ipairs(players) do
         if p.id==player then buyer=p end
         if p.id~=player and Yule_PlayerSlot(p.id)==YULE_SHOP_UI.targetIndex
-            and AGS_IsMutualRelation(player,p.id,R_ENEMY) then targetValid=true end
+            and AGS_IsMutualRelation(player,p.id,R_ENEMY) then
+            targetValid=true
+            targetName=Yule_TargetName(p,players)
+        end
     end
     if not targetValid then YULE_SHOP_UI.targetIndex=0 end
+    local cheerSeconds=Yule_CheerSecondsRemaining(player)
     local data={toggle=YULE_SHOP_UI.toggle,buy=YULE_SHOP_UI.buy,target=YULE_SHOP_UI.target,selectTab=YULE_SHOP_UI.selectTab,
         visibility=YULE_SHOP_UI.open and "Visible" or "Collapsed",
         wallet="Golden presents: "..balance,
         suppliesVisible=YULE_SHOP_UI.tab=="supplies" and "Visible" or "Collapsed",
         raidsVisible=YULE_SHOP_UI.tab=="raids" and "Visible" or "Collapsed",
+        buffsVisible=YULE_SHOP_UI.tab=="buffs" and "Visible" or "Collapsed",
+        cheerStatus=cheerSeconds>0 and ("Active: "..cheerSeconds.."s. Buy again to refresh.") or "Lasts 30 seconds. Applies to your villagers.",
         resourceLabel="Resources - "..Yule_ExchangeAmount(player).." per purchase",
         villagersLabel="Villagers x "..Yule_VillagerCount(player),
         ageLabel="Age "..page,
-        targetLabel=YULE_SHOP_UI.targetIndex==0 and "Choose enemy" or "Enemy: player "..YULE_SHOP_UI.targetIndex.."   >",
+        targetLabel=targetName and "Enemy: "..targetName or "Choose enemy",
         raidStatus=YULE_RAIDS_VERIFIED and "Send a wave to the selected enemy." or "Raid purchases are unavailable in this build.",
         villagerStatus=(buyer and Yule_CanReceiveVillagers(buyer,Yule_VillagerCount(player))) and "Delivered to your town centre." or "Needs a town centre and free population.",
         enabled={},labels={},pages={}}
@@ -127,7 +160,7 @@ function Yule_RefreshShop()
         if offer.tier then enabled=enabled and age==offer.tier end
         if offer.villagers then
             enabled=enabled and Yule_CanReceiveVillagers(buyer,Yule_VillagerCount(player))
-        elseif offer.resource==nil then
+        elseif offer.tier then
             enabled=enabled and YULE_RAIDS_VERIFIED and YULE_SHOP_UI.targetIndex~=0
         end
         data.enabled[key]=enabled
@@ -149,7 +182,7 @@ function Yule_CreateShop()
     <Border Visibility="{Binding [visibility]}" Background="#F014201C" BorderBrush="#FF77623A" BorderThickness="1" Padding="10">
     <StackPanel>
     <TextBlock Text="{Binding [wallet]}" FontSize="16" Foreground="#FFE4B85A" Margin="0,0,0,8" />
-    <UniformGrid Columns="2"><Button Content="Supplies" Command="{Binding [selectTab]}" CommandParameter="supplies" Style="{StaticResource PrimaryRaisedTextButton}"/><Button Content="Raids" Command="{Binding [selectTab]}" CommandParameter="raids" Style="{StaticResource PrimaryRaisedTextButton}"/></UniformGrid>
+    <UniformGrid Columns="3"><Button Content="Supplies" Command="{Binding [selectTab]}" CommandParameter="supplies" FontSize="12" Style="{StaticResource PrimaryRaisedTextButton}"/><Button Content="Raids" Command="{Binding [selectTab]}" CommandParameter="raids" FontSize="12" Style="{StaticResource PrimaryRaisedTextButton}"/><Button Content="Buffs" Command="{Binding [selectTab]}" CommandParameter="buffs" FontSize="12" Style="{StaticResource PrimaryRaisedTextButton}"/></UniformGrid>
     <TextBlock Text="Cost" Foreground="#FFE4B85A" HorizontalAlignment="Right" FontSize="12" Margin="0,8,0,0"/>
     <ScrollViewer MaxHeight="370" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled"><StackPanel>
     <StackPanel Visibility="{Binding [suppliesVisible]}">
@@ -161,7 +194,7 @@ function Yule_CreateShop()
     xaml=xaml..'<TextBlock Text="Reinforcements" FontSize="14" Foreground="White" Margin="0,10,0,4"/>'..Yule_ShopPurchaseButton("villagers","villagersLabel",1,true)
     xaml=xaml..[[<TextBlock Text="{Binding [villagerStatus]}" Foreground="#FFB9C6BC" TextWrapping="Wrap" FontSize="12" Margin="0,6,0,0"/></StackPanel>
     <StackPanel Visibility="{Binding [raidsVisible]}">
-    <Button Content="{Binding [targetLabel]}" Command="{Binding [target]}" Style="{StaticResource PrimaryRaisedTextButton}" Margin="0,7,0,6"/>
+    <Button Command="{Binding [target]}" ToolTip="{Binding [targetLabel]}" HorizontalContentAlignment="Stretch" Style="{StaticResource PrimaryRaisedTextButton}" Margin="0,7,0,6"><Grid><TextBlock Text="{Binding [targetLabel]}" TextTrimming="CharacterEllipsis" Margin="0,0,18,0"/><TextBlock Text="&gt;" HorizontalAlignment="Right"/></Grid></Button>
     <TextBlock Text="{Binding [ageLabel]}" Foreground="#FFE4B85A" FontSize="14" Margin="0,7,0,4"/>]]
     for i=1,4 do
         xaml=xaml..'<StackPanel Visibility="{Binding [pages][age'..i..']}">'
@@ -171,7 +204,12 @@ function Yule_CreateShop()
         end
         xaml=xaml..'</StackPanel>'
     end
-    xaml=xaml..[[<TextBlock Text="{Binding [raidStatus]}" Foreground="#FFB9C6BC" TextWrapping="Wrap" FontSize="12" Margin="0,8,0,0"/></StackPanel></StackPanel></ScrollViewer></StackPanel></Border></StackPanel></Grid>]]
+    xaml=xaml..[[<TextBlock Text="{Binding [raidStatus]}" Foreground="#FFB9C6BC" TextWrapping="Wrap" FontSize="12" Margin="0,8,0,0"/></StackPanel>
+    <StackPanel Visibility="{Binding [buffsVisible]}">]]..Yule_ShopPurchaseButton("cheer","Festive Cheer",YULE_OFFERS.cheer.cost,false)..[[
+    <TextBlock Text="+30% villager movement speed" Foreground="#FFB9C6BC" FontSize="12" Margin="0,8,0,0"/>
+    <TextBlock Text="+50% resource gathering speed" Foreground="#FFB9C6BC" FontSize="12" Margin="0,3,0,0"/>
+    <TextBlock Text="{Binding [cheerStatus]}" Foreground="#FFE4B85A" TextWrapping="Wrap" FontSize="12" Margin="0,8,0,0"/>
+    </StackPanel></StackPanel></ScrollViewer></StackPanel></Border></StackPanel></Grid>]]
     YULE_SHOP_UI.toggle=UI_CreateCommand("Yule_ShopToggle")
     YULE_SHOP_UI.buy=UI_CreateCommand("Yule_ShopBuy")
     YULE_SHOP_UI.target=UI_CreateCommand("Yule_ShopNextTarget")

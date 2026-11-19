@@ -1,0 +1,81 @@
+-- Synchronized, player-scoped temporary buffs. No local UI state changes gameplay.
+YULE_CHEER_DURATION = 30
+
+function Yule_CheerBlueprints()
+    if YULE.cheerBlueprints == nil then
+        local blueprints={}
+        local seen={}
+        -- Villagers only: worker also includes traders and other economic units.
+        for _,bp in pairs(BP_GetEntityBlueprintsWithType(AGS_BP_VILLAGER)) do
+            local id=bp.PropertyBagGroupID
+            if not seen[id] then seen[id]=true; table.insert(blueprints,bp) end
+        end
+        table.sort(blueprints,function(a,b) return a.PropertyBagGroupID<b.PropertyBagGroupID end)
+        YULE.cheerBlueprints=blueprints
+    end
+    return YULE.cheerBlueprints
+end
+
+function Yule_CheerSecondsRemaining(player)
+    local state=(YULE.cheers or {})[Yule_PlayerSlot(player)]
+    if state == nil then return 0 end
+    return math.max(0,math.ceil(state.expires-World_GetGameTime()))
+end
+
+function Yule_ClearCheer(slot)
+    local state=(YULE.cheers or {})[slot]
+    if state == nil then return end
+    -- Timed native modifiers have already removed themselves at expiry.
+    if World_GetGameTime()<state.expires then Modifier_Remove(state.modifiers) end
+    YULE.cheers[slot]=nil
+end
+
+function Yule_ApplyFestiveCheer(buyer)
+    local blueprints=Yule_CheerBlueprints()
+    if #blueprints==0 then return false end
+    local modifiers={}
+    local changes={
+        {"speed_maximum_modifier",1.3},
+        {"resource_entity_harvest_rate_food",1.5},
+        {"resource_entity_harvest_rate_wood",1.5},
+        {"resource_entity_harvest_rate_gold",1.5},
+        {"resource_entity_harvest_rate_stone",1.5},
+    }
+    local ok=pcall(function()
+        for _,bp in ipairs(blueprints) do
+            for _,change in ipairs(changes) do
+                local modifier=Modifier_Create(MAT_EntityType,change[1],MUT_Multiplication,false,change[2],bp)
+                local id=Modifier_ApplyToPlayer(modifier,buyer.id,YULE_CHEER_DURATION)
+                if id==nil then error("Festive Cheer modifier was not applied") end
+                table.insert(modifiers,id)
+            end
+        end
+    end)
+    if not ok then
+        Modifier_Remove(modifiers)
+        return false
+    end
+    local slot=Yule_PlayerSlot(buyer.id)
+    -- Replace the old set in the same simulation callback; never stack purchases.
+    -- Only remove it after the replacement succeeds, so a failed refresh preserves it.
+    Yule_ClearCheer(slot)
+    YULE.cheers=YULE.cheers or {}
+    YULE.cheers[slot]={player=buyer.id,expires=World_GetGameTime()+YULE_CHEER_DURATION,modifiers=modifiers}
+    return true
+end
+
+function Yule_UpdateCheer(players)
+    local living={}
+    for _,player in ipairs(players) do living[player.id]=true end
+    -- Stable slot order, independent of each client's local player.
+    for slot=1,8 do
+        local state=(YULE.cheers or {})[slot]
+        if state and (not living[state.player] or World_GetGameTime()>=state.expires) then
+            Yule_ClearCheer(slot)
+        end
+    end
+end
+
+function Yule_ClearAllCheer()
+    for slot=1,8 do Yule_ClearCheer(slot) end
+end

@@ -428,13 +428,13 @@ ID,SourceText,TranslatedText
 438,,,,Handicap Option,,Economic Handicap
 2001,,,,,,The elves are raiding! Protect your villagers.
 2002,,,,,,Father Christmas is arriving! Look for presents along his route.
-2003,,,,,,A present awarded gold to its opener!
+2003,,,,,,A present shared gold with the opener and their teammates!
 2004,,,,,,A mischievous present awarded gold to the opener's enemies!
 2005,,,,,,A present revealed a gold deposit!
 2006,,,,,,A present revealed a stone deposit!
 2007,,,,,,This mischievous present found no living enemies to reward.
 2010,,,,,,Christmas Present
-2011,,,,,,"Move a unit nearby to open. Equal chances: gold for you, gold for your enemies, a gold deposit, or a stone deposit."
+2011,,,,,,"Move a unit nearby to open. Team gold: 40%; enemy gold: 40%; gold deposit: 10%; stone deposit: 10%. Deposits appear on nearby clear ground."
 2012,,,,,,Elf Raider
 2013,,,,,,A hostile festive raider. Defend your villagers!
 2014,,,,,,Father Christmas

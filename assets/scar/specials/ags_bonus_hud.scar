@@ -1,0 +1,95 @@
+-- A local, non-interactive summary of this player's custom match bonuses.
+-- UI observations never feed back into simulation settings or modifier application.
+Core_RegisterModule("AGS_BonusHUD")
+AGS_BONUS_HUD = {created=false}
+
+function AGS_BonusHUD_Data(player)
+    local data={visibility="Collapsed",text="",colour="#FFE1E7DE"}
+    if player == nil or player.isEliminated then return data end
+    local slot=Player_GetSlotIndex(player.id)
+    local slotNames={"FirstSlot","SecondSlot","ThirdSlot","FourthSlot",
+        "FifthSlot","SixthSlot","SeventhSlot","EighthSlot"}
+    local key=slotNames[slot]
+    if key == nil then return data end
+    local applied=player.AGS_HandicapApplied or {}
+    local parts={}
+    local pending=false
+    for _,entry in ipairs({{"economic","Economic","Eco"},{"military","Military","Military"}}) do
+        local requested=AGS_GLOBAL_SETTINGS.PlayerHandicaps[entry[2]][key] or 0
+        if requested > 0 then
+            if applied[entry[1]] == requested then
+                table.insert(parts,entry[3].." +"..math.floor((requested-1)*100+0.5).."%")
+            else
+                table.insert(parts,entry[3].." pending")
+                pending=true
+            end
+        end
+    end
+    if AGS_GLOBAL_SETTINGS.MaximumPopulation ~= 200 or AGS_PopulationCapacity_GetSlotMaximum(player) > 0 then
+        local actual=math.floor(Player_GetMaxPopulationCapOverride(player.id,CT_Personnel)+0.5)
+        local expected=AGS_PopulationCapacity_GetPlayerMaximum(player)
+        if player.AGS_Team and AGS_TEAM_BALANCE_TEAM_BONUS then
+            expected=expected+(AGS_TEAM_BALANCE_TEAM_BONUS[player.AGS_Team.index] or 0)
+        end
+        expected=math.floor(expected+0.5)
+        if actual == expected then
+            table.insert(parts,"Pop "..actual)
+        else
+            table.insert(parts,"Pop "..actual.." / "..expected)
+            pending=true
+        end
+    end
+    if #parts > 0 then
+        data.visibility="Visible"
+        data.text=table.concat(parts,"\n")
+        if pending then data.colour="#FFFFC567" end
+    end
+    return data
+end
+
+function AGS_BonusHUD_Update()
+    if not AGS_BONUS_HUD.created then return end
+    local player=nil
+    if not UI_IsReplay() then
+        local localPlayer=Game_GetLocalPlayer()
+        for _,candidate in pairs(PLAYERS) do
+            if candidate.id == localPlayer then player=candidate; break end
+        end
+    end
+    UI_SetDataContext("AGS_BonusHUD",AGS_BonusHUD_Data(player))
+end
+
+function AGS_BonusHUD_Create()
+    if UI_IsReplay() then return end
+    if not AGS_BONUS_HUD.created then
+        local xaml=[[<TextBlock xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+            HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="18,0,0,408"
+            IsHitTestVisible="False" Visibility="{Binding [visibility]}"
+            Text="{Binding [text]}" Foreground="{Binding [colour]}"
+            FontSize="11" LineHeight="14" MaxWidth="180" TextTrimming="CharacterEllipsis">
+            <TextBlock.Effect>
+                <DropShadowEffect Color="Black" BlurRadius="2" ShadowDepth="1" Opacity="0.9"/>
+            </TextBlock.Effect>
+        </TextBlock>]]
+        UI_AddChild("ScarNotReplay","XamlPresenter","AGS_BonusHUD",{
+            IsHitTestVisible=false,Xaml=xaml,
+            DataContext=UI_CreateDataContext(AGS_BonusHUD_Data(nil))})
+        AGS_BONUS_HUD.created=true
+    end
+    AGS_BonusHUD_Update()
+    if not Rule_Exists(AGS_BonusHUD_Update) then Rule_AddInterval(AGS_BonusHUD_Update,1) end
+end
+
+function AGS_BonusHUD_OnPlay()
+    AGS_BonusHUD_Create()
+end
+
+function AGS_BonusHUD_OnGameRestore()
+    AGS_BONUS_HUD.created=false
+    AGS_BonusHUD_Create()
+end
+
+function AGS_BonusHUD_OnGameOver()
+    if Rule_Exists(AGS_BonusHUD_Update) then Rule_Remove(AGS_BonusHUD_Update) end
+    if AGS_BONUS_HUD.created then UI_SetDataContext("AGS_BonusHUD",AGS_BonusHUD_Data(nil)) end
+end

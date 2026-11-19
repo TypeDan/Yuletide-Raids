@@ -266,6 +266,11 @@ function AGS_GlobalSettings_SetupSettings(options)
 		AGS_GlobalSettings_DefineHandicapSettings(options.section_outer_handicap_settings)
 	end
 
+	-- Military bonuses have their own section in the lobby descriptor.
+	if options.section_outer_military_handicap_settings then
+		AGS_GlobalSettings_DefineHandicapSettings(options.section_outer_military_handicap_settings)
+	end
+
 	if options.section_outer_population_settings then
 		AGS_GlobalSettings_DefinePopulationSettings(options.section_outer_population_settings)
 	end

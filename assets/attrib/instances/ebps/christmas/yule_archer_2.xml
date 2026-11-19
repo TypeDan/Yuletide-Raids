@@ -122,7 +122,7 @@
     </template_reference>
     <template_reference name="exts" value="ebpextensions\health_ext" List.ItemID="-123081057" List.ParentItemID="-123081057">
       <enum name="allegiance_override" value="enemy_to_all" overrideParent="True" />
-      <float name="hitpoints" value="70" overrideParent="True" />
+      <float name="hitpoints" value="84" overrideParent="True" />
       <enum_table name="armor_scaler_by_damage_type">
         <float name="Melee" value="1" overrideParent="True" />
         <float name="Ranged" value="1" overrideParent="True" />

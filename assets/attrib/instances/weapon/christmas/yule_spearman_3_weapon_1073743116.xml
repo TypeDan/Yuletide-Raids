@@ -4,8 +4,8 @@
   <instance_reference name="parent_pbg" value="weapon\races\common\melee\weapon_spearman_3_charge" />
   <group name="weapon_bag">
     <group name="damage">
-      <float name="min" value="11" overrideParent="True" />
-      <float name="max" value="11" overrideParent="True" />
+      <float name="min" value="12.1" overrideParent="True" />
+      <float name="max" value="12.1" overrideParent="True" />
     </group>
   </group>
 </instance>

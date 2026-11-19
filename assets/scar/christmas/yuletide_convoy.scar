@@ -123,7 +123,7 @@ function Yule_UpdateVisit(players)
     local santa=YULE.santa
     if santa==nil then return end
     if SGroup_CountSpawned(santa.group)==0 then Yule_EndVisit(); return end
-    -- A blocked route may extend the visit; never end normally below its 5-10 target.
+    -- A blocked route may extend the visit; never end normally below its 8-12 target.
     if YULE.time>=santa.ends and santa.drops>=santa.dropTarget then Yule_EndVisit(); return end
     if YULE.time<santa.nextDrop then return end
     if santa.drops>=santa.dropTarget then return end

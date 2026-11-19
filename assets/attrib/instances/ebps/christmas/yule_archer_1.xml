@@ -16,7 +16,7 @@
       <float name="personnel_pop" value="0" overrideParent="True" />
     </template_reference>
     <template_reference name="exts" value="ebpextensions\health_ext" List.ItemID="-123081057" List.ParentItemID="-123081057">
-      <float name="hitpoints" value="55" overrideParent="True" />
+      <float name="hitpoints" value="66" overrideParent="True" />
       <enum name="allegiance_override" value="enemy_to_all" overrideParent="True" />
       <enum_table name="armor_scaler_by_damage_type">
         <float name="Melee" value="0" overrideParent="True" />

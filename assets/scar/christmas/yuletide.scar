@@ -1,4 +1,5 @@
 import("christmas/yuletide_shop.scar")
+import("christmas/yuletide_buffs.scar")
 import("christmas/yuletide_units.scar")
 import("christmas/yuletide_convoy.scar")
 YULE_LOC = "$7a91e5eaf5e04afb92278936ca4d8a0c:"
@@ -10,9 +11,9 @@ Core_RegisterModule("Yule")
 YULE_CONFIG = {
     goldenChance = 40, maxActiveRaids = 8,
     firstVisit = 60, visitMin = 300, visitMax = 480, visitDuration = 36,
-    minGiftsPerVisit = 5, giftsPerVisit = 10, openRadius = 5, gold = 300, maxPresents = 24,
+    minGiftsPerVisit = 8, giftsPerVisit = 12, openRadius = 5, gold = 300, maxPresents = 24,
     presentLifetime = 600, raidLifetime = 300,
-    presentWeights = {40, 40, 10, 10}, -- collector gold, enemy gold, gold deposit, stone deposit
+    presentWeights = {40, 40, 10, 10}, -- collector-team gold, enemy gold, gold deposit, stone deposit
 }
 YULE = { time = 0, wallets = {}, nextVisit = 60, visits = 0,
     waves = 0, presents = {}, raids = {}, santa = nil, running = false }
@@ -71,6 +72,7 @@ end
 
 function Yule_OnGameOver()
     YULE.running = false
+    Yule_ClearAllCheer()
     Rule_Remove(Yule_Tick)
     Rule_Remove(Yule_Flight)
     Yule_EndVisit()
@@ -142,10 +144,67 @@ function Yule_RollPresentOutcome()
     end
 end
 
+-- Split a fixed pot, including the collector, without multiplying it by team size.
+function Yule_ShareTeamGold(opener, players, amount)
+    local recipients = {opener}
+    for _, player in ipairs(players) do
+        if player.id ~= opener.id and not player.isEliminated
+            and AGS_IsMutualRelation(opener.id, player.id, R_ALLY) then
+            table.insert(recipients, player)
+        end
+    end
+    table.sort(recipients, function(a,b) return Yule_PlayerSlot(a.id)<Yule_PlayerSlot(b.id) end)
+    local share = math.floor(amount/#recipients)
+    local remainder = amount-share*#recipients
+    for i, player in ipairs(recipients) do
+        Player_AddResource(player.id, RT_Gold, share+(i<=remainder and 1 or 0))
+    end
+end
+
+-- Spawnable-position checks alone can overlap mobile units. Check squads too.
+function Yule_DepositAreaClear(position)
+    if World_GetTerrainCellType(position.x,position.z)~=1 then return false end
+    local squads=SGroup_CreateIfNotFound("yule_ore_clearance_squads")
+    local entities=EGroup_CreateIfNotFound("yule_ore_clearance_entities")
+    for i=1,World_GetPlayerCount() do
+        local player=World_GetPlayerAt(i)
+        World_GetSquadsNearPoint(player,squads,position,8,OT_Player)
+        if SGroup_CountSpawned(squads)>0 then return false end
+        World_GetEntitiesNearPoint(player,entities,position,8,OT_Player)
+        if EGroup_CountSpawned(entities)>0 then return false end
+    end
+    -- Include neutral animals, raids, resources and other map obstructions.
+    local player=World_GetPlayerAt(1)
+    World_GetSquadsNearPoint(player,squads,position,8,OT_Neutral)
+    if SGroup_CountSpawned(squads)>0 then return false end
+    World_GetEntitiesNearPoint(player,entities,position,8,OT_Neutral)
+    return EGroup_CountSpawned(entities)==0
+end
+
+function Yule_SpawnSafeDeposit(position, outcome, players)
+    local name=outcome==3 and "resource_gold_deposit_small" or "resource_stone_deposit_small"
+    local blueprint=BP_GetEntityBlueprint(name)
+    -- Search nearby instead of placing ore underneath the unit opening the gift.
+    for attempt=1,24 do
+        local candidate=Yule_PositionNear(position,12+math.floor((attempt-1)/8)*6)
+        if Yule_DepositAreaClear(candidate) then
+            local entity=Entity_CreateENVFacing(blueprint,candidate,candidate,false)
+            local safe=World_GetSpawnablePosition(candidate,entity)
+            if safe ~= nil and Yule_DepositAreaClear(safe) then
+                Entity_Spawn(entity)
+                Entity_WarpToPos(entity,safe)
+                return true
+            end
+            Entity_Destroy(entity)
+        end
+    end
+    return false
+end
+
 -- Weighted ordinary-present outcomes. Enemy gold is one total pot, not per enemy.
 function Yule_Reward(opener, position, outcome, players)
     if outcome == 1 then
-        Player_AddResource(opener.id, RT_Gold, YULE_CONFIG.gold)
+        Yule_ShareTeamGold(opener, players, YULE_CONFIG.gold)
     elseif outcome == 2 then
         local enemies = {}
         for _, player in ipairs(players) do
@@ -164,12 +223,12 @@ function Yule_Reward(opener, position, outcome, players)
             Player_AddResource(enemy.id, RT_Gold, share + (i <= remainder and 1 or 0))
         end
     elseif outcome == 3 or outcome == 4 then
-        local name = outcome == 3 and "resource_gold_deposit_small" or "resource_stone_deposit_small"
-        local entity = Entity_CreateENVFacing(BP_GetEntityBlueprint(name), position, position, false)
-        -- Resolve collision with the unit opening the present; stay near its location.
-        local safe = World_GetSpawnablePosition(position, entity)
-        Entity_Spawn(entity)
-        Entity_WarpToPos(entity, safe)
+        if not Yule_SpawnSafeDeposit(position, outcome, players) then
+            -- A crowded location must never trap the collector. Preserve a reward.
+            Yule_ShareTeamGold(opener, players, YULE_CONFIG.gold)
+            Yule_Notify(2003)
+            return
+        end
     else
         error("Invalid Yuletide present outcome")
     end
@@ -202,6 +261,7 @@ function Yule_Tick()
     YULE.time = YULE.time + 1
     Yule_RefreshShop()
     local players = Yule_LivePlayers()
+    Yule_UpdateCheer(players)
     if #players == 0 then return end
     if YULE.santa == nil and YULE.time >= YULE.nextVisit then
         if Yule_StartVisit(players) then

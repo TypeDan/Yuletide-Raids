@@ -28,8 +28,9 @@ function AGS_Handicaps_UpdateModuleSettings()
 	end
 end
 
-function AGS_Handicaps_PresetFinalize()
-	AGS_Print("AGS_Handicaps_PresetFinalize")
+function AGS_Handicaps_OnPlay()
+	-- Native player and starting-age initialization must finish first.
+	AGS_Print("AGS_Handicaps_OnPlay")
 	AGS_Handicaps_ApplyPerPlayer()
 end
 
@@ -71,7 +72,7 @@ function AGS_Handicaps_ApplyWorkerBonus(bps)
 		if AGS_HANDICAPS_ECO_MODIFIERS[ebp.PropertyBagGroupID] == nil then
 			AGS_HANDICAPS_ECO_MODIFIERS[ebp.PropertyBagGroupID] = true
 			for _, player in pairs(PLAYERS) do
-				local handicap = AGS_HANDICAPS_ECO_TABLE[player.slotIndex]
+				local handicap = AGS_HANDICAPS_ECO_TABLE[Player_GetSlotIndex(player.id)]
 				if handicap ~= nil and handicap.percantage ~= 0.0 then
 					-- Economic handicap affects trade income, gather rates and carry capacity.
 					AGS_Handicaps_ApplyModifier(player.id, ebp, "trade_route_resource_generation_modifier", handicap.percantage)
@@ -83,6 +84,9 @@ function AGS_Handicaps_ApplyWorkerBonus(bps)
 					AGS_Handicaps_ApplyModifier(player.id, ebp, "resource_carry_capacity_wood", handicap.percantage)
 					AGS_Handicaps_ApplyModifier(player.id, ebp, "resource_carry_capacity_gold", handicap.percantage)
 					AGS_Handicaps_ApplyModifier(player.id, ebp, "resource_carry_capacity_stone", handicap.percantage)
+					-- UI reads this only after the modifier calls have completed.
+					player.AGS_HandicapApplied = player.AGS_HandicapApplied or {}
+					player.AGS_HandicapApplied.economic = handicap.percantage
 				end
 			end
 		end
@@ -94,7 +98,7 @@ function AGS_Handicaps_ApplyMilitaryBonus(bps)
 		if AGS_HANDICAPS_MIL_MODIFIERS[ebp.PropertyBagGroupID] == nil then
 			AGS_HANDICAPS_MIL_MODIFIERS[ebp.PropertyBagGroupID] = true
 			for _, player in pairs(PLAYERS) do
-				local handicap = AGS_HANDICAPS_MIL_TABLE[player.slotIndex]
+				local handicap = AGS_HANDICAPS_MIL_TABLE[Player_GetSlotIndex(player.id)]
 				if handicap ~= nil and handicap.percantage ~= 0.0 then
 					-- Military handicap affects armour, production speed and maximum health.
 					AGS_Handicaps_AddModifier(player.id, ebp, "armor_scalar_for_ranged_damage", handicap.raw)
@@ -102,6 +106,8 @@ function AGS_Handicaps_ApplyMilitaryBonus(bps)
 					AGS_Handicaps_AddModifier(player.id, ebp, "armor_scalar_for_melee_damage", handicap.raw)
 					AGS_Handicaps_ApplyModifier(player.id, ebp, "production_speed_modifier", handicap.percantage)
 					AGS_Handicaps_ApplyModifier(player.id, ebp, "health_maximum_modifier", handicap.percantage)
+					player.AGS_HandicapApplied = player.AGS_HandicapApplied or {}
+					player.AGS_HandicapApplied.military = handicap.percantage
 				end
 			end
 		end

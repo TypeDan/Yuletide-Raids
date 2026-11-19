@@ -6,17 +6,19 @@ Father Christmas drops presents across the map. Spend golden presents on elf rai
 
 **Select Yuletide Raids as BOTH the game mode and tuning pack.** The game mode runs the events and shop; the tuning pack supplies the custom unit and present definitions. Both are supplied by this one extension archive. Start a new match after updating.
 
+**19 November source update is not built or published yet.** See [update status](docs/2026-11-19-update.md) for completed changes and remaining live checks. The existing download remains the 11 November release.
+
 ## Presents and convoy
 
 - One Father Christmas trade cart per visit, with nine named reindeer. All ten are invulnerable, unselectable and controlled by the script, with zero sight and population. The convoy cannot collect its own gifts.
-- The first visit is due after 60 seconds; later visits are due 5–8 minutes after the previous visit began. Each visit chooses a target of **5–10 presents** and normally lasts 36 seconds, with drops every 2–4 seconds. Santa searches nearby clear locations and retries blocked drops; he stays longer if needed to finish his target. A visit waits if fewer than five slots remain under the limit of 24 unopened presents, then starts once enough are collected or expire. Uncollected presents expire after ten minutes. Native pathfinding and movement animations are used.
+- The first visit is due after 60 seconds; later visits are due 5–8 minutes after the previous visit began. Each visit chooses a target of **8–12 presents** and normally lasts 36 seconds, with drops every 2–4 seconds. Santa searches nearby clear locations and retries blocked drops; he stays longer if needed to finish his target. A visit waits if fewer than eight slots remain under the limit of 24 unopened presents, then starts once enough are collected or expire. Uncollected presents expire after ten minutes. Native pathfinding and movement animations are used.
 - Each visit starts at a random land location and follows random destinations across the map, dropping presents along the way. Player bases, team sizes and lobby order do not determine the route. Drops avoid water, buildings and nearby presents; a safety margin keeps the convoy away from the map boundary.
 - Bring an eligible unit near a present to open it. **Forty percent** are golden presents stored in your wallet.
-- Ordinary presents give 300 gold to the opener (40%), 300 gold shared among living enemies (40%), a gold deposit (10%), or a stone deposit (10%). These chances apply to the remaining 60% of presents that are not golden shop tokens.
+- Ordinary presents give 300 gold split between the opener and living teammates (40%), 300 gold shared among living enemies (40%), a gold deposit (10%), or a stone deposit (10%). These chances apply to the remaining 60% of presents that are not golden shop tokens. Deposits are placed on nearby clear ground after checking units and map objects; if no safe spot is found, the reward becomes shared team gold.
 
 ## Golden-present shop
 
-Only choices for your **current age** appear. Server checks reject purchases from other ages. Raid units have their age's configured health, armour and weapon upgrades; they are smaller than normal units. Waves use neutral ownership and do not reveal the enemy base to the buyer. There are no automatic elf raids.
+Only choices for your **current age** appear. Server checks reject purchases from other ages. Raid units have their age's configured health, armour and weapon upgrades; they are smaller than normal units, with a 20% health and 10% base weapon-damage bonus above those age-specific values. Waves use neutral ownership and do not reveal the enemy base to the buyer. There are no automatic elf raids.
 
 | Option | Age I | Age II | Age III | Age IV |
 |---|---:|---:|---:|---:|
@@ -27,9 +29,13 @@ Only choices for your **current age** appear. Server checks reject purchases fro
 | Armoured wave size | 2 | 3 | 4 | 5 |
 | Golden-present cost per wave | 1 | 2 | 3 | 4 |
 
-Villagers match the buyer's civilization and respect population limits. Failed wave deployments refund their purchase.
+All purchased resources, including gold, go entirely to the buyer. Gold found in ordinary presents is shared with living teammates. Villagers match the buyer's civilization and respect population limits. Failed wave deployments refund their purchase.
 
-The enemy selector uses the actual lobby slot number, in ascending order. Empty slots and eliminated players do not renumber the remaining targets.
+The **Buffs** tab includes **Festive Cheer**, costing **1 golden present** in any age. For **30 game seconds**, the buyer's villagers move **30% faster** and gather food, wood, gold and stone **50% faster**. Existing and newly trained villagers benefit; other players and non-villager units do not. The tab shows the remaining time. Buying again resets the timer to 30 seconds without stacking the effect. The buff multiplies existing economy bonuses, and those bonuses remain after it expires. A failed activation refunds the purchase.
+
+The enemy selector shows player names, cycling in lobby-slot order. Duplicate names include a small slot suffix; long names are shortened visually, with the full name available on hover. Purchases still use stable lobby-slot IDs, so renamed players and empty slots do not redirect raids.
+
+Small text with no background or border just above the bottom-left resource box shows your applied economy/military boosts and the game's population limit on separate rows: Eco, Military, then Pop. It is hidden when you have no custom bonuses. Pending boosts or a population mismatch appear in amber; `Pop 200 / 250`, for example, means the game currently reports 200 while the configured limit is 250. This display is also included in More Advanced Game Settings.
 
 ## Installation and source build
 

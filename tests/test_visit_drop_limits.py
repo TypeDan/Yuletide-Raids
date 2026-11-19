@@ -5,16 +5,16 @@ from lupa import LuaRuntime
 lua = LuaRuntime()
 lua.execute('Core_RegisterModule=function() end; import=function() end; print=function() end')
 root = Path(__file__).resolve().parents[1] / 'assets/scar/christmas'
-for filename in ('yuletide.scar', 'yuletide_convoy.scar'):
+for filename in ('yuletide.scar', 'yuletide_convoy.scar', 'yuletide_buffs.scar'):
     lua.execute((root / filename).read_text())
 
 lua.execute('''
 World_Pos=function(x,y,z) return {x=x,y=y,z=z} end
 World_GetWidth=function() return 240 end; World_GetLength=function() return 240 end
 World_GetHeightAt=function() return 0 end; World_GetTerrainCellType=function() return 1 end
-local chosen=5
+local chosen=8
 World_GetRand=function(a,b)
-    if a==5 then assert(b>=5 and b<=10); return math.min(chosen,b) end
+    if a==8 then assert(b>=8 and b<=12); return math.min(chosen,b) end
     return a
 end
 Yule_ConvoyMember=function(owner,bp,name,pos) return {position=pos} end
@@ -35,25 +35,25 @@ Yule_DropPresent=function()
     YULE.presents[#YULE.presents+1]={}
     return true
 end
-for target=5,10 do
+for target=8,12 do
     reset(target,0); successes=0
     assert(Yule_StartVisit(players) and YULE.santa.dropTarget==target)
     for time=1,60 do YULE.time=time; Yule_UpdateVisit(players) end
     assert(successes==target and #YULE.presents==target and YULE.santa==nil)
 end
 
--- A busy map reserves only the room available, always at least five presents.
-reset(10,19); successes=0
-assert(Yule_StartVisit(players) and YULE.santa.dropTarget==5)
+-- A busy map reserves only the room available, always at least eight presents.
+reset(12,16); successes=0
+assert(Yule_StartVisit(players) and YULE.santa.dropTarget==8)
 for time=1,60 do YULE.time=time; Yule_UpdateVisit(players) end
-assert(successes==5 and #YULE.presents==24 and YULE.santa==nil)
-for existing=20,24 do
-    reset(10,existing)
+assert(successes==8 and #YULE.presents==24 and YULE.santa==nil)
+for existing=17,24 do
+    reset(12,existing)
     assert(not Yule_StartVisit(players) and YULE.santa==nil and YULE.visits==0)
 end
 
 -- Blockage is retried with bounded work and cannot end a visit below its target.
-reset(7,0); successes=0; checks=0
+reset(10,0); successes=0; checks=0
 assert(Yule_StartVisit(players))
 Yule_DropAreaClear=function() checks=checks+1; return false end
 for time=1,50 do YULE.time=time; Yule_UpdateVisit(players) end
@@ -66,10 +66,10 @@ YULE.time=51; Yule_UpdateVisit(players)
 assert(resolvedAttempts==8 and YULE.santa.drops==0)
 Yule_DropPresent=function() successes=successes+1; return true end
 for time=52,90 do YULE.time=time; Yule_UpdateVisit(players) end
-assert(successes==7 and YULE.santa==nil)
+assert(successes==10 and YULE.santa==nil)
 
 -- Full capacity or unavailable land retries in five seconds, not another cycle.
-reset(5,0); YULE.nextVisit=0
+reset(8,0); YULE.nextVisit=0
 Yule_StartVisit=function() return false end
 Yule_UpdateVisit=function() end; Yule_RefreshShop=function() end
 Yule_LivePlayers=function() return players end
@@ -94,4 +94,4 @@ for roll=1,100 do
 end
 assert(golden==40)
 ''')
-print('PASS: exact 5-10 successful drops, capacity reservation, bounded blocked-drop retries, extended visits, short deferred-start retry and exactly 40 golden rolls out of 100.')
+print('PASS: exact 8-12 successful drops, capacity reservation, bounded blocked-drop retries, extended visits, short deferred-start retry and exactly 40 golden rolls out of 100.')

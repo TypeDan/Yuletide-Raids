@@ -91,5 +91,15 @@ function AGS_TeamBalance_IncreaseCapPopulation(player, pop_size)
 end
 
 function AGS_TeamBalance_IncreaseMaxCapPopulation(player, pop_size)
+	-- Explicit lobby limits use the engine override. Keep the optional
+	-- defeated-teammate population transfer effective for those players too.
+	local explicit = AGS_GLOBAL_SETTINGS.MaximumPopulation ~= 200 or AGS_PopulationCapacity_GetSlotMaximum(player) > 0
+	local previous = nil
+	if explicit then
+		previous = Player_GetMaxPopulationCapOverride(player.id, CT_Personnel)
+	end
 	Modifier_ApplyToPlayer(Modifier_Create(MAT_Player, "max_personnel_cap_player_modifier", MUT_Addition, false, pop_size, ""), player.id, 0)
+	if explicit then
+		Player_SetPopCapOverride(player.id, previous + pop_size)
+	end
 end
