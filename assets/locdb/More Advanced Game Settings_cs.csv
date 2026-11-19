@@ -1,7 +1,7 @@
 ID,SourceText,TranslatedText
 1,Advanced Game Settings,Yuletide Raids
-2,"Father Christmas drops presents across the map. Spend golden presents on elf raids, villagers or resources, with options for each age. Select Yuletide Raids as both the game mode and tuning pack. Experimental build using Advanced Game Settings code. Source and credits: https://github.com/TypeDan/Yuletide-Raids","Father Christmas and his reindeer drop 8-12 presents across the map. Collect golden presents for age-appropriate elf raids, villagers, resources or Festive Cheer. Gold found in ordinary presents is shared with your team; purchases stay yours. Includes per-player economy, military and population settings, plus Vikings and Scots support. Select Yuletide Raids as both Game Mode and Tuning Pack. Uses Advanced Game Settings code; source and credits: https://github.com/TypeDan/Yuletide-Raids"
-3,"Father Christmas drops presents across the map. Spend golden presents on elf raids, villagers or resources. Select Yuletide Raids as both the game mode and tuning pack. Experimental build.","Collect presents and spend golden presents on age-appropriate elf raids, villagers, resources or Festive Cheer. Includes custom match settings. Select Yuletide Raids as both Game Mode and Tuning Pack."
+2,"Version 2026.11.19.1. Father Christmas drops presents across the map. Spend golden presents on elf raids, villagers or resources, with options for each age. Select Yuletide Raids as both the game mode and tuning pack. Experimental build using Advanced Game Settings code. Source and credits: https://github.com/TypeDan/Yuletide-Raids","Version 2026.11.19.1. Father Christmas and his reindeer drop 8-12 presents across the map. Collect golden presents for age-appropriate elf raids, villagers, resources or Festive Cheer. Gold found in ordinary presents is shared with your team; purchases stay yours. Includes per-player economy, military and population settings, plus Vikings and Scots support. Select Yuletide Raids as both Game Mode and Tuning Pack. Uses Advanced Game Settings code; source and credits: https://github.com/TypeDan/Yuletide-Raids"
+3,"Version 2026.11.19.1. Father Christmas drops presents across the map. Spend golden presents on elf raids, villagers or resources. Select Yuletide Raids as both the game mode and tuning pack. Experimental build.","Version 2026.11.19.1. Collect presents and spend golden presents on age-appropriate elf raids, villagers, resources or Festive Cheer. Includes custom match settings. Select Yuletide Raids as both Game Mode and Tuning Pack."
 4,,Podmínky pro výhru
 5,,Zničení
 6,,Zničte všechny nepřátele. Tato možnost je povinná
@@ -434,7 +434,7 @@ ID,SourceText,TranslatedText
 2006,,,,,,A present revealed a stone deposit!
 2007,,,,,,This mischievous present found no living enemies to reward.
 2010,,,,,,Christmas Present
-2011,,,,,,"Move a unit nearby to open. Team gold: 40%; enemy gold: 40%; gold deposit: 10%; stone deposit: 10%. Deposits appear on nearby clear ground."
+2011,,,,,,Move a unit nearby to open. Team gold: 40%; enemy gold: 40%; gold deposit: 10%; stone deposit: 10%. Deposits appear on nearby clear ground.
 2012,,,,,,Elf Raider
 2013,,,,,,A hostile festive raider. Defend your villagers!
 2014,,,,,,Father Christmas

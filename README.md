@@ -1,12 +1,14 @@
 # Yuletide Raids
 
+**Release version: 2026.11.19.1.** This label also appears at the start of the mod description.
+
 ![Yuletide Raids](assets/mod.png)
 
 Father Christmas drops presents across the map. Spend golden presents on elf raids, villagers or resources, with options for each age.
 
 **Select Yuletide Raids as BOTH the game mode and tuning pack.** The game mode runs the events and shop; the tuning pack supplies the custom unit and present definitions. Both are supplied by this one extension archive. Start a new match after updating.
 
-**19 November build available on [GitHub Releases](https://github.com/TypeDan/Yuletide-Raids/releases/tag/v2026.11.19-neutral).** Native builds and live checks passed. The AoE catalogue update is still pending; the store entry was last verified as the 11 November version. See [update status](docs/2026-11-19-update.md).
+**Version 2026.11.19.1 is available in the [AoE IV catalogue](https://www.ageofempires.com/mods/details/593823/) and on [GitHub Releases](https://github.com/TypeDan/Yuletide-Raids/releases/tag/v2026.11.19.1).** The description starts with the same release label. Native builds passed with zero errors/warnings; subscribed archives match these builds byte-for-byte. See [validation and coverage](docs/2026-11-19-update.md).
 
 ## Presents and convoy
 
@@ -39,7 +41,7 @@ Small text with no background or border just above the bottom-left resource box 
 
 ## Installation and source build
 
-[Subscribe through the Age of Empires IV mod catalogue](https://www.ageofempires.com/mods/details/583313/), or search for **Yuletide Raids** by **TypeEkcyall** in the game. This replaces the earlier listing; existing users must subscribe to this new entry.
+[Subscribe through the Age of Empires IV mod catalogue](https://www.ageofempires.com/mods/details/593823/), or search for **Yuletide Raids** by **TypeEkcyall** in the game. This replaces the earlier listing; existing users must subscribe to this new entry.
 
 Download `Yuletide_Raids.sga` from [Releases](https://github.com/TypeDan/Yuletide-Raids/releases). Put it in a `Yuletide Raids` folder inside your AoE IV user-data `mods/extension/local` directory. Select it in **both** lobby selectors: Game Mode and Tuning Pack.
 
@@ -53,7 +55,7 @@ To build from source, open `Yuletide Raids.aoe4mod` in the AoE IV Content Editor
 4. Open **Mods → My Mods → Mod Publisher**. Select the existing local project and publish its update. Confirm completion and check the existing catalogue entry's version and downloaded archive.
 5. Keep the source and release on GitHub in sync. After checking the subscribed archive, enable only the published copy of Yuletide. Keep any local publishing copy disabled, and retain the source project and build archives outside the game's mod folders.
 
-Keep this project's GUID unchanged for updates; a genuinely separate mod needs a different GUID. The [official publishing guide](https://support.ageofempires.com/hc/en-us/articles/4416968609044-Publishing-and-Using-Mods) says publishing the local project overwrites its published version. Button wording alone is not proof of success or failure. On 19 November the local entry showed “By Unknown” while the catalogue correctly showed TypeEkcyall, and upload finalization did not confirm an update. Check the catalogue and download before deleting anything or publishing again. The current listing was recreated on 11 November 2026 with the owner's approval after earlier update failures; deletion is not a routine update step.
+Keep this project's GUID unchanged for updates; a genuinely separate mod needs a different GUID. The [official publishing guide](https://support.ageofempires.com/hc/en-us/articles/4416968609044-Publishing-and-Using-Mods) describes updating the existing local project. The game failed to associate the rebuilt archive with the existing listing on 19 November and created a fresh listing. The replacement above was verified by its description and downloaded archive before obsolete listings were removed, as requested by the owner. Deletion is not a routine update step. If the publisher shows Unknown or Publish Mod unexpectedly, check the existing listing before proceeding; the website's separate version counter is not this release label.
 
 ## Experimental status
 
@@ -66,3 +68,7 @@ The current build uses a native trade cart, reindeer, smaller human soldiers and
 ## Credits
 
 Uses the match setup, settings, victory-condition, diplomacy and civilization helper code from More Advanced Game Settings, based on [Woprok's original Advanced Game Settings](https://github.com/Woprok/AOE4-AdvancedGameSettings) and [Joshua Sachtleben's continuation](https://github.com/joshuasachtleben/AOE4-AdvancedGameSettings). The Christmas convoy, present rewards, golden-present shop and elf raids were added for Yuletide Raids. See [CREDITS.md](CREDITS.md) and the retained [GPL-3.0 license](LICENSE.md).
+
+## Release numbering
+
+Use `YYYY.MM.DD.N` in `VERSION`, the description entries (IDs 2 and 3) in `assets/locdb/*.csv`, and the GitHub release. Increase `N` for each further release that day. Set the label before the native F7 build, publish through the existing local project, then verify the store description and downloaded archive. The site's own version counter is separate from this release label. Keep project GUIDs and existing store listings when updating; deleting listings is not a normal update step.
