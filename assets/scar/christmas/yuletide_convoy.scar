@@ -79,7 +79,7 @@ function Yule_StartVisit(players)
     YULE.visits=YULE.visits+1
     local convoy=Yule_SpawnConvoy(players,origin)
     YULE.santa={group=convoy.group,members=convoy.members,position=convoy.position,destination=convoy.destination,
-        ends=YULE.time+YULE_CONFIG.visitDuration,nextDrop=YULE.time,drops=0,dropSites={},lastProgress=YULE.time,
+        ends=YULE.time+YULE_CONFIG.visitDuration,nextDrop=YULE.time,drops=0,dropSites={},
         dropTarget=World_GetRand(YULE_CONFIG.minGiftsPerVisit,math.min(YULE_CONFIG.giftsPerVisit,capacity))}
     Yule_Notify(2002)
     return true
@@ -141,45 +141,28 @@ function Yule_FindDeliveryArea(players)
     end
     return nil
 end
-function Yule_ResumeDelivery(players)
-    local santa=YULE.santa
-    local origin=Yule_FindDeliveryArea(players)
-    santa.lastProgress=YULE.time -- bounded retry interval even on crowded maps
-    if origin==nil then return false end
-    -- A blocked/unreachable native route must not unload at one spot forever.
-    -- Remove the old convoy first: exactly one Santa, neutral again in this callback.
-    for _,member in ipairs(santa.members or {}) do Yule_DestroyGroup(member.group) end
-    Yule_DestroyGroup(santa.group)
-    local convoy=Yule_SpawnConvoy(players,origin)
-    santa.group=convoy.group;santa.members=convoy.members
-    santa.position=convoy.position;santa.destination=convoy.destination
-    return true
-end
 function Yule_UpdateVisit(players)
     local santa=YULE.santa
     if santa==nil then return end
     if SGroup_CountSpawned(santa.group)==0 then Yule_EndVisit(); return end
-    -- A blocked route may extend the visit; never end normally below its 8-12 target.
+    -- Unavailable gift sites may extend a visit; never end below its 8-12 target.
     if YULE.time>=santa.ends and santa.drops>=santa.dropTarget then Yule_EndVisit(); return end
     if YULE.time<santa.nextDrop then return end
     if santa.drops>=santa.dropTarget then return end
     santa.position=SGroup_GetPosition(santa.group)
-    if YULE.time-santa.lastProgress>=YULE_CONFIG.dropStallTimeout then
-        Yule_ResumeDelivery(players)
-    end
-    -- Drop beside the cart only when it has reached a distinct delivery area.
+    -- Each gift independently samples the whole map. The convoy is visual:
+    -- following its path must not lead a player to the remaining presents.
+    -- Keep spacing history even when gifts are collected immediately.
     for attempt=1,8 do
-        local position=Yule_PositionNear(santa.position,World_GetRand(2,6))
-        if Yule_DropAreaClear(position,players) then
-            local dropped,actual=Yule_DropPresent(position,players)
-            if dropped then
-                santa.drops=santa.drops+1
-                table.insert(santa.dropSites,actual)
-                santa.lastProgress=YULE.time
-                print("Yuletide visit "..YULE.visits.." present "..santa.drops.."/"..santa.dropTarget.." at "..actual.x..","..actual.z)
-                santa.nextDrop=YULE.time+World_GetRand(YULE_CONFIG.dropMin,YULE_CONFIG.dropMax)
-                return
-            end
+        local position=Yule_FindDeliveryArea(players)
+        if position==nil then break end
+        local dropped,actual=Yule_DropPresent(position,players)
+        if dropped then
+            santa.drops=santa.drops+1
+            table.insert(santa.dropSites,actual)
+            print("Yuletide visit "..YULE.visits.." present "..santa.drops.."/"..santa.dropTarget.." at "..actual.x..","..actual.z)
+            santa.nextDrop=YULE.time+World_GetRand(YULE_CONFIG.dropMin,YULE_CONFIG.dropMax)
+            return
         end
     end
     santa.nextDrop=YULE.time+1

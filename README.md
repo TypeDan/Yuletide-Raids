@@ -1,6 +1,6 @@
 # Yuletide Raids
 
-**Release version: 2026.11.19.2.** This label also appears at the start of the mod description.
+**Release version: 2026.11.19.3.** This label also appears at the start of the mod description.
 
 ![Yuletide Raids](assets/mod.png)
 
@@ -8,13 +8,13 @@ Father Christmas drops presents across the map. Spend golden presents on elf rai
 
 **Select Yuletide Raids as BOTH the game mode and tuning pack.** The game mode runs the events and shop; the tuning pack supplies the custom unit and present definitions. Both are supplied by this one extension archive. Start a new match after updating.
 
-**Version 2026.11.19.2 is available in the [AoE IV catalogue](https://www.ageofempires.com/mods/details/593826/) and on [GitHub Releases](https://github.com/TypeDan/Yuletide-Raids/releases/tag/v2026.11.19.2).** The description starts with the same release label. The native build passed with zero errors/warnings; a fresh subscribed archive matches the build byte-for-byte. A live match confirmed the first drop at 5:00, all eight planned gifts delivered, separated sites, and neutral ownership throughout. See [validation and coverage](docs/2026-11-19-delivery-update.md).
+**Version 2026.11.19.3 is available in the [AoE IV catalogue](https://www.ageofempires.com/mods/details/593827/) and on [GitHub Releases](https://github.com/TypeDan/Yuletide-Raids/releases/tag/v2026.11.19.3).** The description starts with the same release label. The native build passed with zero errors/warnings; a fresh subscribed archive matches the build byte-for-byte. A live match confirmed the first drop at 5:00, all nine planned gifts delivered across all four map quadrants independently of Santa's route, and neutral ownership throughout. See [validation and coverage](docs/2026-11-19-random-drop-update.md).
 
 ## Presents and convoy
 
 - One Father Christmas trade cart per visit, with nine named reindeer. All ten remain neutral throughout the visit, invulnerable and unselectable, with zero sight and population. No player owns or tracks the convoy. Native movement orders are queued before ownership is relinquished in the same simulation callback. The convoy cannot collect its own gifts.
-- The first visit is due at **5:00**; later visits are due 5–8 minutes after the previous visit began. Each visit chooses a target of **8–12 presents**, with at least 6–9 seconds between drops. Visits last at least 36 seconds and continue until their target is delivered. Every drop is separated from earlier sites and other unopened presents by a map-scaled distance (24–80 world units). Collected gifts remain in the visit’s spacing history. If no drop succeeds for 20 seconds, the convoy relocates to another randomly sampled clear land area and resumes its native route; it keeps the same visit budget and remains neutral. A visit waits if fewer than eight slots remain under the limit of 24 unopened presents, then starts once enough are collected or expire. Uncollected presents expire after ten minutes. Native pathfinding and movement animations are used.
-- Each visit starts at a random land location and follows random destinations across the map, dropping presents along the way. Player bases, team sizes and lobby order do not determine the route. Drops avoid water, buildings and nearby presents; a safety margin keeps the convoy away from the map boundary.
+- The first visit is due at **5:00**; later visits are due 5–8 minutes after the previous visit began. Each visit chooses a target of **8–12 presents**, with at least 6–9 seconds between drops. Visits last at least 36 seconds and continue until their target is delivered. Every drop is separated from earlier sites and other unopened presents by a map-scaled distance (24–80 world units). Collected gifts remain in the visit’s spacing history. Every gift independently samples a random clear land location across the whole map. Gift positions do not use the cart position or its route; following Santa does not reveal a trail of upcoming gifts. The convoy is not relocated to distribute gifts. A visit waits if fewer than eight slots remain under the limit of 24 unopened presents, then starts once enough are collected or expire. Uncollected presents expire after ten minutes. Native pathfinding and movement animations are used.
+- Each visit starts at a random land location and follows random destinations across the map. Presents appear at independently sampled locations elsewhere on the map while the convoy travels. Player bases, team sizes and lobby order do not determine the route. Drops avoid water, buildings and nearby presents; a safety margin keeps the convoy away from the map boundary.
 - Bring an eligible unit near a present to open it. **Forty percent** are golden presents stored in your wallet.
 - Ordinary presents give 300 gold split between the opener and living teammates (40%), 300 gold shared among living enemies (40%), a gold deposit (10%), or a stone deposit (10%). These chances apply to the remaining 60% of presents that are not golden shop tokens. Deposits are placed on nearby clear ground after checking units and map objects; if no safe spot is found, the reward becomes shared team gold.
 
@@ -41,7 +41,7 @@ Small text with no background or border just above the bottom-left resource box 
 
 ## Installation and source build
 
-[Subscribe through the Age of Empires IV mod catalogue](https://www.ageofempires.com/mods/details/593826/), or search for **Yuletide Raids** by **TypeEkcyall** in the game. This replaces the earlier listing; existing users must subscribe to this new entry.
+[Subscribe through the Age of Empires IV mod catalogue](https://www.ageofempires.com/mods/details/593827/), or search for **Yuletide Raids** by **TypeEkcyall** in the game. This replaces the earlier listing; existing users must subscribe to this new entry.
 
 Download `Yuletide_Raids.sga` from [Releases](https://github.com/TypeDan/Yuletide-Raids/releases). Put it in a `Yuletide Raids` folder inside your AoE IV user-data `mods/extension/local` directory. Select it in **both** lobby selectors: Game Mode and Tuning Pack.
 
@@ -61,7 +61,7 @@ Keep this project's GUID unchanged for updates; a genuinely separate mod needs a
 
 The 19 November release was built with the native Content Editor for game version **17.0.12303**, with zero build errors or warnings. Automated checks cover age restrictions, rewards, refunds, neutral raid deployment, all twelve unit variants, convoy invulnerability/movement/cleanup and pickup exclusions. Live tests have shown Age I melee and ranged attacks, reindeer running, the shop panel and ordinary-present collection. Scots and Vikings blueprint support is included.
 
-A complete natural golden-present pickup → purchase → enemy attack sequence, all higher-age animations, deposit mining, multiplayer and save/load still need full in-game validation. Convoy spacing and route access can vary by map, and the cart horse's animation has not been separately confirmed close up.
+A complete natural golden-present pickup → purchase → enemy attack sequence, all higher-age animations, deposit mining, multiplayer and save/load still need full in-game validation. Available gift sites and convoy route access can vary by map, and the cart horse's animation has not been separately confirmed close up.
 
 The current build uses a native trade cart, reindeer, smaller human soldiers and native present models. Custom sleigh/Santa models, reliable red/green recolours, festive voices/bells and turkey replacements are **not implemented**. Golden presents are larger and labelled, without a gold repaint. The cover is promotional illustration, not a screenshot of custom assets.
 

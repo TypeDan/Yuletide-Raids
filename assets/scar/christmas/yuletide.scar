@@ -11,7 +11,7 @@ Core_RegisterModule("Yule")
 YULE_CONFIG = {
     goldenChance = 40, maxActiveRaids = 8,
     firstVisit = 300, visitMin = 300, visitMax = 480, visitDuration = 36,
-    dropMin = 6, dropMax = 9, dropStallTimeout = 20,
+    dropMin = 6, dropMax = 9,
     minGiftsPerVisit = 8, giftsPerVisit = 12, openRadius = 5, gold = 300, maxPresents = 24,
     presentLifetime = 600, raidLifetime = 300,
     presentWeights = {40, 40, 10, 10}, -- collector-team gold, enemy gold, gold deposit, stone deposit

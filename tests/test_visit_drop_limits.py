@@ -58,7 +58,7 @@ assert(Yule_StartVisit(players))
 checks=0
 Yule_DropAreaClear=function() checks=checks+1; return false end
 for time=1,50 do YULE.time=time; Yule_UpdateVisit(players) end
-assert(checks==8*50+2*64 and successes==0 and YULE.santa~=nil)
+assert(checks==64*50 and successes==0 and YULE.santa~=nil)
 -- Even an apparently clear point may fail its engine-resolved spawn position.
 Yule_DropAreaClear=function() return true end
 local resolvedAttempts=0
