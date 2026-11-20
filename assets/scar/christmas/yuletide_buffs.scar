@@ -25,9 +25,18 @@ end
 function Yule_ClearCheer(slot)
     local state=(YULE.cheers or {})[slot]
     if state == nil then return end
-    -- Timed native modifiers have already removed themselves at expiry.
-    if World_GetGameTime()<state.expires then Modifier_Remove(state.modifiers) end
+    -- Own the full lifetime: player/entity-type modifiers must be explicitly
+    -- removed, including when the displayed countdown has reached zero.
+    Modifier_Remove(state.modifiers)
     YULE.cheers[slot]=nil
+end
+
+function Yule_ExpireCheer(context,data)
+    local state=(YULE.cheers or {})[data.slot]
+    -- A previous purchase's callback must not cancel a refreshed purchase.
+    if state and state.expires==data.expires and World_GetGameTime()>=state.expires then
+        Yule_ClearCheer(data.slot)
+    end
 end
 
 function Yule_ApplyFestiveCheer(buyer)
@@ -45,7 +54,8 @@ function Yule_ApplyFestiveCheer(buyer)
         for _,bp in ipairs(blueprints) do
             for _,change in ipairs(changes) do
                 local modifier=Modifier_Create(MAT_EntityType,change[1],MUT_Multiplication,false,change[2],bp)
-                local id=Modifier_ApplyToPlayer(modifier,buyer.id,YULE_CHEER_DURATION)
+                -- Duration 0 keeps native expiry from racing our cleanup.
+                local id=Modifier_ApplyToPlayer(modifier,buyer.id,0)
                 if id==nil then error("Festive Cheer modifier was not applied") end
                 table.insert(modifiers,id)
             end
@@ -61,6 +71,7 @@ function Yule_ApplyFestiveCheer(buyer)
     Yule_ClearCheer(slot)
     YULE.cheers=YULE.cheers or {}
     YULE.cheers[slot]={player=buyer.id,expires=World_GetGameTime()+YULE_CHEER_DURATION,modifiers=modifiers}
+    Rule_AddOneShot(Yule_ExpireCheer,YULE_CHEER_DURATION,{slot=slot,expires=YULE.cheers[slot].expires})
     return true
 end
 

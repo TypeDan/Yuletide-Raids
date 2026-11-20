@@ -1,4 +1,4 @@
-"""Exercise real purchase/buff/UI Lua with a timed, player-scoped modifier model."""
+"""Exercise real purchase/buff/UI Lua without assuming native modifier expiry."""
 from pathlib import Path
 import xml.etree.ElementTree as ET
 from lupa import LuaRuntime
@@ -43,30 +43,42 @@ Modifier_Create=function(scope,name,usage,exclusive,value,bp)
     return {name=name,value=value,bp=bp.PropertyBagGroupID}
 end
 Modifier_ApplyToPlayer=function(mod,player,duration)
-    assert(duration==30)
+    assert(duration==0, 'Script owns expiry; avoid native expiry/removal races')
     attempts=attempts+1
     if failAfter and attempts>failAfter then return nil end
-    nextID=nextID+1; mod.player=player; mod.expires=now+duration
+    nextID=nextID+1; mod.player=player
     active[nextID]=mod; table.insert(applicationOrder,mod.bp)
     return nextID
 end
 Modifier_Remove=function(ids)
     for _,id in ipairs(ids) do
-        assert(active[id]~=nil and active[id].expires>now, 'Must not remove expired or unrelated modifiers')
+        assert(active[id]~=nil, 'Must not remove already removed or unrelated modifiers')
         active[id]=nil; removed[id]=true
     end
 end
--- Model native timed expiry and player/blueprint scope, including future units.
+timers={}
+Rule_AddOneShot=function(callback,delay,data)
+    table.insert(timers,{callback=callback,at=now+delay,data=data})
+end
+local function runTimers()
+    for i=#timers,1,-1 do
+        if timers[i].at<=now then
+            local timer=table.remove(timers,i)
+            timer.callback({},timer.data)
+        end
+    end
+end
+-- Effects remain until explicitly removed, including on future units.
 local function effective(player,bp,name,base)
     local value=base or 1
     for _,mod in pairs(active) do
-        if mod.player==player and mod.bp==bp and mod.name==name and now<mod.expires then value=value*mod.value end
+        if mod.player==player and mod.bp==bp and mod.name==name then value=value*mod.value end
     end
     return value
 end
 local function reset()
     YULE={running=true,time=0,wallets={[5]=3,[1]=3},raids={1,2,3,4,5,6,7,8},presents={}}
-    active={}; removed={}; applicationOrder={}; attempts=0; failAfter=nil
+    active={}; removed={}; applicationOrder={}; attempts=0; failAfter=nil; timers={}
     YULE_RAIDS_VERIFIED=false; players[1].isEliminated=false
 end
 reset()
@@ -107,12 +119,24 @@ assert(YULE.cheers[5].expires==50.75)
 assert(effective(11,101,'speed_maximum_modifier')==1.3)
 assert(effective(11,101,'resource_entity_harvest_rate_food')==1.5)
 failAfter=nil
+now=40.25; runTimers() -- original purchase deadline cannot cancel the refresh
+assert(effective(11,101,'speed_maximum_modifier')==1.3)
 now=50.74; assert(Yule_CheerSecondsRemaining(11)==1)
+runTimers(); assert(effective(11,101,'speed_maximum_modifier')==1.3)
 now=50.75
 assert(Yule_CheerSecondsRemaining(11)==0)
+runTimers()
 assert(effective(11,101,'speed_maximum_modifier')==1)
 assert(effective(11,101,'resource_entity_harvest_rate_gold',2)==2)
 Yule_UpdateCheer(Yule_LivePlayers()); assert(YULE.cheers[5]==nil)
+assert(next(active)==nil)
+-- The periodic simulation tick also cleans up if a one-shot is unavailable
+-- after restore; elapsed UI time alone must never discard active modifiers.
+YULE.wallets[5]=1; assert(Yule_PurchaseNetwork(11,'cheer:0'))
+now=now+31
+Yule_UpdateCheer(Yule_LivePlayers())
+assert(next(active)==nil and YULE.cheers[5]==nil)
+runTimers(); assert(next(active)==nil) -- no double removal from stale timers
 
 -- It works in every age, stays personal, and does not depend on UI state.
 for tier=1,4 do
@@ -156,6 +180,7 @@ Yule_ShopSelectTab('supplies'); assert(context.buffsVisible=='Collapsed')
 -- Game-over cleanup removes only this feature's still-live modifiers.
 Rule_Remove=function() end; Yule_EndVisit=function() end; YULE.raids={}
 Yule_OnGameOver(); assert(next(YULE.cheers)==nil and not YULE.running)
+now=now+40; runTimers(); assert(next(active)==nil)
 assert(effective(11,101,'speed_maximum_modifier')==1)
 assert(effective(11,101,'resource_entity_harvest_rate_gold',2)==2)
 reset(); YULE.cheerBlueprints={}

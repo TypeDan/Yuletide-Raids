@@ -1,6 +1,6 @@
 # Yuletide Raids
 
-**Release version: 2026.11.20.1.** This label also appears at the start of the mod description.
+**Release version: 2026.11.20.2.** This label also appears at the start of the mod description.
 
 ![Yuletide Raids](assets/mod.png)
 
@@ -8,7 +8,9 @@ Father Christmas drops presents across the map. Spend golden presents on elf rai
 
 **Select Yuletide Raids as BOTH the game mode and tuning pack.** The game mode runs the events and shop; the tuning pack supplies the custom unit and present definitions. Both are supplied by this one extension archive. Start a new match after updating.
 
-**Version 2026.11.20.1** fixes custom population limits granting all housing immediately. A configured maximum of 250 now preserves normal house requirements. The present shop also has compact buttons, centered equal-width tabs and aligned numeric costs. See [validation and coverage](docs/2026-11-20-housing-update.md).
+**Version 2026.11.20.2** explicitly removes Festive Cheer's movement and gathering bonuses at the end of its 30-second timer. Repeat purchases refresh the timer without stacking. See [expiry fix and validation](docs/2026-11-20-cheer-expiry.md).
+
+The population and compact shop fixes from **2026.11.20.1** remain included: a configured maximum of 250 preserves normal house requirements, and the shop has centered equal-width tabs and aligned numeric costs. See [housing validation](docs/2026-11-20-housing-update.md).
 
 ## Presents and convoy
 
@@ -41,7 +43,7 @@ Small text with no background or border just above the bottom-left resource box 
 
 ## Installation and source build
 
-[Subscribe through the Age of Empires IV mod catalogue](https://www.ageofempires.com/mods/details/593849/), or search for **Yuletide Raids** by **TypeEkcyall** in the game. This replaces the earlier listing; existing users must subscribe to this new entry. Check for version **2026.11.20.1** in the description.
+[Subscribe through the Age of Empires IV mod catalogue](https://www.ageofempires.com/mods/details/593851/), or search for **Yuletide Raids** by **TypeEkcyall** in the game. Check for version **2026.11.20.2** in the description and start a new match after updating.
 
 Download `Yuletide_Raids.sga` from [Releases](https://github.com/TypeDan/Yuletide-Raids/releases). Put it in a `Yuletide Raids` folder inside your AoE IV user-data `mods/extension/local` directory. Select it in **both** lobby selectors: Game Mode and Tuning Pack.
 
