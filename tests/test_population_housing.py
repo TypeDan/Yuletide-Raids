@@ -57,5 +57,34 @@ for _,maximum in ipairs({250,300,500}) do
         assert(state[101].maximum==maximum+75 and housing(101)==15)
     end
 end
+-- Every lobby slot can have its own ceiling without receiving free housing.
+PLAYERS={}; state={}; slots={}
+AGS_GLOBAL_SETTINGS.MaximumPopulation=200
+AGS_GLOBAL_SETTINGS.MinimumPopulation=0
+AGS_GLOBAL_SETTINGS.MinimumPopulationReset=false
+local independentCaps={250,300,350,400,450,500,550,600}
+for slot,key in ipairs(keys) do
+    local id=200+slot; slots[id]=slot
+    state[id]={maximum=200,housing=10,fixed=independentCaps[slot]}
+    PLAYERS[9-slot]={id=id,slotIndex=9-slot,raceName='english'}
+    AGS_GLOBAL_SETTINGS.PlayerPopulationCaps[key]=independentCaps[slot]
+end
+AGS_PopulationCapacity_PresetFinalize()
+AGS_PopulationCapacity_OnPlay()
+for slot,maximum in ipairs(independentCaps) do
+    local id=200+slot
+    assert(state[id].maximum==maximum, 'wrong maximum for slot '..slot)
+    assert(housing(id)==10, 'free housing for slot '..slot)
+    state[id].housing=20
+    assert(housing(id)==20)
+    state[id].housing=maximum+20
+    assert(housing(id)==maximum)
+    state[id].housing=10
+    assert(housing(id)==10)
+end
+AGS_PopulationCapacity_OnGameRestore()
+for slot,maximum in ipairs(independentCaps) do
+    assert(state[200+slot].maximum==maximum and housing(200+slot)==10)
+end
 ''')
-print('PASS: 250/300/500 ceilings, host and slots 2/3, global settings, normal house growth/loss, Mongol housing, repeated play/restore and team transfer without free housing.')
+print('PASS: independent ceilings for all eight slots, global settings, normal house growth/loss, Mongol housing, repeated play/restore and team transfer without free housing.')
