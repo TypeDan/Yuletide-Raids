@@ -11,7 +11,7 @@ Core_RegisterModule("Yule")
 YULE_CONFIG = {
     goldenChance = 40, maxActiveRaids = 8,
     firstVisit = 300, visitMin = 300, visitMax = 480, visitDuration = 36,
-    dropMin = 6, dropMax = 9,
+    dropMin = 6, dropMax = 9, maxDropOffset = 6,
     minGiftsPerVisit = 8, giftsPerVisit = 12, openRadius = 5, gold = 300, maxPresents = 24,
     presentLifetime = 600, raidLifetime = 300,
     presentWeights = {40, 40, 10, 10}, -- collector-team gold, enemy gold, gold deposit, stone deposit
@@ -117,14 +117,18 @@ function Yule_DeployPurchasedRaid(buyer,target,offer)
     return true
 end
 
-function Yule_DropPresent(position,players)
+function Yule_DropPresent(position,players,sourcePosition)
     print("Yuletide dropping present")
     if #YULE.presents >= YULE_CONFIG.maxPresents then return false end
     local golden = World_GetRand(1,100) <= YULE_CONFIG.goldenChance
     local blueprint = golden and YULE.blueprints.golden or YULE.blueprints.present
     local entity = Entity_CreateENVFacing(blueprint, position, position, false)
     local safe = World_GetSpawnablePosition(position, entity)
-    if safe == nil or not Yule_DropAreaClear(safe,players or Yule_LivePlayers()) then
+    -- Native placement can relocate a blocked spawn. A convoy delivery must
+    -- remain beside the actual cart, even after that engine adjustment.
+    if safe == nil
+        or (sourcePosition ~= nil and (safe.x-sourcePosition.x)^2+(safe.z-sourcePosition.z)^2 > YULE_CONFIG.maxDropOffset^2)
+        or not Yule_DropAreaClear(safe,players or Yule_LivePlayers()) then
         Entity_Destroy(entity)
         return false
     end

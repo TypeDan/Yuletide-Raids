@@ -1,4 +1,4 @@
-"""Verify map-wide gifts are independent of the convoy's physical route."""
+"""Verify gifts follow Santa while preserving spacing and native spawn safety."""
 from pathlib import Path
 from lupa import LuaRuntime
 
@@ -22,7 +22,6 @@ local players={{id=2},{id=1}}
 Yule_LivePlayers=function() return players end
 Yule_RefreshShop=function() end; Yule_UpdateCheer=function() end
 Yule_FindOpener=function() return nil end
-Yule_PositionNear=function() error('Gifts must not follow the cart') end
 local notices=0
 Yule_Notify=function() notices=notices+1 end
 local liveGroups=0; local maxGroups=0; local deployed=0
@@ -38,7 +37,7 @@ end
 SGroup_SetWorldOwned=function(group) group.owner=nil;group.neutral=true end
 SGroup_SetSelectable=function(group,value) group.selectable=value end
 SGroup_SetInvulnerable=function(group,value) group.invulnerable=value end
-SGroup_GetPosition=function(group) return group.position end -- deliberately stuck
+SGroup_GetPosition=function(group) return group.position end
 SGroup_CountSpawned=function(group) return group.live and 1 or 0 end
 SGroup_DestroyAllSquads=function(group)
     assert(group.live); group.live=false;liveGroups=liveGroups-1
@@ -56,6 +55,9 @@ end
 World_GetSpawnablePosition=function(pos) return override or pos end
 Entity_Spawn=function() end
 Entity_WarpToPos=function(entity,pos)
+    local cart=SGroup_GetPosition(YULE.santa.group)
+    assert((pos.x-cart.x)^2+(pos.z-cart.z)^2<=YULE_CONFIG.maxDropOffset^2,
+        'Gift appeared away from the actual cart')
     entity.position=pos;table.insert(sites,pos);table.insert(times,YULE.time)
 end
 Entity_GetID=function(entity) return entity.id end
@@ -74,8 +76,9 @@ local first=sites[1]
 YULE.presents={}
 assert(not Yule_DropAreaClear(first,players))
 for i=1,5 do Yule_Tick(); assert(#sites==1 and deployed==10) end
-for i=1,4 do Yule_Tick() end
-assert(#sites==2 and deployed==10 and YULE.santa.drops==2 and notices==1)
+for i=1,44 do Yule_Tick() end
+assert(#sites==1 and deployed==10 and YULE.santa.drops==1 and notices==1,
+    'Stationary Santa must wait instead of scattering gifts elsewhere')
 
 -- Engine placement can move a valid candidate back beside an earlier gift.
 override=first
@@ -84,9 +87,20 @@ assert(not Yule_DropPresent(World_Pos(250,0,250),players))
 assert(#sites==before and destroyed==count+1)
 override=nil
 
--- Even an immobile convoy delivers twelve distinct map-wide sites without
--- being respawned, retaining one Santa/nine deer and the same gift budget.
-for tick=310,500 do
+-- Even a clear engine-resolved point is invalid if far from Santa.
+override=World_Pos(250,0,250)
+before=#sites;count=destroyed
+assert(not Yule_DropPresent(World_Pos(0,0,0),players,World_Pos(0,0,0)))
+assert(#sites==before and destroyed==count+1)
+override=nil
+
+-- Move along a route and verify every gift appears beside the cart, while
+-- instant collection cannot bypass the spacing history or create extra Santas.
+for tick=350,800 do
+    local step=math.floor((tick-350)/10)
+    if YULE.santa then
+        YULE.santa.group.position=World_Pos(-240+(step%5)*120,0,-240+(math.floor(step/5)%5)*120)
+    end
     YULE.presents={} -- simulate instant collection after each successful drop
     Yule_Tick()
     if YULE.santa then
@@ -105,26 +119,6 @@ for i,a in ipairs(sites) do
         if i~=j then assert((a.x-b.x)^2+(a.z-b.z)^2>=Yule_DropSpacing()^2) end
     end
 end
--- Identical simulation RNG produces identical gift positions/times with a
--- completely different cart path. Movement must not bias gift placement.
-local firstSites,firstTimes=sites,times
-local blueprints=YULE.blueprints
-sites={};times={}
-YULE={running=true,time=0,visits=0,presents={},raids={},wallets={},nextVisit=300,blueprints=blueprints}
-math.randomseed(97531)
-for tick=1,500 do
-    if YULE.santa then
-        YULE.santa.group.position=World_Pos(250*math.sin(tick),0,250*math.cos(tick))
-    end
-    if tick>300 then YULE.presents={} end
-    Yule_Tick()
-    if tick>300 and YULE.santa==nil then break end
-end
-assert(#sites==12 and liveGroups==0 and deployed==20)
-for i,p in ipairs(sites) do
-    assert(p.x==firstSites[i].x and p.z==firstSites[i].z and times[i]==firstTimes[i],
-        'The cart path affected gift delivery')
-end
 -- Crowded/water maps fail safely without an announcement or a partial convoy.
 building=true
 local n=YULE.visits
@@ -134,4 +128,4 @@ World_GetTerrainCellType=function() return 2 end
 assert(not Yule_StartVisit(players) and YULE.visits==n)
 assert(not Yule_DropAreaClear(nil,players))
 ''')
-print('PASS: first drop at 5:00, 12 map-wide gifts independent of cart movement, no convoy respawns, pairwise spacing after pickups, native placement validation, neutral single convoy, bounded blocked/water handling.')
+print('PASS: first drop at 5:00, 12 gifts beside actual Santa positions, stationary cart waits, pairwise spacing after pickups, remote native placement rejected, neutral single convoy, bounded blocked/water handling.')

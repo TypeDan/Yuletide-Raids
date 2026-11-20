@@ -1,12 +1,14 @@
 # Yuletide Raids
 
-**Release version: 2026.11.20.2.** This label also appears at the start of the mod description.
+**Release version: 2026.11.20.3.** This label also appears at the start of the mod description.
 
 ![Yuletide Raids](assets/mod.png)
 
 Father Christmas drops presents across the map. Spend golden presents on elf raids, villagers or resources, with options for each age.
 
 **Select Yuletide Raids as BOTH the game mode and tuning pack.** The game mode runs the events and shop; the tuning pack supplies the custom unit and present definitions. Both are supplied by this one extension archive. Start a new match after updating.
+
+**Version 2026.11.20.3** reconnects presents to Santa: gifts appear beside his actual cart position as he follows his random route. Spacing checks prevent clustered drops, including after earlier gifts are collected. See [delivery validation](docs/2026-11-20-santa-delivery.md).
 
 **Version 2026.11.20.2** explicitly removes Festive Cheer's movement and gathering bonuses at the end of its 30-second timer. Repeat purchases refresh the timer without stacking. See [expiry fix and validation](docs/2026-11-20-cheer-expiry.md).
 
@@ -15,8 +17,8 @@ The population and compact shop fixes from **2026.11.20.1** remain included: a c
 ## Presents and convoy
 
 - One Father Christmas trade cart per visit, with nine named reindeer. All ten remain neutral throughout the visit, invulnerable and unselectable, with zero sight and population. No player owns or tracks the convoy. Native movement orders are queued before ownership is relinquished in the same simulation callback. The convoy cannot collect its own gifts.
-- The first visit is due at **5:00**; later visits are due 5–8 minutes after the previous visit began. Each visit chooses a target of **8–12 presents**, with at least 6–9 seconds between drops. Visits last at least 36 seconds and continue until their target is delivered. Every drop is separated from earlier sites and other unopened presents by a map-scaled distance (24–80 world units). Collected gifts remain in the visit’s spacing history. Every gift independently samples a random clear land location across the whole map. Gift positions do not use the cart position or its route; following Santa does not reveal a trail of upcoming gifts. The convoy is not relocated to distribute gifts. A visit waits if fewer than eight slots remain under the limit of 24 unopened presents, then starts once enough are collected or expire. Uncollected presents expire after ten minutes. Native pathfinding and movement animations are used.
-- Each visit starts at a random land location and follows random destinations across the map. Presents appear at independently sampled locations elsewhere on the map while the convoy travels. Player bases, team sizes and lobby order do not determine the route. Drops avoid water, buildings and nearby presents; a safety margin keeps the convoy away from the map boundary.
+- The first visit is due at **5:00**; later visits are due 5–8 minutes after the previous visit began. Each visit chooses a target of **8–12 presents**, with at least 6–9 seconds between drops. Visits last at least 36 seconds and continue until their target is delivered. Every drop is separated from earlier sites and other unopened presents by a map-scaled distance (24–80 world units). Collected gifts remain in the visit’s spacing history. Every gift appears beside Santa at his actual position, within six world units even after native spawn adjustment. If he is too close to an earlier drop or the ground is blocked, delivery waits for a suitable spot farther along his route. The convoy is not relocated to distribute gifts. You can follow him, but he must travel far enough between gifts to satisfy the spacing checks. A visit waits if fewer than eight slots remain under the limit of 24 unopened presents, then starts once enough are collected or expire. Uncollected presents expire after ten minutes. Native pathfinding and movement animations are used.
+- Each visit starts at a random land location and follows random destinations across the map. Presents follow that same physical route and appear beside the moving cart. Player bases, team sizes and lobby order do not determine the route. Drops avoid water, buildings and nearby presents; a safety margin keeps the convoy away from the map boundary.
 - Bring an eligible unit near a present to open it. **Forty percent** are golden presents stored in your wallet.
 - Ordinary presents give 300 gold split between the opener and living teammates (40%), 300 gold shared among living enemies (40%), a gold deposit (10%), or a stone deposit (10%). These chances apply to the remaining 60% of presents that are not golden shop tokens. Deposits are placed on nearby clear ground after checking units and map objects; if no safe spot is found, the reward becomes shared team gold.
 
@@ -43,7 +45,7 @@ Small text with no background or border just above the bottom-left resource box 
 
 ## Installation and source build
 
-[Subscribe through the Age of Empires IV mod catalogue](https://www.ageofempires.com/mods/details/593851/), or search for **Yuletide Raids** by **TypeEkcyall** in the game. Check for version **2026.11.20.2** in the description and start a new match after updating.
+[Subscribe through the Age of Empires IV mod catalogue](https://www.ageofempires.com/mods/details/593852/), or search for **Yuletide Raids** by **TypeEkcyall** in the game. Check for version **2026.11.20.3** in the description and start a new match after updating.
 
 Download `Yuletide_Raids.sga` from [Releases](https://github.com/TypeDan/Yuletide-Raids/releases). Put it in a `Yuletide Raids` folder inside your AoE IV user-data `mods/extension/local` directory. Select it in **both** lobby selectors: Game Mode and Tuning Pack.
 

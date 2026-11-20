@@ -150,19 +150,20 @@ function Yule_UpdateVisit(players)
     if YULE.time<santa.nextDrop then return end
     if santa.drops>=santa.dropTarget then return end
     santa.position=SGroup_GetPosition(santa.group)
-    -- Each gift independently samples the whole map. The convoy is visual:
-    -- following its path must not lead a player to the remaining presents.
-    -- Keep spacing history even when gifts are collected immediately.
+    -- Deliver from the cart's actual position on its random route. If this
+    -- area is crowded or too close to an earlier gift, wait for Santa to move
+    -- farther along; never substitute an unrelated location elsewhere.
     for attempt=1,8 do
-        local position=Yule_FindDeliveryArea(players)
-        if position==nil then break end
-        local dropped,actual=Yule_DropPresent(position,players)
-        if dropped then
-            santa.drops=santa.drops+1
-            table.insert(santa.dropSites,actual)
-            print("Yuletide visit "..YULE.visits.." present "..santa.drops.."/"..santa.dropTarget.." at "..actual.x..","..actual.z)
-            santa.nextDrop=YULE.time+World_GetRand(YULE_CONFIG.dropMin,YULE_CONFIG.dropMax)
-            return
+        local position=Yule_PositionNear(santa.position,3)
+        if Yule_DropAreaClear(position,players) then
+            local dropped,actual=Yule_DropPresent(position,players,santa.position)
+            if dropped then
+                santa.drops=santa.drops+1
+                table.insert(santa.dropSites,actual)
+                print("Yuletide visit "..YULE.visits.." present "..santa.drops.."/"..santa.dropTarget.." at "..actual.x..","..actual.z)
+                santa.nextDrop=YULE.time+World_GetRand(YULE_CONFIG.dropMin,YULE_CONFIG.dropMax)
+                return
+            end
         end
     end
     santa.nextDrop=YULE.time+1
