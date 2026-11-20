@@ -1,6 +1,6 @@
 # Yuletide Raids
 
-**Release version: 2026.11.19.3.** This label also appears at the start of the mod description.
+**Release version: 2026.11.20.1.** This label also appears at the start of the mod description.
 
 ![Yuletide Raids](assets/mod.png)
 
@@ -8,7 +8,7 @@ Father Christmas drops presents across the map. Spend golden presents on elf rai
 
 **Select Yuletide Raids as BOTH the game mode and tuning pack.** The game mode runs the events and shop; the tuning pack supplies the custom unit and present definitions. Both are supplied by this one extension archive. Start a new match after updating.
 
-**Version 2026.11.19.3 is available in the [AoE IV catalogue](https://www.ageofempires.com/mods/details/593827/) and on [GitHub Releases](https://github.com/TypeDan/Yuletide-Raids/releases/tag/v2026.11.19.3).** The description starts with the same release label. The native build passed with zero errors/warnings; a fresh subscribed archive matches the build byte-for-byte. A live match confirmed the first drop at 5:00, all nine planned gifts delivered across all four map quadrants independently of Santa's route, and neutral ownership throughout. See [validation and coverage](docs/2026-11-19-random-drop-update.md).
+**Version 2026.11.20.1** fixes custom population limits granting all housing immediately. A configured maximum of 250 now preserves normal house requirements. The present shop also has compact buttons, centered equal-width tabs and aligned numeric costs. See [validation and coverage](docs/2026-11-20-housing-update.md).
 
 ## Presents and convoy
 
@@ -41,7 +41,7 @@ Small text with no background or border just above the bottom-left resource box 
 
 ## Installation and source build
 
-[Subscribe through the Age of Empires IV mod catalogue](https://www.ageofempires.com/mods/details/593827/), or search for **Yuletide Raids** by **TypeEkcyall** in the game. This replaces the earlier listing; existing users must subscribe to this new entry.
+[Subscribe through the Age of Empires IV mod catalogue](https://www.ageofempires.com/mods/details/593849/), or search for **Yuletide Raids** by **TypeEkcyall** in the game. This replaces the earlier listing; existing users must subscribe to this new entry. Check for version **2026.11.20.1** in the description.
 
 Download `Yuletide_Raids.sga` from [Releases](https://github.com/TypeDan/Yuletide-Raids/releases). Put it in a `Yuletide Raids` folder inside your AoE IV user-data `mods/extension/local` directory. Select it in **both** lobby selectors: Game Mode and Tuning Pack.
 
@@ -55,11 +55,11 @@ To build from source, open `Yuletide Raids.aoe4mod` in the AoE IV Content Editor
 4. Open **Mods → My Mods → Mod Publisher**. Select the existing local project and publish its update. Confirm completion and check the existing catalogue entry's version and downloaded archive.
 5. Keep the source and release on GitHub in sync. After checking the subscribed archive, enable only the published copy of Yuletide. Keep any local publishing copy disabled, and retain the source project and build archives outside the game's mod folders.
 
-Keep this project's GUID unchanged for updates; a genuinely separate mod needs a different GUID. The [official publishing guide](https://support.ageofempires.com/hc/en-us/articles/4416968609044-Publishing-and-Using-Mods) describes updating the existing local project. The game failed to associate the rebuilt archive with the existing listing on 19 November and created a fresh listing. The replacement above was verified by its description and downloaded archive before obsolete listings were removed, as requested by the owner. Deletion is not a routine update step. If the publisher shows Unknown or Publish Mod unexpectedly, check the existing listing before proceeding; the website's separate version counter is not this release label.
+Keep this project's GUID unchanged for updates; a genuinely separate mod needs a different GUID. The [official publishing guide](https://support.ageofempires.com/hc/en-us/articles/4416968609044-Publishing-and-Using-Mods) describes updating the existing local project. The game failed to associate the rebuilt archive with the existing listing on 20 November and created a fresh listing. Deletion is not a routine update step. If the publisher shows Unknown or Publish Mod unexpectedly, check the existing listing before proceeding; the website's separate version counter is not this release label.
 
 ## Experimental status
 
-The 19 November release was built with the native Content Editor for game version **17.0.12303**, with zero build errors or warnings. Automated checks cover age restrictions, rewards, refunds, neutral raid deployment, all twelve unit variants, convoy invulnerability/movement/cleanup and pickup exclusions. Live tests have shown Age I melee and ranged attacks, reindeer running, the shop panel and ordinary-present collection. Scots and Vikings blueprint support is included.
+The 20 November release was built with the native Content Editor for game version **17.0.12303**, with zero build errors or warnings. Automated checks cover age restrictions, rewards, refunds, neutral raid deployment, all twelve unit variants, convoy invulnerability/movement/cleanup and pickup exclusions. Live tests have shown Age I melee and ranged attacks, reindeer running, the shop panel and ordinary-present collection. Scots and Vikings blueprint support is included.
 
 A complete natural golden-present pickup → purchase → enemy attack sequence, all higher-age animations, deposit mining, multiplayer and save/load still need full in-game validation. Available gift sites and convoy route access can vary by map, and the cart horse's animation has not been separately confirmed close up.
 

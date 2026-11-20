@@ -36,14 +36,17 @@ function AGS_PopulationCapacity_PresetFinalize()
 end
 
 function AGS_PopulationCapacity_OnPlay()
-	-- Apply explicit limits after native starting-age/player initialization.
-	-- The engine's cap override takes precedence over max-pop modifiers.
+	-- Remove the fixed-cap bypass after native initialization. The maximum
+	-- modifier sets the ceiling; houses still supply the usable population.
 	for _, player in pairs(PLAYERS) do
-		local maximum = AGS_PopulationCapacity_GetPlayerMaximum(player)
 		if AGS_GLOBAL_SETTINGS.MaximumPopulation ~= 200 or AGS_PopulationCapacity_GetSlotMaximum(player) > 0 then
-			Player_SetPopCapOverride(player.id, maximum)
+			Player_ClearPopCapOverride(player.id)
 		end
 	end
+end
+
+function AGS_PopulationCapacity_OnGameRestore()
+	AGS_PopulationCapacity_OnPlay()
 end
 
 ---------------------------------------------------------------------------------------------------

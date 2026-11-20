@@ -28,7 +28,7 @@ BP_GetEntityBlueprintsWithType=function(kind) return {{PropertyBagGroupID=kind}}
 Modifier_Create=function(scope,name,usage,exclusive,value,bp) return {name=name,value=value} end
 applied=0
 Modifier_ApplyToPlayer=function(m,id) assert(id==22); applied=applied+1 end
-Player_SetPopCapOverride=function(id,n) assert(id==22); cap=n end
+Player_ClearPopCapOverride=function(id) assert(id==22); cap=250 end
 AGS_Handicaps_OnPlay(); AGS_PopulationCapacity_OnPlay()
 assert(applied==19)
 data=AGS_BonusHUD_Data(PLAYERS[2])

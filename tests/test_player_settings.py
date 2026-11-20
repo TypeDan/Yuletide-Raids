@@ -61,29 +61,38 @@ assert(not unregistered.AGS_PopulationCapacity and not unregistered.AGS_Handicap
 assert(AGS_PopulationCapacity_GetPlayerMaximum(PLAYERS[3])==250)
 assert(AGS_PopulationCapacity_GetPlayerMaximum(PLAYERS[2])==200)
 MAT_Player=1; MAT_EntityType=2; MUT_Addition=3; MUT_Multiplication=4
-AGS_CIV_MONGOL='mongol'; modifiers={}; overrides={}
+AGS_CIV_MONGOL='mongol'; modifiers={}; maxCaps={}
 Modifier_Create=function(scope,name,usage,exclusive,value,bp)
     return {scope=scope,name=name,usage=usage,value=value,bp=bp}
 end
 Modifier_ApplyToPlayer=function(mod,p) mod.player=p; table.insert(modifiers,mod) end
-Player_SetPopCapOverride=function(p,value) overrides[p]=value end
+local function engineMaximum(p)
+    local result=200
+    for _,mod in ipairs(modifiers) do
+        if mod.player==p and mod.name=='max_personnel_cap_player_modifier' then result=result+mod.value end
+    end
+    return result
+end
+Player_ClearPopCapOverride=function(p) maxCaps[p]=engineMaximum(p) end
+Player_SetPopCapOverride=function() error('Fixed population must not bypass houses') end
 AGS_PopulationCapacity_PresetFinalize()
--- Simulate a native 200 override that masks the earlier +50 modifier.
-overrides[11]=200
-AGS_PopulationCapacity_OnPlay(); assert(overrides[11]==250)
-assert(overrides[21]==nil and overrides[81]==nil)
-AGS_PopulationCapacity_OnPlay(); assert(overrides[11]==250) -- no stacking
+-- Simulate a stale fixed cap; clearing it restores the maximum modifier.
+maxCaps[11]=200
+AGS_PopulationCapacity_OnPlay(); assert(maxCaps[11]==250)
+assert(maxCaps[21]==nil and maxCaps[81]==nil)
+AGS_PopulationCapacity_OnPlay(); assert(maxCaps[11]==250) -- no stacking
 AGS_GLOBAL_SETTINGS.MaximumPopulation=300
-AGS_PopulationCapacity_OnPlay()
-assert(overrides[11]==250 and overrides[21]==300 and overrides[81]==300)
+modifiers={}
+AGS_PopulationCapacity_PresetFinalize(); AGS_PopulationCapacity_OnPlay()
+assert(maxCaps[11]==250 and maxCaps[21]==300 and maxCaps[81]==300)
 CT_Personnel=1
-Player_GetMaxPopulationCapOverride=function(p) return overrides[p] or 200 end
+Player_GetMaxPopulationCapOverride=function(p) return maxCaps[p] or 200 end
 AGS_TeamBalance_IncreaseMaxCapPopulation(PLAYERS[3],75)
-assert(overrides[11]==325)
+assert(engineMaximum(11)==325)
 AGS_GLOBAL_SETTINGS.MaximumPopulation=200
-overrides[21]=nil
+maxCaps[21]=nil
 AGS_TeamBalance_IncreaseMaxCapPopulation(PLAYERS[2],50)
-assert(overrides[21]==nil) -- default civ bonuses remain modifier-driven
+assert(maxCaps[21]==nil) -- default civ bonuses remain modifier-driven
 
 AGS_BP_BUILDING='building'; AGS_BP_WORKER='worker'; AGS_BP_UNIT_CLASS='unit'
 BP_GetEntityBlueprintsWithType=function(kind)
@@ -116,7 +125,7 @@ assert(not AGS_Handicaps_HasAnyBonus())
 -- All eight slots with simultaneous eco, military and custom population.
 -- Reverse world order and deliberately set misleading legacy slot fields.
 local keys={'FirstSlot','SecondSlot','ThirdSlot','FourthSlot','FifthSlot','SixthSlot','SeventhSlot','EighthSlot'}
-PLAYERS={}; modifiers={}; overrides={}
+PLAYERS={}; modifiers={}; maxCaps={}
 AGS_HANDICAPS_ECO_MODIFIERS={}; AGS_HANDICAPS_MIL_MODIFIERS={}
 for slot,key in ipairs(keys) do
     local id=100+slot; slots[id]=slot
@@ -125,19 +134,21 @@ for slot,key in ipairs(keys) do
     AGS_GLOBAL_SETTINGS.PlayerHandicaps.Military[key]=1+slot/20
     AGS_GLOBAL_SETTINGS.PlayerPopulationCaps[key]=250+slot*25
 end
-AGS_PopulationCapacity_OnPlay(); AGS_Handicaps_OnPlay()
+AGS_PopulationCapacity_PresetFinalize(); AGS_PopulationCapacity_OnPlay(); AGS_Handicaps_OnPlay()
 for _,p in ipairs(PLAYERS) do
     local slot=slots[p.id]
-    assert(overrides[p.id]==250+slot*25)
+    assert(maxCaps[p.id]==250+slot*25)
     assert(p.AGS_HandicapApplied.economic==1+slot/10)
     assert(p.AGS_HandicapApplied.military==1+slot/20)
 end
 local counts={}
 for _,mod in ipairs(modifiers) do
+    if mod.scope==MAT_EntityType then
     local slot=slots[mod.player]; counts[slot]=(counts[slot] or 0)+1
     local expected=mod.bp.PropertyBagGroupID==201 and (1+slot/20) or (1+slot/10)
     if mod.usage==MUT_Addition then expected=expected-1 end
     assert(mod.value==expected)
+    end
 end
 for slot=1,8 do assert(counts[slot]==23) end
 
@@ -164,12 +175,12 @@ for _,cap in ipairs({250,300,500}) do
                 slots[501]=1; slots[502]=2; slots[503]=3
                 PLAYERS=hostFirst and {host,guest,ai} or {guest,ai,host}
                 Game_GetLocalPlayer=function() return localID end
-                unregistered={}; modifiers={}; overrides={[501]=200,[502]=200,[503]=200}
+                unregistered={}; modifiers={}; maxCaps={[501]=200,[502]=200,[503]=200}
                 AGS_PopulationCapacity_UpdateModuleSettings(); AGS_Handicaps_UpdateModuleSettings()
                 assert(not unregistered.AGS_PopulationCapacity and unregistered.AGS_Handicaps)
                 AGS_PopulationCapacity_PresetFinalize(); AGS_PopulationCapacity_OnPlay()
                 assert(AGS_PopulationCapacity_GetPlayerMaximum(host)==cap)
-                assert(overrides[501]==cap and overrides[502]==200 and overrides[503]==200)
+                assert(maxCaps[501]==cap and maxCaps[502]==200 and maxCaps[503]==200)
                 local hostMaximum,hostHousing=nil,nil
                 for _,mod in ipairs(modifiers) do
                     if mod.player==501 and mod.name=='max_personnel_cap_player_modifier' then hostMaximum=mod.value end
