@@ -1,4 +1,4 @@
-"""Exercise lobby parsing, fixed arrival/chime timing and guaranteed token pickups."""
+"""Exercise lobby parsing, arrival/bell timing and guaranteed token pickups."""
 from pathlib import Path
 import xml.etree.ElementTree as E
 from lupa import LuaRuntime
@@ -38,12 +38,22 @@ YULE={running=true,time=0,nextVisit=YULE_CONFIG.firstVisit,presents={},raids={},
 Yule_RefreshShop=function() end;Yule_UpdateCheer=function() end
 Yule_LivePlayers=function() return players end
 local warnings={};local arrivals={}
-Yule_Notify=function(key) assert(key==2008);table.insert(warnings,YULE.time) end
+Loc_Empty=function() return '' end;ECV_Title=3
+UI_CreateEventCue=function(title,description,template,icon,sound,visibility,lifetime)
+    assert(title==YULE_LOC..'2008' and sound=='taunt_007')
+    assert(visibility==ECV_Title and lifetime==5)
+    table.insert(warnings,YULE.time)
+end
 Yule_StartVisit=function() table.insert(arrivals,YULE.time);YULE.santa={ends=YULE.time+10};return true end
 Yule_UpdateVisit=function() if YULE.santa and YULE.time>=YULE.santa.ends then YULE.santa=nil end end
 for time=1,600 do Yule_Tick() end
 assert(#arrivals==4 and #warnings==4)
 for i,time in ipairs(arrivals) do assert(time==60+(i-1)*180 and warnings[i]==time-3) end
+-- Normal announcements retain their notification cue rather than repeating bells.
+UI_CreateEventCue=function(title,description,template,icon,sound)
+    assert(sound=='sfx_ui_event_queue_med_priority_play')
+end
+Yule_Notify(2001);Yule_Notify(2004)
 
 -- Every outcome, including disabled bonuses, gives exactly one private token.
 YULE.santa=nil;YULE.nextVisit=9999

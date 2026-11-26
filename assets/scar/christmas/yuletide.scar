@@ -6,7 +6,7 @@ import("christmas/yuletide_settings.scar")
 YULE_LOC = "$7a91e5eaf5e04afb92278936ca4d8a0c:"
 YULE_MOD = "7a91e5eaf5e04afb92278936ca4d8a0c:"
 -- Yuletide Raids. Simulation uses World_GetRand and stable player order.
--- Existing human/cart visuals; stock notification sound pending custom audio support.
+-- Existing human/cart visuals and the game's bell sound warning.
 Core_RegisterModule("Yule")
 
 YULE_CONFIG = {
@@ -31,8 +31,10 @@ end
 
 function Yule_Notify(key)
     print("Yuletide event " .. tostring(key) .. " at " .. tostring(YULE.time))
+    -- Only the pre-arrival warning uses the native town-bell sound.
+    local sound = key == 2008 and "taunt_007" or "sfx_ui_event_queue_med_priority_play"
     UI_CreateEventCue(YULE_LOC .. tostring(key), Loc_Empty(), "medium_priority", "",
-        "sfx_ui_event_queue_med_priority_play", ECV_Title, 5)
+        sound, ECV_Title, 5)
 end
 
 function Yule_ResolveBlueprint(getter, name, id, kind)
