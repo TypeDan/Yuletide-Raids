@@ -49,7 +49,7 @@ Small text with no background or border just above the bottom-left resource box 
 
 ## Installation and source build
 
-[Subscribe through the Age of Empires IV mod catalogue](https://www.ageofempires.com/mods/details/593852/), or search for **Yuletide Raids** by **TypeEkcyall** in the game. Check for version **2026.11.25.1** in the description and start a new match after updating.
+[Subscribe through the Age of Empires IV mod catalogue](https://www.ageofempires.com/mods/details/604183/), or search for **Yuletide Raids** by **TypeEkcyall** in the game. Check for version **2026.11.25.1** in the description and start a new match after updating. The publisher created a replacement listing; subscribers to the older listing need this new link.
 
 Download `Yuletide_Raids.sga` from [Releases](https://github.com/TypeDan/Yuletide-Raids/releases). Put it in a `Yuletide Raids` folder inside your AoE IV user-data `mods/extension/local` directory. Select it in **both** lobby selectors: Game Mode and Tuning Pack.
 
