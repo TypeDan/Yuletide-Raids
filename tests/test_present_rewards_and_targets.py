@@ -59,18 +59,18 @@ for roll=1,100 do
 end
 assert(rngCalls==100)
 assert(counts[1]==40 and counts[2]==40 and counts[3]==10 and counts[4]==10)
-assert(paid[11]==-2000 and paid[22]==4000 and paid[33]==4000)
-assert(paid[44]==-2000 and paid[55]==nil)
+assert(paid[11]==0 and paid[22]==2000 and paid[33]==2000)
+assert(paid[44]==0 and paid[55]==nil)
 assert(deposits.resource_gold_deposit_small==10 and deposits.resource_stone_deposit_small==10)
 assert(YULE_CONFIG.goldenChance==nil)
 
--- Enemy payments scale with each recipient's age, without splitting a pot.
+-- Both pots use the collector's age; recipients' ages never multiply them.
 for age,total in ipairs({100,150,200,300}) do
-    Player_GetCurrentAge=function(id) return id==22 and age or 1 end
+    Player_GetCurrentAge=function(id) return id==11 and age or 4 end
     paid={}
     Yule_Reward(players[1],{},2,players)
-    assert(paid[22]==total and paid[33]==100)
-    assert(paid[11]==-100 and paid[44]==-100 and paid[55]==nil)
+    assert(paid[22]==total/2 and paid[33]==total/2)
+    assert(paid[11]==-total/2 and paid[44]==-total/2 and paid[55]==nil)
 end
 players[3].isEliminated=true
 paid={}; Yule_Reward(players[1],{},2,players)
@@ -78,18 +78,49 @@ assert(paid[22]==300 and paid[33]==nil)
 players[3].isEliminated=nil
 Player_GetCurrentAge=function() return 1 end
 
--- Each teammate pays their own age's cost, capped at available gold.
+-- Each teammate pays their share, capped at available gold, without redistribution.
 for age,cost in ipairs({100,150,200,300}) do
-    Player_GetCurrentAge=function(id) return id==44 and age or 1 end
+    Player_GetCurrentAge=function(id) return id==11 and age or 1 end
     Player_GetResource=function(id) return id==11 and 35 or 1000 end
     paid={}; Yule_Reward(players[1],{},2,players)
-    assert(paid[11]==-35 and paid[44]==-cost and paid[55]==nil)
-    assert(paid[22]==100 and paid[33]==100)
+    assert(paid[11]==-35 and paid[44]==-cost/2 and paid[55]==nil)
+    assert(paid[22]==cost/2 and paid[33]==cost/2)
 end
 Player_GetResource=function() return 0 end
 paid={}; Yule_Reward(players[1],{},2,players)
-assert(paid[11]==0 and paid[44]==0 and paid[22]==100)
+assert(paid[11]==0 and paid[44]==0 and paid[22]==150)
 Player_GetResource=function() return 1000 end
+Player_GetCurrentAge=function() return 1 end
+
+-- Unequal 4v2 / 3v2 / 1v3 teams: each side's total remains exactly one pot.
+local savedRelations=AGS_IsMutualRelation
+local savedSlots=Yule_PlayerSlot
+Yule_PlayerSlot=function(id) return id end
+for _,sizes in ipairs({{4,2},{3,2},{1,3}}) do
+    local roster={}
+    for i=1,sizes[1] do table.insert(roster,{id=i}) end
+    for i=1,sizes[2] do table.insert(roster,{id=10+i}) end
+    table.insert(roster,{id=99,isEliminated=true})
+    AGS_IsMutualRelation=function(a,b,r) return r==R_ALLY and b<10 or r==R_ENEMY and b>=10 end
+    for age,pot in ipairs({100,150,200,300}) do
+        Player_GetCurrentAge=function(id) return id==1 and age or 4 end
+        paid={}; Yule_Reward(roster[1],{},2,roster)
+        local debit,credit=0,0
+        for id,delta in pairs(paid) do
+            if id<10 then debit=debit-delta else credit=credit+delta end
+        end
+        assert(debit==pot and credit==pot and paid[99]==nil)
+        if sizes[1]==3 and pot==100 then assert(paid[1]==-34 and paid[2]==-33 and paid[3]==-33) end
+        if sizes[2]==3 and pot==100 then assert(paid[11]==34 and paid[12]==33 and paid[13]==33) end
+        local first=paid
+        local reversed={}; for i=#roster,1,-1 do table.insert(reversed,roster[i]) end
+        paid={}; Yule_Reward(roster[1],{},2,reversed)
+        for id,delta in pairs(first) do assert(paid[id]==delta) end
+    end
+end
+paid={}; Yule_Reward({id=1},{},2,{{id=1},{id=99,isEliminated=true}})
+assert(next(paid)==nil) -- No living enemies means no charge.
+AGS_IsMutualRelation=savedRelations; Yule_PlayerSlot=savedSlots
 Player_GetCurrentAge=function() return 1 end
 
 -- UI, request payload, receiver and wallet must all agree on the lobby slot.
@@ -143,8 +174,8 @@ Yule_RefreshShop(); assert(context.wallet=='Golden presents: 19')
 paid={}; local pickupRolls=0
 World_GetRand=function(a,b) assert(a==1 and b==100); pickupRolls=pickupRolls+1; return 41 end
 YULE.presents={{id=102,entity=102,position={x=0,z=0},expires=100,golden=false}}
-Yule_Tick(); assert(paid[22]==100 and paid[33]==100 and paid[11]==-100 and paid[44]==-100)
-Yule_Tick(); assert(pickupRolls==1 and paid[22]==100 and YULE.wallets[5]==20)
+Yule_Tick(); assert(paid[22]==50 and paid[33]==50 and paid[11]==-50 and paid[44]==-50)
+Yule_Tick(); assert(pickupRolls==1 and paid[22]==50 and YULE.wallets[5]==20)
 
 -- Found gold is shared with living teammates, once per collected present.
 paid={}; pickupRolls=0

@@ -1,12 +1,14 @@
 # Yuletide Raids
 
-**Release version: 2026.11.25.1.** This label also appears at the start of the mod description.
+**Release version: 2026.11.26.1.** This label also appears at the start of the mod description.
 
 ![Yuletide Raids](assets/mod.png)
 
 Father Christmas drops presents across the map. Spend golden presents on elf raids, villagers or resources, with options for each age.
 
 **Select Yuletide Raids as BOTH the game mode and tuning pack.** The game mode runs the events and shop; the tuning pack supplies the custom unit and present definitions. Both are supplied by this one extension archive. Start a new match after updating.
+
+**Version 2026.11.26.1** fixes enemy gifts for unequal teams: one shared enemy reward and one shared collecting-team deduction, both based on the collector's age. See [shared-gold validation](docs/2026-11-26-shared-gold.md).
 
 **Version 2026.11.25.1** adds configurable starting tokens, gift counts and outcome weights, guaranteed tokens plus bonus rolls, earlier regular deliveries, individual enemy-gift payments/deductions and blocked-convoy recovery. Validation: [delivery update](docs/2026-11-25-delivery-draft.md).
 
@@ -22,7 +24,7 @@ The population and compact shop fixes from **2026.11.20.1** remain included: a c
 - First arrival at **1:00**, then every **three minutes**, with a native event-cue chime three seconds before arrival. A visit chooses **8–12 gifts** by default; lobby minimum and maximum can each be set to 1–20. Capacity is 80 unopened gifts; each expires after ten minutes. If capacity or safe land is unavailable, arrival retries. Visits continue until the selected gift count is delivered.
 - Santa follows random land destinations. Every gift appears within six world units of the actual cart, separated from earlier sites by a map-scaled 24–80 units. If the convoy stalls or cannot find a valid delivery site for 15 seconds, all ten units phase to a clear location and resume native movement. This is obstruction recovery, not continuous flight through buildings.
 - Every pickup gives the collector **one private golden token**, plus one independently rolled outcome. Default bonus chances: **40% shared team gold, 40% enemy gift, 10% gold ore, 10% stone ore**. Lobby weights are normalized by their total; zero disables an outcome, and all zero means tokens only.
-- Team gold is a **100/150/200/300** pot by the collector's age, split between the collector and living teammates. Enemy gifts pay **each living enemy** 100/150/200/300 gold and deduct that amount from **each collecting teammate**, using each player's own age. Deductions stop at zero. No eligible enemies means no payment or deduction.
+- Team gold is a **100/150/200/300** pot by the collector's age, split between the collector and living teammates. Enemy gifts split one **100/150/200/300** gold pot among all living enemies and split one equal deduction among the collector and living teammates, both using the **collector's age**. Each deduction stops at zero; unpaid shares are not redistributed to teammates. Whole-gold remainders follow lobby-slot order. Neither pot increases with team size. No eligible enemies means no payment or deduction.
 - Deposits appear on nearby clear ground, away from units. If no safe site is available, the bonus becomes shared team gold.
 - Lobby starting tokens have a common value and individual overrides for all eight player slots; default zero. Existing wallets are not reset on resume.
 
@@ -49,7 +51,7 @@ Small text with no background or border just above the bottom-left resource box 
 
 ## Installation and source build
 
-[Subscribe through the Age of Empires IV mod catalogue](https://www.ageofempires.com/mods/details/604183/), or search for **Yuletide Raids** by **TypeEkcyall** in the game. Check for version **2026.11.25.1** in the description and start a new match after updating. The publisher created a replacement listing; subscribers to the older listing need this new link.
+[Subscribe through the Age of Empires IV mod catalogue](https://www.ageofempires.com/mods/details/604183/), or search for **Yuletide Raids** by **TypeEkcyall** in the game. Check for version **2026.11.26.1** in the description and start a new match after updating. The publisher created a replacement listing; subscribers to the older listing need this new link.
 
 Download `Yuletide_Raids.sga` from [Releases](https://github.com/TypeDan/Yuletide-Raids/releases). Put it in a `Yuletide Raids` folder inside your AoE IV user-data `mods/extension/local` directory. Select it in **both** lobby selectors: Game Mode and Tuning Pack.
 
@@ -67,7 +69,7 @@ Keep this project's GUID unchanged for updates; a genuinely separate mod needs a
 
 ## Experimental status
 
-The current release was built with the native Content Editor for game version **17.0.12303**, with zero build errors or warnings. All 13 automated test scripts passed. A native 2v2 skirmish verified individual gold payments and deductions, the host's starting-token override, a reduced resource purchase, golden-token pickup plus bonus, two Santa visits and neutral convoy recovery. Every tested drop stayed beside the cart. Earlier live tests showed Age I melee and ranged attacks and reindeer running. Scots and Vikings blueprint support is included.
+All 13 automated test scripts pass, including the current shared-gold correction for unequal teams and all ages. The preceding release's native 2v2 skirmish verified the engine's gold transactions, host starting-token override, reduced resource purchase, golden-token pickup plus bonus, two Santa visits and neutral convoy recovery. Every tested drop stayed beside the cart. Earlier live tests showed Age I melee and ranged attacks and reindeer running. Scots and Vikings blueprint support is included. Current build and publication evidence is recorded in the shared-gold validation document above.
 
 A complete natural golden-present pickup → purchase → enemy attack sequence, all higher-age animations, deposit mining, multiplayer and save/load still need full in-game validation. The warning's audio was not independently captured. Available gift sites and convoy route access can vary by map, and the cart horse's animation has not been separately confirmed close up.
 

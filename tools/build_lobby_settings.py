@@ -11,7 +11,7 @@ sections = tree.find('.//DataProperty[@Name="m_optionSections"]')
 owner = tree.find('.//DataObject[@Type="WinCondition::OptionsUIDescriptor"]').get('Id')
 parts = {f'm_modPart{i}': n for i, n in enumerate([2056381930, 1258026464, 914958226, 210390474])}
 strings = {
-    '2004': 'Enemy gift! Enemies gain gold; each collecting teammate loses gold, scaled by their own age.',
+    '2004': 'Enemy gift! Enemies share a gold pot; your team shares the deduction, scaled by the collector\'s age.',
     '2008': 'Father Christmas arrives in 3 seconds!',
     '2011': 'Collect one golden token plus a random bonus outcome. Outcome chances are set in the lobby. Deposits appear on nearby clear ground.',
     '2015': 'Father Christmas and his nine reindeer deliver golden presents. First visit at 1:00, then every three minutes. Blocked convoys phase to clear ground.',
@@ -86,7 +86,7 @@ for key, label_id, label, default in (
     ('stone_deposit_weight', 3112, 'Stone deposit chance weight', 10),
 ):
     option(visits, key, label_id, label,
-           'Bonus outcome weight. Defaults 40/40/10/10 give 40%/40%/10%/10%. Chance is this weight divided by the total. Zero disables an outcome; all zero means golden tokens only. Enemy gifts give each enemy 100/150/200/300 gold and deduct that amount from each collecting teammate, using each player\'s own age; gold cannot fall below zero.',
+           'Bonus outcome weight. Defaults 40/40/10/10 give 40%/40%/10%/10%. Chance is this weight divided by the total. Zero disables an outcome; all zero means golden tokens only. Enemy gifts split one 100/150/200/300 gold pot among living enemies and split one equal deduction among your living team, using the collector\'s age. Gold cannot fall below zero; unpaid shares are not charged to other allies.',
            range(0, 101, 5), default)
 
 wallets = section('section_yuletide_wallets', 3120, 'Starting golden presents')

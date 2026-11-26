@@ -151,8 +151,23 @@ function Yule_RollPresentOutcome()
     end
 end
 
--- Split a fixed pot, including the collector, without multiplying it by team size.
-function Yule_ShareTeamGold(opener, players, amount)
+-- Split one fixed pot deterministically, regardless of recipient count or age.
+function Yule_ShareGold(recipients, amount, deduct)
+    if #recipients == 0 then return end
+    table.sort(recipients, function(a,b) return Yule_PlayerSlot(a.id)<Yule_PlayerSlot(b.id) end)
+    local share = math.floor(amount/#recipients)
+    local remainder = amount-share*#recipients
+    for i, player in ipairs(recipients) do
+        local delta = share+(i<=remainder and 1 or 0)
+        if deduct then
+            -- Unaffordable shares stop at zero; do not charge other allies extra.
+            delta = -math.min(delta, math.max(0, Player_GetResource(player.id, RT_Gold)))
+        end
+        Player_AddResource(player.id, RT_Gold, delta)
+    end
+end
+
+function Yule_CollectingTeam(opener, players)
     local recipients = {opener}
     for _, player in ipairs(players) do
         if player.id ~= opener.id and not player.isEliminated
@@ -160,12 +175,11 @@ function Yule_ShareTeamGold(opener, players, amount)
             table.insert(recipients, player)
         end
     end
-    table.sort(recipients, function(a,b) return Yule_PlayerSlot(a.id)<Yule_PlayerSlot(b.id) end)
-    local share = math.floor(amount/#recipients)
-    local remainder = amount-share*#recipients
-    for i, player in ipairs(recipients) do
-        Player_AddResource(player.id, RT_Gold, share+(i<=remainder and 1 or 0))
-    end
+    return recipients
+end
+
+function Yule_ShareTeamGold(opener, players, amount)
+    Yule_ShareGold(Yule_CollectingTeam(opener, players), amount, false)
 end
 
 -- Spawnable-position checks alone can overlap mobile units. Check squads too.
@@ -208,7 +222,7 @@ function Yule_SpawnSafeDeposit(position, outcome, players)
     return false
 end
 
--- Bonus outcomes accompany every golden token. Enemy gold scales per recipient.
+-- Bonus outcomes accompany every token. All gold pots use the collector's age.
 function Yule_Reward(opener, position, outcome, players)
     if outcome == 1 then
         Yule_ShareTeamGold(opener, players, Yule_ExchangeAmount(opener.id))
@@ -225,16 +239,9 @@ function Yule_Reward(opener, position, outcome, players)
             Yule_Notify(2007)
             return
         end
-        for _, enemy in ipairs(enemies) do
-            Player_AddResource(enemy.id, RT_Gold, Yule_ExchangeAmount(enemy.id))
-        end
-        for _, player in ipairs(players) do
-            if not player.isEliminated and (player.id == opener.id
-                or AGS_IsMutualRelation(opener.id, player.id, R_ALLY)) then
-                local cost = math.min(Yule_ExchangeAmount(player.id), math.max(0, Player_GetResource(player.id, RT_Gold)))
-                Player_AddResource(player.id, RT_Gold, -cost)
-            end
-        end
+        local amount = Yule_ExchangeAmount(opener.id)
+        Yule_ShareGold(enemies, amount, false)
+        Yule_ShareGold(Yule_CollectingTeam(opener, players), amount, true)
     elseif outcome == 3 or outcome == 4 then
         if not Yule_SpawnSafeDeposit(position, outcome, players) then
             -- A crowded location must never trap the collector. Preserve a reward.
