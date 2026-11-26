@@ -1,6 +1,6 @@
 # Yuletide Raids
 
-**Prepared version: 2026.11.26.2; awaiting native audio test and publication.** This label also appears at the start of the mod description.
+**Prepared version: 2026.11.26.2; tested; awaiting publication.** This label also appears at the start of the mod description.
 
 ![Yuletide Raids](assets/mod.png)
 
@@ -73,7 +73,7 @@ Keep this project's GUID unchanged for updates; a genuinely separate mod needs a
 
 All 13 automated test scripts pass, including the current shared-gold correction for unequal teams and all ages. The preceding release's native 2v2 skirmish verified the engine's gold transactions, host starting-token override, reduced resource purchase, golden-token pickup plus bonus, two Santa visits and neutral convoy recovery. Every tested drop stayed beside the cart. Earlier live tests showed Age I melee and ranged attacks and reindeer running. Scots and Vikings blueprint support is included. Current build and publication evidence is recorded in the shared-gold validation document above.
 
-A complete natural golden-present pickup → purchase → enemy attack sequence, all higher-age animations, deposit mining, multiplayer and save/load still need full in-game validation. The warning's audio was not independently captured. Available gift sites and convoy route access can vary by map, and the cart horse's animation has not been separately confirmed close up.
+A complete natural golden-present pickup → purchase → enemy attack sequence, all higher-age animations, deposit mining, multiplayer and save/load still need full in-game validation. The bell warning's audio was verified by matching a native-match speaker capture to the installed bell waveform. Available gift sites and convoy route access can vary by map, and the cart horse's animation has not been separately confirmed close up.
 
 The current build uses a native trade cart, reindeer, smaller human soldiers and native present models. Custom sleigh/Santa models, reliable red/green recolours, imported voices/sleigh bells and turkey replacements are **not implemented**. Golden presents are larger and labelled, without a gold repaint. The cover is promotional illustration, not a screenshot of custom assets.
 
