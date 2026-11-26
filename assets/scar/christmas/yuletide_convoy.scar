@@ -66,7 +66,7 @@ function Yule_SpawnConvoy(players,origin)
         local row=math.floor((i-1)/2)
         local forward=i==9 and 12 or 4+row*2
         local side=i==9 and 0 or (i%2==1 and -1.5 or 1.5)
-        members[i]={group=Yule_ConvoyMember(owner,YULE.blueprints.reindeer[i],name,origin,route,forward,side)}
+        members[i]={group=Yule_ConvoyMember(owner,YULE.blueprints.reindeer[i],name,origin,route,forward,side),forward=forward,side=side}
     end
     return {group=group,members=members,position=origin,destination=route[1]}
 end
@@ -80,6 +80,7 @@ function Yule_StartVisit(players)
     local convoy=Yule_SpawnConvoy(players,origin)
     YULE.santa={group=convoy.group,members=convoy.members,position=convoy.position,destination=convoy.destination,
         ends=YULE.time+YULE_CONFIG.visitDuration,nextDrop=YULE.time,drops=0,dropSites={},
+        progressPosition=convoy.position,progressCheck=YULE.time+2,lastDelivery=YULE.time,
         dropTarget=World_GetRand(YULE_CONFIG.minGiftsPerVisit,math.min(YULE_CONFIG.giftsPerVisit,capacity))}
     Yule_Notify(2002)
     return true
@@ -105,6 +106,53 @@ function Yule_Flight()
     local santa=YULE.santa
     if santa==nil or not YULE.running or SGroup_CountSpawned(santa.group)==0 then return end
     santa.position=SGroup_GetPosition(santa.group)
+    if YULE.time < (santa.progressCheck or 0) then return end
+    local previous=santa.progressPosition or santa.position
+    local moved=(santa.position.x-previous.x)^2+(santa.position.z-previous.z)^2
+    -- Keep native walking/running animations. Only phase the convoy when it
+    -- stops making progress, or its route cannot find room for the next gift.
+    if moved<4 or (santa.drops<santa.dropTarget and YULE.time-(santa.lastDelivery or YULE.time)>=15) then
+        Yule_PhasePastObstruction(Yule_LivePlayers())
+    end
+    santa.progressPosition=SGroup_GetPosition(santa.group)
+    santa.progressCheck=YULE.time+2
+end
+
+function Yule_PhasePastObstruction(players)
+    local santa=YULE.santa
+    if santa==nil or #players==0 then return false end
+    local destination=nil
+    for attempt=1,8 do
+        local candidate=Yule_FindDeliveryArea(players)
+        if candidate~=nil and (candidate.x-santa.position.x)^2+(candidate.z-santa.position.z)^2>=Yule_DropSpacing()^2 then
+            destination=candidate
+            break
+        end
+    end
+    if destination==nil then return false end
+    -- Native group warping crosses walls, forests and blocked passages without
+    -- destroying map objects. Every gift still uses the cart's actual position.
+    local owner=players[1].id
+    local route={}
+    local previous=destination
+    for i=1,64 do previous=Yule_RandomWaypoint(previous);route[i]=previous end
+    local function resume(group,position)
+        SGroup_WarpToPos(group,position)
+        SGroup_SetPlayerOwner(group,owner)
+        for i,target in ipairs(route) do Cmd_Move(group,target,i>1) end
+        SGroup_SetWorldOwned(group)
+        SGroup_SetSelectable(group,false)
+        SGroup_SetInvulnerable(group,true)
+    end
+    resume(santa.group,destination)
+    for _,member in ipairs(santa.members or {}) do
+        resume(member.group,Yule_PositionNear(destination,4))
+    end
+    santa.position=SGroup_GetPosition(santa.group)
+    santa.destination=route[1]
+    santa.lastDelivery=YULE.time -- Bound retries even when native placement fails.
+    print("Yuletide convoy phased past an obstruction at "..YULE.time)
+    return true
 end
 -- Scale separation to the map, not to the number or position of players.
 function Yule_DropSpacing()
@@ -159,6 +207,7 @@ function Yule_UpdateVisit(players)
             local dropped,actual=Yule_DropPresent(position,players,santa.position)
             if dropped then
                 santa.drops=santa.drops+1
+                santa.lastDelivery=YULE.time
                 table.insert(santa.dropSites,actual)
                 print("Yuletide visit "..YULE.visits.." present "..santa.drops.."/"..santa.dropTarget.." at "..actual.x..","..actual.z)
                 santa.nextDrop=YULE.time+World_GetRand(YULE_CONFIG.dropMin,YULE_CONFIG.dropMax)

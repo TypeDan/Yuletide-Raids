@@ -1,12 +1,14 @@
 # Yuletide Raids
 
-**Release version: 2026.11.20.3.** This label also appears at the start of the mod description.
+**Release version: 2026.11.25.1.** This label also appears at the start of the mod description.
 
 ![Yuletide Raids](assets/mod.png)
 
 Father Christmas drops presents across the map. Spend golden presents on elf raids, villagers or resources, with options for each age.
 
 **Select Yuletide Raids as BOTH the game mode and tuning pack.** The game mode runs the events and shop; the tuning pack supplies the custom unit and present definitions. Both are supplied by this one extension archive. Start a new match after updating.
+
+**Version 2026.11.25.1** adds configurable starting tokens, gift counts and outcome weights, guaranteed tokens plus bonus rolls, earlier regular deliveries, individual enemy-gift payments/deductions and blocked-convoy recovery. Validation: [delivery update](docs/2026-11-25-delivery-draft.md).
 
 **Version 2026.11.20.3** reconnects presents to Santa: gifts appear beside his actual cart position as he follows his random route. Spacing checks prevent clustered drops, including after earlier gifts are collected. See [delivery validation](docs/2026-11-20-santa-delivery.md).
 
@@ -17,10 +19,12 @@ The population and compact shop fixes from **2026.11.20.1** remain included: a c
 ## Presents and convoy
 
 - One Father Christmas trade cart per visit, with nine named reindeer. All ten remain neutral throughout the visit, invulnerable and unselectable, with zero sight and population. No player owns or tracks the convoy. Native movement orders are queued before ownership is relinquished in the same simulation callback. The convoy cannot collect its own gifts.
-- The first visit is due at **5:00**; later visits are due 5–8 minutes after the previous visit began. Each visit chooses a target of **8–12 presents**, with at least 6–9 seconds between drops. Visits last at least 36 seconds and continue until their target is delivered. Every drop is separated from earlier sites and other unopened presents by a map-scaled distance (24–80 world units). Collected gifts remain in the visit’s spacing history. Every gift appears beside Santa at his actual position, within six world units even after native spawn adjustment. If he is too close to an earlier drop or the ground is blocked, delivery waits for a suitable spot farther along his route. The convoy is not relocated to distribute gifts. You can follow him, but he must travel far enough between gifts to satisfy the spacing checks. A visit waits if fewer than eight slots remain under the limit of 24 unopened presents, then starts once enough are collected or expire. Uncollected presents expire after ten minutes. Native pathfinding and movement animations are used.
-- Each visit starts at a random land location and follows random destinations across the map. Presents follow that same physical route and appear beside the moving cart. Player bases, team sizes and lobby order do not determine the route. Drops avoid water, buildings and nearby presents; a safety margin keeps the convoy away from the map boundary.
-- Bring an eligible unit near a present to open it. **Forty percent** are golden presents stored in your wallet.
-- Ordinary presents give 300 gold split between the opener and living teammates (40%), 300 gold shared among living enemies (40%), a gold deposit (10%), or a stone deposit (10%). These chances apply to the remaining 60% of presents that are not golden shop tokens. Deposits are placed on nearby clear ground after checking units and map objects; if no safe spot is found, the reward becomes shared team gold.
+- First arrival at **1:00**, then every **three minutes**, with a native event-cue chime three seconds before arrival. A visit chooses **8–12 gifts** by default; lobby minimum and maximum can each be set to 1–20. Capacity is 80 unopened gifts; each expires after ten minutes. If capacity or safe land is unavailable, arrival retries. Visits continue until the selected gift count is delivered.
+- Santa follows random land destinations. Every gift appears within six world units of the actual cart, separated from earlier sites by a map-scaled 24–80 units. If the convoy stalls or cannot find a valid delivery site for 15 seconds, all ten units phase to a clear location and resume native movement. This is obstruction recovery, not continuous flight through buildings.
+- Every pickup gives the collector **one private golden token**, plus one independently rolled outcome. Default bonus chances: **40% shared team gold, 40% enemy gift, 10% gold ore, 10% stone ore**. Lobby weights are normalized by their total; zero disables an outcome, and all zero means tokens only.
+- Team gold is a **100/150/200/300** pot by the collector's age, split between the collector and living teammates. Enemy gifts pay **each living enemy** 100/150/200/300 gold and deduct that amount from **each collecting teammate**, using each player's own age. Deductions stop at zero. No eligible enemies means no payment or deduction.
+- Deposits appear on nearby clear ground, away from units. If no safe site is available, the bonus becomes shared team gold.
+- Lobby starting tokens have a common value and individual overrides for all eight player slots; default zero. Existing wallets are not reset on resume.
 
 ## Golden-present shop
 
@@ -28,14 +32,14 @@ Only choices for your **current age** appear. Server checks reject purchases fro
 
 | Option | Age I | Age II | Age III | Age IV |
 |---|---:|---:|---:|---:|
-| Resources per golden present | 300 | 450 | 600 | 900 |
+| Resources per golden present | 100 | 150 | 200 | 300 |
 | Villagers per golden present | 2 | 3 | 4 | 5 |
 | Archer wave size | 3 | 4 | 5 | 6 |
 | Spearman wave size | 4 | 6 | 8 | 10 |
 | Armoured wave size | 2 | 3 | 4 | 5 |
 | Golden-present cost per wave | 1 | 2 | 3 | 4 |
 
-All purchased resources, including gold, go entirely to the buyer. Gold found in ordinary presents is shared with living teammates. Villagers match the buyer's civilization and respect population limits. Failed wave deployments refund their purchase.
+All purchased resources, including gold, go entirely to the buyer. The team-gold pickup outcome is shared with living teammates. Villagers match the buyer's civilization and respect population limits. Failed wave deployments refund their purchase.
 
 The **Buffs** tab includes **Festive Cheer**, costing **1 golden present** in any age. For **30 game seconds**, the buyer's villagers move **30% faster** and gather food, wood, gold and stone **50% faster**. Existing and newly trained villagers benefit; other players and non-villager units do not. The tab shows the remaining time. Buying again resets the timer to 30 seconds without stacking the effect. The buff multiplies existing economy bonuses, and those bonuses remain after it expires. A failed activation refunds the purchase.
 
@@ -45,7 +49,7 @@ Small text with no background or border just above the bottom-left resource box 
 
 ## Installation and source build
 
-[Subscribe through the Age of Empires IV mod catalogue](https://www.ageofempires.com/mods/details/593852/), or search for **Yuletide Raids** by **TypeEkcyall** in the game. Check for version **2026.11.20.3** in the description and start a new match after updating.
+[Subscribe through the Age of Empires IV mod catalogue](https://www.ageofempires.com/mods/details/593852/), or search for **Yuletide Raids** by **TypeEkcyall** in the game. Check for version **2026.11.25.1** in the description and start a new match after updating.
 
 Download `Yuletide_Raids.sga` from [Releases](https://github.com/TypeDan/Yuletide-Raids/releases). Put it in a `Yuletide Raids` folder inside your AoE IV user-data `mods/extension/local` directory. Select it in **both** lobby selectors: Game Mode and Tuning Pack.
 
@@ -63,9 +67,9 @@ Keep this project's GUID unchanged for updates; a genuinely separate mod needs a
 
 ## Experimental status
 
-The 20 November release was built with the native Content Editor for game version **17.0.12303**, with zero build errors or warnings. Automated checks cover age restrictions, rewards, refunds, neutral raid deployment, all twelve unit variants, convoy invulnerability/movement/cleanup and pickup exclusions. Live tests have shown Age I melee and ranged attacks, reindeer running, the shop panel and ordinary-present collection. Scots and Vikings blueprint support is included.
+The current release was built with the native Content Editor for game version **17.0.12303**, with zero build errors or warnings. All 13 automated test scripts passed. A native 2v2 skirmish verified individual gold payments and deductions, the host's starting-token override, a reduced resource purchase, golden-token pickup plus bonus, two Santa visits and neutral convoy recovery. Every tested drop stayed beside the cart. Earlier live tests showed Age I melee and ranged attacks and reindeer running. Scots and Vikings blueprint support is included.
 
-A complete natural golden-present pickup → purchase → enemy attack sequence, all higher-age animations, deposit mining, multiplayer and save/load still need full in-game validation. Available gift sites and convoy route access can vary by map, and the cart horse's animation has not been separately confirmed close up.
+A complete natural golden-present pickup → purchase → enemy attack sequence, all higher-age animations, deposit mining, multiplayer and save/load still need full in-game validation. The warning's audio was not independently captured. Available gift sites and convoy route access can vary by map, and the cart horse's animation has not been separately confirmed close up.
 
 The current build uses a native trade cart, reindeer, smaller human soldiers and native present models. Custom sleigh/Santa models, reliable red/green recolours, festive voices/bells and turkey replacements are **not implemented**. Golden presents are larger and labelled, without a gold repaint. The cover is promotional illustration, not a screenshot of custom assets.
 

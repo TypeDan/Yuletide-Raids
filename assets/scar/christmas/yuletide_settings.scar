@@ -1,0 +1,44 @@
+-- Lobby values are read by the synchronized SetupSettings delegate.
+function Yule_LobbyNumber(option, fallback, minimum, maximum)
+    if type(option) ~= "table" or type(option.enum_items) ~= "table" then return fallback end
+    for key, value in pairs(option.enum_items) do
+        if value == option.enum_value then
+            local number = tonumber(string.match(key, "^yule_value_(-?%d+)$"))
+            if number ~= nil and number >= minimum and number <= maximum then return number end
+        end
+    end
+    return fallback
+end
+
+function Yule_SetupSettings(options)
+    local settings = options.section_yuletide or {}
+    local starting = options.section_yuletide_wallets or {}
+    YULE_CONFIG.minGiftsPerVisit = Yule_LobbyNumber(settings.minimum_presents, 8, 1, 20)
+    YULE_CONFIG.giftsPerVisit = Yule_LobbyNumber(settings.maximum_presents, 12, 1, 20)
+    -- Reversed bounds are swapped, so both selected values are respected.
+    if YULE_CONFIG.minGiftsPerVisit > YULE_CONFIG.giftsPerVisit then
+        YULE_CONFIG.minGiftsPerVisit, YULE_CONFIG.giftsPerVisit = YULE_CONFIG.giftsPerVisit, YULE_CONFIG.minGiftsPerVisit
+    end
+    YULE_CONFIG.presentWeights = {
+        Yule_LobbyNumber(settings.team_gold_weight, 40, 0, 100),
+        Yule_LobbyNumber(settings.enemy_gold_weight, 40, 0, 100),
+        Yule_LobbyNumber(settings.gold_deposit_weight, 10, 0, 100),
+        Yule_LobbyNumber(settings.stone_deposit_weight, 10, 0, 100),
+    }
+    local common = Yule_LobbyNumber(starting.starting_tokens, 0, 0, 100)
+    YULE_CONFIG.startingTokens = {}
+    for slot = 1,8 do
+        local amount = Yule_LobbyNumber(starting["starting_tokens_"..slot], -1, -1, 100)
+        YULE_CONFIG.startingTokens[slot] = amount < 0 and common or amount
+    end
+end
+
+function Yule_InitializeWallets(players)
+    -- Never overwrite a saved wallet or grant the starting balance twice.
+    for _, player in ipairs(players) do
+        local slot = Yule_PlayerSlot(player.id)
+        if YULE.wallets[slot] == nil then
+            YULE.wallets[slot] = (YULE_CONFIG.startingTokens or {})[slot] or 0
+        end
+    end
+end

@@ -2,6 +2,7 @@ import("christmas/yuletide_shop.scar")
 import("christmas/yuletide_buffs.scar")
 import("christmas/yuletide_units.scar")
 import("christmas/yuletide_convoy.scar")
+import("christmas/yuletide_settings.scar")
 YULE_LOC = "$7a91e5eaf5e04afb92278936ca4d8a0c:"
 YULE_MOD = "7a91e5eaf5e04afb92278936ca4d8a0c:"
 -- Yuletide Raids. Simulation uses World_GetRand and stable player order.
@@ -9,10 +10,10 @@ YULE_MOD = "7a91e5eaf5e04afb92278936ca4d8a0c:"
 Core_RegisterModule("Yule")
 
 YULE_CONFIG = {
-    goldenChance = 40, maxActiveRaids = 8,
-    firstVisit = 300, visitMin = 300, visitMax = 480, visitDuration = 36,
+    maxActiveRaids = 8,
+    firstVisit = 60, visitInterval = 180, warningSeconds = 3, visitDuration = 36,
     dropMin = 6, dropMax = 9, maxDropOffset = 6,
-    minGiftsPerVisit = 8, giftsPerVisit = 12, openRadius = 5, gold = 300, maxPresents = 24,
+    minGiftsPerVisit = 8, giftsPerVisit = 12, openRadius = 5, maxPresents = 80,
     presentLifetime = 600, raidLifetime = 300,
     presentWeights = {40, 40, 10, 10}, -- collector-team gold, enemy gold, gold deposit, stone deposit
 }
@@ -58,6 +59,7 @@ function Yule_OnPlay()
     Yule_ConvoyBlueprints()
     -- Art is loaded through the game mode's declarative PrecacheList.
     YULE.running = true
+    Yule_InitializeWallets(Yule_LivePlayers())
     print("Yuletide initialized")
     Network_RegisterEvent("Yule_PurchaseNetwork")
     Yule_CreateShop()
@@ -120,8 +122,7 @@ end
 function Yule_DropPresent(position,players,sourcePosition)
     print("Yuletide dropping present")
     if #YULE.presents >= YULE_CONFIG.maxPresents then return false end
-    local golden = World_GetRand(1,100) <= YULE_CONFIG.goldenChance
-    local blueprint = golden and YULE.blueprints.golden or YULE.blueprints.present
+    local blueprint = YULE.blueprints.golden
     local entity = Entity_CreateENVFacing(blueprint, position, position, false)
     local safe = World_GetSpawnablePosition(position, entity)
     -- Native placement can relocate a blocked spawn. A convoy delivery must
@@ -135,13 +136,14 @@ function Yule_DropPresent(position,players,sourcePosition)
     Entity_Spawn(entity)
     Entity_WarpToPos(entity, safe)
     table.insert(YULE.presents, { entity = entity, id = Entity_GetID(entity),
-        position = safe, golden = golden, expires = YULE.time + YULE_CONFIG.presentLifetime })
+        position = safe, golden = true, expires = YULE.time + YULE_CONFIG.presentLifetime })
     return true, safe
 end
 
 function Yule_RollPresentOutcome()
     local total = 0
     for _, weight in ipairs(YULE_CONFIG.presentWeights) do total = total + weight end
+    if total == 0 then return nil end -- Lobby can disable all bonus outcomes.
     local roll = World_GetRand(1, total)
     for outcome, weight in ipairs(YULE_CONFIG.presentWeights) do
         roll = roll - weight
@@ -206,14 +208,15 @@ function Yule_SpawnSafeDeposit(position, outcome, players)
     return false
 end
 
--- Weighted ordinary-present outcomes. Enemy gold is one total pot, not per enemy.
+-- Bonus outcomes accompany every golden token. Enemy gold scales per recipient.
 function Yule_Reward(opener, position, outcome, players)
     if outcome == 1 then
-        Yule_ShareTeamGold(opener, players, YULE_CONFIG.gold)
+        Yule_ShareTeamGold(opener, players, Yule_ExchangeAmount(opener.id))
     elseif outcome == 2 then
         local enemies = {}
         for _, player in ipairs(players) do
-            if player.id ~= opener.id and AGS_IsMutualRelation(opener.id, player.id, R_ENEMY) then
+            if player.id ~= opener.id and not player.isEliminated
+                and AGS_IsMutualRelation(opener.id, player.id, R_ENEMY) then
                 table.insert(enemies, player)
             end
         end
@@ -222,15 +225,20 @@ function Yule_Reward(opener, position, outcome, players)
             Yule_Notify(2007)
             return
         end
-        local share = math.floor(YULE_CONFIG.gold / #enemies)
-        local remainder = YULE_CONFIG.gold - share * #enemies
-        for i, enemy in ipairs(enemies) do
-            Player_AddResource(enemy.id, RT_Gold, share + (i <= remainder and 1 or 0))
+        for _, enemy in ipairs(enemies) do
+            Player_AddResource(enemy.id, RT_Gold, Yule_ExchangeAmount(enemy.id))
+        end
+        for _, player in ipairs(players) do
+            if not player.isEliminated and (player.id == opener.id
+                or AGS_IsMutualRelation(opener.id, player.id, R_ALLY)) then
+                local cost = math.min(Yule_ExchangeAmount(player.id), math.max(0, Player_GetResource(player.id, RT_Gold)))
+                Player_AddResource(player.id, RT_Gold, -cost)
+            end
         end
     elseif outcome == 3 or outcome == 4 then
         if not Yule_SpawnSafeDeposit(position, outcome, players) then
             -- A crowded location must never trap the collector. Preserve a reward.
-            Yule_ShareTeamGold(opener, players, YULE_CONFIG.gold)
+            Yule_ShareTeamGold(opener, players, Yule_ExchangeAmount(opener.id))
             Yule_Notify(2003)
             return
         end
@@ -268,9 +276,14 @@ function Yule_Tick()
     local players = Yule_LivePlayers()
     Yule_UpdateCheer(players)
     if #players == 0 then return end
+    if YULE.time >= YULE.nextVisit - YULE_CONFIG.warningSeconds and YULE.time < YULE.nextVisit
+        and YULE.warnedVisit ~= YULE.nextVisit then
+        YULE.warnedVisit = YULE.nextVisit
+        Yule_Notify(2008)
+    end
     if YULE.santa == nil and YULE.time >= YULE.nextVisit then
         if Yule_StartVisit(players) then
-            YULE.nextVisit = YULE.time + World_GetRand(YULE_CONFIG.visitMin, YULE_CONFIG.visitMax)
+            YULE.nextVisit = YULE.time + YULE_CONFIG.visitInterval
         else
             -- Wait for enough present capacity or usable land before announcing a visit.
             YULE.nextVisit = YULE.time + 5
@@ -290,12 +303,10 @@ function Yule_Tick()
                 -- Consume first: a present cannot reward two players in the same tick.
                 table.remove(YULE.presents, i)
                 Entity_Destroy(present.entity)
-                if present.golden then
-                    local slot = Yule_PlayerSlot(opener.id)
-                    YULE.wallets[slot] = (YULE.wallets[slot] or 0) + 1
-                else
-                    Yule_Reward(opener, present.position, Yule_RollPresentOutcome(), players)
-                end
+                local slot = Yule_PlayerSlot(opener.id)
+                YULE.wallets[slot] = (YULE.wallets[slot] or 0) + 1
+                local outcome = Yule_RollPresentOutcome()
+                if outcome ~= nil then Yule_Reward(opener, present.position, outcome, players) end
             end
         end
     end

@@ -33,6 +33,7 @@ UI_SetDataContext=function(name,data) context=data end
 Network_CallEvent=function(name,message) networkMessage=message end
 Yule_Notify=function() end
 paid={}; deposits={}; deployed={}
+Player_GetResource=function() return 1000 end
 Player_AddResource=function(id,resource,n) paid[id]=(paid[id] or 0)+n end
 BP_GetEntityBlueprint=function(name) return name end
 -- Clearance and engine-resolved positions are exercised separately.
@@ -58,10 +59,38 @@ for roll=1,100 do
 end
 assert(rngCalls==100)
 assert(counts[1]==40 and counts[2]==40 and counts[3]==10 and counts[4]==10)
-assert(paid[11]==6000 and paid[22]==6000 and paid[33]==6000)
-assert(paid[44]==6000 and paid[55]==nil)
+assert(paid[11]==-2000 and paid[22]==4000 and paid[33]==4000)
+assert(paid[44]==-2000 and paid[55]==nil)
 assert(deposits.resource_gold_deposit_small==10 and deposits.resource_stone_deposit_small==10)
-assert(YULE_CONFIG.goldenChance==40)
+assert(YULE_CONFIG.goldenChance==nil)
+
+-- Enemy payments scale with each recipient's age, without splitting a pot.
+for age,total in ipairs({100,150,200,300}) do
+    Player_GetCurrentAge=function(id) return id==22 and age or 1 end
+    paid={}
+    Yule_Reward(players[1],{},2,players)
+    assert(paid[22]==total and paid[33]==100)
+    assert(paid[11]==-100 and paid[44]==-100 and paid[55]==nil)
+end
+players[3].isEliminated=true
+paid={}; Yule_Reward(players[1],{},2,players)
+assert(paid[22]==300 and paid[33]==nil)
+players[3].isEliminated=nil
+Player_GetCurrentAge=function() return 1 end
+
+-- Each teammate pays their own age's cost, capped at available gold.
+for age,cost in ipairs({100,150,200,300}) do
+    Player_GetCurrentAge=function(id) return id==44 and age or 1 end
+    Player_GetResource=function(id) return id==11 and 35 or 1000 end
+    paid={}; Yule_Reward(players[1],{},2,players)
+    assert(paid[11]==-35 and paid[44]==-cost and paid[55]==nil)
+    assert(paid[22]==100 and paid[33]==100)
+end
+Player_GetResource=function() return 0 end
+paid={}; Yule_Reward(players[1],{},2,players)
+assert(paid[11]==0 and paid[44]==0 and paid[22]==100)
+Player_GetResource=function() return 1000 end
+Player_GetCurrentAge=function() return 1 end
 
 -- UI, request payload, receiver and wallet must all agree on the lobby slot.
 YULE={running=true,time=0,nextVisit=999,wallets={[5]=20},raids={},presents={}}
@@ -99,12 +128,12 @@ Yule_RefreshShop(); assert(context.targetLabel=='Enemy: '..names[22])
 Yule_ShopBuy('pikes1'); assert(networkMessage=='pikes1:8')
 names[22]='Morgan'; names[33]='Alex & Bea <Raid>'
 
--- A golden pickup credits the same lobby-slot wallet and never rolls a reward.
+-- Every pickup credits the same lobby-slot wallet and rolls one reward.
 Yule_UpdateVisit=function() end
 Yule_FindOpener=function() return players[1] end
 Entity_IsValid=function() return true end
 Entity_Destroy=function() end
-World_GetRand=function() error('Golden pickups must not roll ordinary rewards') end
+World_GetRand=function() return 1 end
 YULE.presents={{id=101,entity=101,position={x=0,z=0},expires=100,golden=true}}
 Yule_Tick(); assert(YULE.wallets[5]==19 and #YULE.presents==0)
 Yule_Tick(); assert(YULE.wallets[5]==19)
@@ -114,18 +143,18 @@ Yule_RefreshShop(); assert(context.wallet=='Golden presents: 19')
 paid={}; local pickupRolls=0
 World_GetRand=function(a,b) assert(a==1 and b==100); pickupRolls=pickupRolls+1; return 41 end
 YULE.presents={{id=102,entity=102,position={x=0,z=0},expires=100,golden=false}}
-Yule_Tick(); assert(paid[22]==150 and paid[33]==150 and paid[11]==nil)
-Yule_Tick(); assert(pickupRolls==1 and paid[22]==150 and YULE.wallets[5]==19)
+Yule_Tick(); assert(paid[22]==100 and paid[33]==100 and paid[11]==-100 and paid[44]==-100)
+Yule_Tick(); assert(pickupRolls==1 and paid[22]==100 and YULE.wallets[5]==20)
 
 -- Found gold is shared with living teammates, once per collected present.
 paid={}; pickupRolls=0
 World_GetRand=function(a,b) assert(a==1 and b==100); pickupRolls=pickupRolls+1; return 1 end
 YULE.presents={{id=103,entity=103,position={x=0,z=0},expires=100,golden=false}}
-Yule_Tick(); assert(paid[11]==150 and paid[44]==150 and paid[22]==nil and paid[33]==nil and paid[55]==nil)
-Yule_Tick(); assert(pickupRolls==1 and paid[11]==150 and paid[44]==150)
+Yule_Tick(); assert(paid[11]==50 and paid[44]==50 and paid[22]==nil and paid[33]==nil and paid[55]==nil)
+Yule_Tick(); assert(pickupRolls==1 and paid[11]==50 and paid[44]==50)
 
 -- Purchased gold uses the buyer's age and stays entirely with the buyer.
-for age,total in ipairs({300,450,600,900}) do
+for age,total in ipairs({100,150,200,300}) do
     Player_GetCurrentAge=function() return age end
     paid={}; YULE.wallets[5]=1
     assert(Yule_PurchaseNetwork(11,'gold:0') and YULE.wallets[5]==0)
@@ -134,4 +163,4 @@ for age,total in ipairs({300,450,600,900}) do
     assert(not Yule_PurchaseNetwork(11,'gold:0'))
 end
 ''')
-print('PASS: shared found gold, buyer-only purchased gold in all ages, 40/40/10/10 ordinary rewards, 40% golden tokens, lobby-slot raid targets, wallet and one-time pickups.')
+print('PASS: shared found gold, buyer-only purchased gold in all ages, 40/40/10/10 ordinary rewards, guaranteed tokens plus outcomes, lobby-slot raid targets, wallet and one-time pickups.')

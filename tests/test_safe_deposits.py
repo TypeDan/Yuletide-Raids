@@ -12,6 +12,7 @@ players={{id=1},{id=2},{id=3,isEliminated=true}}
 World_GetPlayerCount=function() return #players end
 World_GetPlayerAt=function(i) return players[i].id end
 Player_GetSlotIndex=function(p) return p end
+Player_GetCurrentAge=function() return 1 end
 AGS_IsMutualRelation=function(a,b,r) return r==R_ALLY and b==2 end
 World_GetTerrainCellType=function(x,z) return x<0 and 2 or 1 end
 SGroup_CreateIfNotFound=function() return {} end
@@ -66,7 +67,7 @@ World_GetSpawnablePosition=function() return {x=0,z=0} end
 Yule_Reward(players[1],{x=0,z=0},4,players)
 assert(attempts==24 and #spawned==0 and #created==24)
 for _,e in ipairs(created) do assert(destroyed[e]) end
-assert(paid[1]==150 and paid[2]==150 and paid[3]==nil)
+assert(paid[1]==50 and paid[2]==50 and paid[3]==nil)
 assert(notices[#notices]==2003)
 -- No valid resolved position also falls back safely.
 World_GetSpawnablePosition=function() return nil end

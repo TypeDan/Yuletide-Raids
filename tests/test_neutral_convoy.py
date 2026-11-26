@@ -29,7 +29,7 @@ for _,kind in ipairs({'santa','dasher'}) do
     local member=Yule_ConvoyMember(2,1,kind,origin,route,kind=='dasher' and 12 or nil,0)
     assert(member.owner==nil and member.neutral and member.invulnerable and not member.selectable)
     assert(#member.orders==3)
-    YULE.santa={group=member,members={},position=origin}
+    YULE.santa={group=member,members={},position=origin,progressCheck=YULE.time+2}
     Cmd_Move=function() error('Flight must not issue commands or restore player ownership') end
     Yule_Flight()
     assert(member.owner==nil and YULE.santa.position==origin)

@@ -43,11 +43,11 @@ for target=8,12 do
 end
 
 -- A busy map reserves only the room available, always at least eight presents.
-reset(12,16); successes=0
+reset(12,72); successes=0
 assert(Yule_StartVisit(players) and YULE.santa.dropTarget==8)
 for time=1,120 do YULE.time=time; Yule_UpdateVisit(players) end
-assert(successes==8 and #YULE.presents==24 and YULE.santa==nil)
-for existing=17,24 do
+assert(successes==8 and #YULE.presents==80 and YULE.santa==nil)
+for existing=73,80 do
     reset(12,existing)
     assert(not Yule_StartVisit(players) and YULE.santa==nil and YULE.visits==0)
 end
@@ -76,23 +76,18 @@ Yule_UpdateVisit=function() end; Yule_RefreshShop=function() end
 Yule_LivePlayers=function() return players end
 Yule_Tick(); assert(YULE.nextVisit==6)
 
--- Exercise real present creation for all 100 possible rolls, including 40/41.
+-- Every spawned present is golden; no token-versus-bonus RNG draw remains.
 Yule_DropPresent=realDrop
 YULE.blueprints={present='ordinary',golden='golden'}
 Entity_CreateENVFacing=function(bp,pos) return {blueprint=bp,position=pos} end
 World_GetSpawnablePosition=function(pos) return pos end
 Entity_Spawn=function() end; Entity_WarpToPos=function() end
 Entity_GetID=function() return 1 end
-local golden=0
-for roll=1,100 do
+World_GetRand=function() error('Every present is guaranteed golden') end
+for i=1,100 do
     YULE.presents={}
-    World_GetRand=function(a,b) assert(a==1 and b==100); return roll end
     assert(Yule_DropPresent({x=0,z=0},players))
-    local present=YULE.presents[1]
-    assert(present.golden==(roll<=40))
-    assert(present.entity.blueprint==(roll<=40 and 'golden' or 'ordinary'))
-    if present.golden then golden=golden+1 end
+    assert(YULE.presents[1].golden and YULE.presents[1].entity.blueprint=='golden')
 end
-assert(golden==40)
 ''')
-print('PASS: exact 8-12 successful drops, capacity reservation, bounded blocked-drop retries, extended visits, short deferred-start retry and exactly 40 golden rolls out of 100.')
+print('PASS: successful delivery targets, 80-present capacity, bounded retries and guaranteed golden tokens.')

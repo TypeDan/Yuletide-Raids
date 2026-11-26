@@ -1,7 +1,7 @@
 ID,Pipeline,PipelineStage,Notes,TranslationNotes,Tags,Text
 1,,,,Mod Title,,Yuletide Raids
-2,,,,Mod Page Description,,"Version 2026.11.20.3. Festive Cheer bonuses end after 30 seconds; repeat purchases refresh the timer. Population limits preserve normal housing requirements. Compact, aligned present shop. Neutral Father Christmas and his reindeer first arrive at 5:00. Each visit drops 8-12 presents beside Santa as he travels his random route, spaced apart across the map. Collect golden presents for age-appropriate elf raids, villagers, resources or Festive Cheer. Gold found in ordinary presents is shared with your team; purchases stay yours. Includes per-player economy, military and population settings, plus Vikings and Scots support. Select Yuletide Raids as both Game Mode and Tuning Pack. Uses Advanced Game Settings code; source and credits: https://github.com/TypeDan/Yuletide-Raids"
-3,,,,Mod Gamemode Description,,"Version 2026.11.20.3. Collect presents and spend golden presents on age-appropriate elf raids, villagers, resources or Festive Cheer. Includes custom match settings. Select Yuletide Raids as both Game Mode and Tuning Pack."
+2,,,,Mod Page Description,,"Version 2026.11.25.1. Father Christmas first arrives at 1:00, then every three minutes, with a chime three seconds before arrival. Every present gives one golden token plus a random outcome. Set starting tokens, outcome weights and gifts per visit in the lobby; defaults are 8-12 gifts and 40% team gold, 40% enemy gift, 10% gold ore, 10% stone. Team gold is a shared 100/150/200/300 pot by the collector's age. Enemy gifts pay each enemy and charge each collecting teammate 100/150/200/300 gold by their own age, down to zero. Purchases stay yours. Neutral Santa drops beside himself at spaced locations and phases past obstructions if blocked. Spend tokens on elf raids, villagers, resources or Festive Cheer. Includes per-player boosts and population settings, Vikings and Scots. Select as BOTH Game Mode and Tuning Pack. Uses Advanced Game Settings code; source and credits: https://github.com/TypeDan/Yuletide-Raids"
+3,,,,Mod Gamemode Description,,"Version 2026.11.25.1. Guaranteed golden tokens plus configurable bonus outcomes. First Santa visit at 1:00, then every three minutes. Set starting tokens and gift counts in the lobby. Select Yuletide Raids as BOTH Game Mode and Tuning Pack."
 4,,,,Option Header,,Win Conditions
 5,,,,Annihilation Option,,Annihilation
 6,,,,Annihilation Option,,"Destroy all enemies. This option is required, unless you wish for player to be never eliminated even if he loses everything."
@@ -429,18 +429,18 @@ ID,Pipeline,PipelineStage,Notes,TranslationNotes,Tags,Text
 2001,,,,,,The elves are raiding! Protect your villagers.
 2002,,,,,,Father Christmas is arriving! Look for presents scattered across the map.
 2003,,,,,,A present shared gold with the opener and their teammates!
-2004,,,,,,A mischievous present awarded gold to the opener's enemies!
+2004,,,,,,"Enemy gift! Enemies gain gold; each collecting teammate loses gold, scaled by their own age."
 2005,,,,,,A present revealed a gold deposit!
 2006,,,,,,A present revealed a stone deposit!
 2007,,,,,,This mischievous present found no living enemies to reward.
 2010,,,,,,Christmas Present
-2011,,,,,,Move a unit nearby to open. Team gold: 40%; enemy gold: 40%; gold deposit: 10%; stone deposit: 10%. Deposits appear on nearby clear ground.
+2011,,,,,,Collect one golden token plus a random bonus outcome. Outcome chances are set in the lobby. Deposits appear on nearby clear ground.
 2012,,,,,,Elf Raider
 2013,,,,,,A hostile festive raider. Defend your villagers!
 2014,,,,,,Father Christmas
-2015,,,,,,"Father Christmas and his reindeer race across the map, scattering ordinary and golden presents."
+2015,,,,,,"Father Christmas and his nine reindeer deliver golden presents. First visit at 1:00, then every three minutes. Blocked convoys phase to clear ground."
 2020,,,,,,Golden Present
-2021,,,,,,Collect to earn one golden present. Spend it in the Golden presents menu.
+2021,,,,,,Collect one golden token plus a random bonus outcome. Spend the token in the Golden presents menu.
 2030,,,,,,Dasher
 2031,,,,,,Dancer
 2032,,,,,,Prancer
@@ -463,3 +463,74 @@ ID,Pipeline,PipelineStage,Notes,TranslationNotes,Tags,Text
 2110,,,,,,Age 2 Armoured Elf
 2111,,,,,,Age 3 Armoured Elf
 2112,,,,,,Age 4 Armoured Elf
+3100,,,,,,Yuletide deliveries
+4001,,,,,,1
+4002,,,,,,2
+4003,,,,,,3
+4004,,,,,,4
+4005,,,,,,5
+4006,,,,,,6
+4007,,,,,,7
+4008,,,,,,8
+4009,,,,,,9
+4010,,,,,,10
+4011,,,,,,11
+4012,,,,,,12
+4013,,,,,,13
+4014,,,,,,14
+4015,,,,,,15
+4016,,,,,,16
+4017,,,,,,17
+4018,,,,,,18
+4019,,,,,,19
+4020,,,,,,20
+3102,,,,,,Minimum presents per visit
+3103,,,,,,"Santa first arrives at 1:00, then every three minutes. Choose 1-20 presents. Reversed minimum/maximum values are swapped. Every pickup gives one golden token plus a bonus outcome."
+3104,,,,,,Maximum presents per visit
+3105,,,,,,"Santa first arrives at 1:00, then every three minutes. Choose 1-20 presents. Reversed minimum/maximum values are swapped. Every pickup gives one golden token plus a bonus outcome."
+4000,,,,,,0
+4025,,,,,,25
+4030,,,,,,30
+4035,,,,,,35
+4040,,,,,,40
+4045,,,,,,45
+4050,,,,,,50
+4055,,,,,,55
+4060,,,,,,60
+4065,,,,,,65
+4070,,,,,,70
+4075,,,,,,75
+4080,,,,,,80
+4085,,,,,,85
+4090,,,,,,90
+4095,,,,,,95
+4100,,,,,,100
+3106,,,,,,Team gold chance weight
+3107,,,,,,"Bonus outcome weight. Defaults 40/40/10/10 give 40%/40%/10%/10%. Chance is this weight divided by the total. Zero disables an outcome; all zero means golden tokens only. Enemy gifts give each enemy 100/150/200/300 gold and deduct that amount from each collecting teammate, using each player's own age; gold cannot fall below zero."
+3108,,,,,,Enemy gift chance weight
+3109,,,,,,"Bonus outcome weight. Defaults 40/40/10/10 give 40%/40%/10%/10%. Chance is this weight divided by the total. Zero disables an outcome; all zero means golden tokens only. Enemy gifts give each enemy 100/150/200/300 gold and deduct that amount from each collecting teammate, using each player's own age; gold cannot fall below zero."
+3110,,,,,,Gold deposit chance weight
+3111,,,,,,"Bonus outcome weight. Defaults 40/40/10/10 give 40%/40%/10%/10%. Chance is this weight divided by the total. Zero disables an outcome; all zero means golden tokens only. Enemy gifts give each enemy 100/150/200/300 gold and deduct that amount from each collecting teammate, using each player's own age; gold cannot fall below zero."
+3112,,,,,,Stone deposit chance weight
+3113,,,,,,"Bonus outcome weight. Defaults 40/40/10/10 give 40%/40%/10%/10%. Chance is this weight divided by the total. Zero disables an outcome; all zero means golden tokens only. Enemy gifts give each enemy 100/150/200/300 gold and deduct that amount from each collecting teammate, using each player's own age; gold cannot fall below zero."
+3120,,,,,,Starting golden presents
+3122,,,,,,Common starting amount
+3123,,,,,,Golden tokens given to every player at match start unless their lobby-slot override is set. The default is zero.
+3999,,,,,,Use common amount
+3124,,,,,,Player 1 starting amount
+3125,,,,,,"Override starting tokens for lobby slot 1, including the host and AI. Use common amount follows the setting above."
+3126,,,,,,Player 2 starting amount
+3127,,,,,,"Override starting tokens for lobby slot 2, including the host and AI. Use common amount follows the setting above."
+3128,,,,,,Player 3 starting amount
+3129,,,,,,"Override starting tokens for lobby slot 3, including the host and AI. Use common amount follows the setting above."
+3130,,,,,,Player 4 starting amount
+3131,,,,,,"Override starting tokens for lobby slot 4, including the host and AI. Use common amount follows the setting above."
+3132,,,,,,Player 5 starting amount
+3133,,,,,,"Override starting tokens for lobby slot 5, including the host and AI. Use common amount follows the setting above."
+3134,,,,,,Player 6 starting amount
+3135,,,,,,"Override starting tokens for lobby slot 6, including the host and AI. Use common amount follows the setting above."
+3136,,,,,,Player 7 starting amount
+3137,,,,,,"Override starting tokens for lobby slot 7, including the host and AI. Use common amount follows the setting above."
+3138,,,,,,Player 8 starting amount
+3139,,,,,,"Override starting tokens for lobby slot 8, including the host and AI. Use common amount follows the setting above."
+2008,,,,,,Father Christmas arrives in 3 seconds!

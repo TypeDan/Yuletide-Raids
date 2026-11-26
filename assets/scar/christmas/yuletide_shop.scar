@@ -1,5 +1,5 @@
 -- Local UI sends requests; only the synchronized receiver changes simulation state.
-YULE_RESOURCE_AMOUNTS = {300,450,600,900}
+YULE_RESOURCE_AMOUNTS = {100,150,200,300}
 YULE_OFFERS = {
     food={cost=1,age=1,resource="food"}, wood={cost=1,age=1,resource="wood"},
     gold={cost=1,age=1,resource="gold"}, stone={cost=1,age=1,resource="stone"},

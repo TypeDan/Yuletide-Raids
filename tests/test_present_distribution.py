@@ -65,11 +65,11 @@ Entity_IsValid=function() return true end
 Entity_Destroy=function(entity) entity.live=false;destroyed=destroyed+1 end
 YULE.running=true
 YULE.blueprints={santa=1,reindeer={1,2,3,4,5,6,7,8,9},present=2,golden=3}
-assert(YULE_CONFIG.firstVisit==300 and YULE.nextVisit==300)
-for i=1,299 do Yule_Tick(); assert(YULE.santa==nil and #sites==0) end
+assert(YULE_CONFIG.firstVisit==60 and YULE.nextVisit==60)
+for i=1,59 do Yule_Tick(); assert(YULE.santa==nil and #sites==0) end
 Yule_Tick()
-assert(YULE.time==300 and #sites==1 and YULE.santa.drops==1)
-assert(YULE.santa.dropTarget==12 and #YULE.santa.members==9 and notices==1)
+assert(YULE.time==60 and #sites==1 and YULE.santa.drops==1)
+assert(YULE.santa.dropTarget==12 and #YULE.santa.members==9 and notices==2)
 local first=sites[1]
 
 -- An immediately collected present must still stop this location being reused.
@@ -77,7 +77,7 @@ YULE.presents={}
 assert(not Yule_DropAreaClear(first,players))
 for i=1,5 do Yule_Tick(); assert(#sites==1 and deployed==10) end
 for i=1,44 do Yule_Tick() end
-assert(#sites==1 and deployed==10 and YULE.santa.drops==1 and notices==1,
+assert(#sites==1 and deployed==10 and YULE.santa.drops==1 and notices==2,
     'Stationary Santa must wait instead of scattering gifts elsewhere')
 
 -- Engine placement can move a valid candidate back beside an earlier gift.
@@ -111,7 +111,7 @@ for tick=350,800 do
         end
     else break end
 end
-assert(#sites==12 and YULE.visits==1 and YULE.santa==nil and notices==1)
+assert(#sites==12 and YULE.visits==1 and YULE.santa==nil and notices==2)
 assert(maxGroups==10 and liveGroups==0 and deployed==10)
 for i,a in ipairs(sites) do
     if i>1 then assert(times[i]-times[i-1]>=YULE_CONFIG.dropMin) end
@@ -128,4 +128,4 @@ World_GetTerrainCellType=function() return 2 end
 assert(not Yule_StartVisit(players) and YULE.visits==n)
 assert(not Yule_DropAreaClear(nil,players))
 ''')
-print('PASS: first drop at 5:00, 12 gifts beside actual Santa positions, stationary cart waits, pairwise spacing after pickups, remote native placement rejected, neutral single convoy, bounded blocked/water handling.')
+print('PASS: first drop at 1:00 with a three-second warning, 12 gifts beside actual Santa positions, stationary cart waits, pairwise spacing after pickups, remote native placement rejected, neutral single convoy, bounded blocked/water handling.')
