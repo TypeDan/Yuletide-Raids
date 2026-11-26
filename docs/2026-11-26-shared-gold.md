@@ -8,4 +8,6 @@ Regression coverage includes all four ages, mixed recipient ages, 4v2, 3v2 and 1
 
 All 13 automated regression scripts passed on 26 November. These execute the shipped Lua functions with mocked engine calls. Native gold-resource API integration was exercised in the immediately preceding release; this arithmetic-only correction has not had a new multiplayer playtest.
 
-Native Content Editor build completed in 42.1481 seconds with zero errors and warnings. Archive validation found all 193 entries, exact Lua-source equality and no diagnostic markers. SHA-256: `dfce04caeb1921bb4e9e94a08b5695e407fcf20a1326f12f1c202a4a27e7531f`. Publication is in progress.
+Native Content Editor build completed in 42.1481 seconds with zero errors and warnings. Archive validation found all 193 entries, exact Lua-source equality and no diagnostic markers. SHA-256: `dfce04caeb1921bb4e9e94a08b5695e407fcf20a1326f12f1c202a4a27e7531f`. Published through the in-game publisher as [AoE listing 604184](https://www.ageofempires.com/mods/details/604184/). The superseded individual-payment listing 604183 was removed after the corrected publication was verified.
+
+Fresh in-game catalogue download and fresh GitHub release download both match the clean archive hash above. Mod Manager shows exactly one Yuletide Raids entry, Published / Subscribed / On. Old subscription and local publisher copies are backed up outside active mod folders. The in-game browse catalogue may still show the removed listing while its cache refreshes.
