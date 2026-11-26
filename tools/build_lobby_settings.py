@@ -80,13 +80,13 @@ for key, label_id, label, default in (
            'Santa first arrives at 1:00, then every three minutes, with four bell bursts starting five seconds beforehand. Choose 1-20 gifts per visit. Reversed minimum/maximum values are swapped. Every pickup gives one golden token plus a bonus outcome.',
            range(1, 21), default)
 for key, label_id, label, default in (
-    ('team_gold_weight', 3106, 'Team gold weight', 40),
-    ('enemy_gold_weight', 3108, 'Enemy gift weight', 40),
+    ('team_gold_weight', 3106, 'Team gold weight', 60),
+    ('enemy_gold_weight', 3108, 'Enemy gift weight', 20),
     ('gold_deposit_weight', 3110, 'Gold ore weight', 10),
     ('stone_deposit_weight', 3112, 'Stone ore weight', 10),
 ):
     option(visits, key, label_id, label,
-           'Bonus outcome weight. Defaults 40/40/10/10 give 40%/40%/10%/10%. Chance is this weight divided by the total. Zero disables an outcome; all zero means golden tokens only. Enemy gifts split one 100/150/200/300 gold pot among living enemies and split one equal deduction among your living team, using the collector\'s age. Gold cannot fall below zero; unpaid shares are not charged to other allies.',
+           'Bonus outcome weight. Defaults 60/20/10/10 give 60%/20%/10%/10%. Chance is this weight divided by the total. Zero disables an outcome; all zero means golden tokens only. Enemy gifts split one 100/150/200/300 gold pot among living enemies and split one equal deduction among your living team, using the collector\'s age. Gold cannot fall below zero; unpaid shares are not charged to other allies.',
            range(0, 101, 5), default)
 
 wallets = section('section_yuletide_wallets', 3120, 'Tokens: players 1-4')

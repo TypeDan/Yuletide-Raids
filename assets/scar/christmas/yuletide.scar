@@ -15,7 +15,7 @@ YULE_CONFIG = {
     dropMin = 6, dropMax = 9, maxDropOffset = 6,
     minGiftsPerVisit = 8, giftsPerVisit = 12, openRadius = 5, maxPresents = 80,
     presentLifetime = 600, raidLifetime = 300,
-    presentWeights = {40, 40, 10, 10}, -- collector-team gold, enemy gold, gold deposit, stone deposit
+    presentWeights = {60, 20, 10, 10}, -- collector-team gold, enemy gold, gold deposit, stone deposit
 }
 YULE = { time = 0, wallets = {}, nextVisit = YULE_CONFIG.firstVisit, visits = 0,
     waves = 0, presents = {}, raids = {}, santa = nil, running = false }

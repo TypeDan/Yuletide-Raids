@@ -11,6 +11,7 @@ for name in ('yuletide.scar', 'yuletide_shop.scar', 'yuletide_settings.scar'):
 lua.execute('''
 local function option(value) return {enum_value=17,enum_items={['yule_value_'..value]=17}} end
 Yule_SetupSettings({})
+assert(table.concat(YULE_CONFIG.presentWeights,",")=="60,20,10,10")
 assert(YULE_CONFIG.minGiftsPerVisit==8 and YULE_CONFIG.giftsPerVisit==12)
 for slot=1,8 do assert(YULE_CONFIG.startingTokens[slot]==0) end
 Yule_SetupSettings({section_yuletide={minimum_presents=option(20),maximum_presents=option(3),
@@ -72,7 +73,7 @@ Entity_IsValid=function() return true end;Entity_Destroy=function() end
 Yule_FindOpener=function() return players[3] end
 local rewards={}
 Yule_Reward=function(opener,pos,result) assert(opener.id==41);table.insert(rewards,result) end
-for i,roll in ipairs({1,41,81,91}) do
+for i,roll in ipairs({1,61,81,91}) do
     World_GetRand=function(a,b) assert(a==1 and b==100);return roll end
     YULE.presents={{id=i,entity=i,position={},expires=9999,golden=true}}
     Yule_Tick();Yule_Tick()
@@ -98,3 +99,9 @@ for key, expected in [('section_yuletide', 6), ('section_yuletide_wallets', 5), 
         assert sum(i.find('./DataProperty[@Name="m_isDefaultValue"]').get('Value') == 'true' for i in items) == 1
         assert all(i.get('OwnerId') == o.get('Id') for i in items)
 print('PASS: compact lobby groups, old/new eight-slot wallets, four bells at 55/56/57/58, 60-second arrival and 180-second cadence, guaranteed tokens and weighted outcomes.')
+
+# Verify the lobby defaults agree with the runtime fallback distribution.
+for key, expected in [('team_gold_weight',60),('enemy_gold_weight',20),('gold_deposit_weight',10),('stone_deposit_weight',10)]:
+    option=next(o for o in objects if o.find(f'./DataProperty[@Name="m_key"][@Value="{key}"]') is not None)
+    default=next(i for i in option.findall('./DataProperty[@Name="m_enumItems"]/DataObject') if i.find('./DataProperty[@Name="m_isDefaultValue"]').get('Value')=='true')
+    assert default.find('./DataProperty[@Name="m_key"]').get('Value')==f'yule_value_{expected}'

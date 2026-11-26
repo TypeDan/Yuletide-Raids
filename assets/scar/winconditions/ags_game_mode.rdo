@@ -1389,7 +1389,7 @@
                         <DataProperty Name="m_locStringKey" Type="Int32" Value="4040" />
                       </DataObject>
                     </DataProperty>
-                    <DataProperty Name="m_isDefaultValue" Type="Bool" Value="true" />
+                    <DataProperty Name="m_isDefaultValue" Type="Bool" Value="false" />
                     <DataProperty Name="m_devOnly" Type="Bool" Value="false" />
                   </DataObject>
                   <DataValue Name="WinCondition::OptionEnumItemUIDescriptor">16144015371508978770</DataValue>
@@ -1493,7 +1493,7 @@
                         <DataProperty Name="m_locStringKey" Type="Int32" Value="4060" />
                       </DataObject>
                     </DataProperty>
-                    <DataProperty Name="m_isDefaultValue" Type="Bool" Value="false" />
+                    <DataProperty Name="m_isDefaultValue" Type="Bool" Value="true" />
                     <DataProperty Name="m_devOnly" Type="Bool" Value="false" />
                   </DataObject>
                   <DataValue Name="WinCondition::OptionEnumItemUIDescriptor">17024796172366410906</DataValue>
@@ -1868,7 +1868,7 @@
                         <DataProperty Name="m_locStringKey" Type="Int32" Value="4020" />
                       </DataObject>
                     </DataProperty>
-                    <DataProperty Name="m_isDefaultValue" Type="Bool" Value="false" />
+                    <DataProperty Name="m_isDefaultValue" Type="Bool" Value="true" />
                     <DataProperty Name="m_devOnly" Type="Bool" Value="false" />
                   </DataObject>
                   <DataValue Name="WinCondition::OptionEnumItemUIDescriptor">16054647041099389401</DataValue>
@@ -1972,7 +1972,7 @@
                         <DataProperty Name="m_locStringKey" Type="Int32" Value="4040" />
                       </DataObject>
                     </DataProperty>
-                    <DataProperty Name="m_isDefaultValue" Type="Bool" Value="true" />
+                    <DataProperty Name="m_isDefaultValue" Type="Bool" Value="false" />
                     <DataProperty Name="m_devOnly" Type="Bool" Value="false" />
                   </DataObject>
                   <DataValue Name="WinCondition::OptionEnumItemUIDescriptor">8125619224672034071</DataValue>

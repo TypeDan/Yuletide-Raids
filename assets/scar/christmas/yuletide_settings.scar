@@ -21,8 +21,8 @@ function Yule_SetupSettings(options)
         YULE_CONFIG.minGiftsPerVisit, YULE_CONFIG.giftsPerVisit = YULE_CONFIG.giftsPerVisit, YULE_CONFIG.minGiftsPerVisit
     end
     YULE_CONFIG.presentWeights = {
-        Yule_LobbyNumber(settings.team_gold_weight, 40, 0, 100),
-        Yule_LobbyNumber(settings.enemy_gold_weight, 40, 0, 100),
+        Yule_LobbyNumber(settings.team_gold_weight, 60, 0, 100),
+        Yule_LobbyNumber(settings.enemy_gold_weight, 20, 0, 100),
         Yule_LobbyNumber(settings.gold_deposit_weight, 10, 0, 100),
         Yule_LobbyNumber(settings.stone_deposit_weight, 10, 0, 100),
     }

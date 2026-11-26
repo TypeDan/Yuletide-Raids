@@ -111,13 +111,13 @@ ID,SourceText,TranslatedText
 4095,,95
 4100,,100
 3106,,Team gold weight
-3107,,"Bonus outcome weight. Defaults 40/40/10/10 give 40%/40%/10%/10%. Chance is this weight divided by the total. Zero disables an outcome; all zero means golden tokens only. Enemy gifts split one 100/150/200/300 gold pot among living enemies and split one equal deduction among your living team, using the collector's age. Gold cannot fall below zero; unpaid shares are not charged to other allies."
+3107,,"Bonus outcome weight. Defaults 60/20/10/10 give 60%/20%/10%/10%. Chance is this weight divided by the total. Zero disables an outcome; all zero means golden tokens only. Enemy gifts split one 100/150/200/300 gold pot among living enemies and split one equal deduction among your living team, using the collector's age. Gold cannot fall below zero; unpaid shares are not charged to other allies."
 3108,,Enemy gift weight
-3109,,"Bonus outcome weight. Defaults 40/40/10/10 give 40%/40%/10%/10%. Chance is this weight divided by the total. Zero disables an outcome; all zero means golden tokens only. Enemy gifts split one 100/150/200/300 gold pot among living enemies and split one equal deduction among your living team, using the collector's age. Gold cannot fall below zero; unpaid shares are not charged to other allies."
+3109,,"Bonus outcome weight. Defaults 60/20/10/10 give 60%/20%/10%/10%. Chance is this weight divided by the total. Zero disables an outcome; all zero means golden tokens only. Enemy gifts split one 100/150/200/300 gold pot among living enemies and split one equal deduction among your living team, using the collector's age. Gold cannot fall below zero; unpaid shares are not charged to other allies."
 3110,,Gold ore weight
-3111,,"Bonus outcome weight. Defaults 40/40/10/10 give 40%/40%/10%/10%. Chance is this weight divided by the total. Zero disables an outcome; all zero means golden tokens only. Enemy gifts split one 100/150/200/300 gold pot among living enemies and split one equal deduction among your living team, using the collector's age. Gold cannot fall below zero; unpaid shares are not charged to other allies."
+3111,,"Bonus outcome weight. Defaults 60/20/10/10 give 60%/20%/10%/10%. Chance is this weight divided by the total. Zero disables an outcome; all zero means golden tokens only. Enemy gifts split one 100/150/200/300 gold pot among living enemies and split one equal deduction among your living team, using the collector's age. Gold cannot fall below zero; unpaid shares are not charged to other allies."
 3112,,Stone ore weight
-3113,,"Bonus outcome weight. Defaults 40/40/10/10 give 40%/40%/10%/10%. Chance is this weight divided by the total. Zero disables an outcome; all zero means golden tokens only. Enemy gifts split one 100/150/200/300 gold pot among living enemies and split one equal deduction among your living team, using the collector's age. Gold cannot fall below zero; unpaid shares are not charged to other allies."
+3113,,"Bonus outcome weight. Defaults 60/20/10/10 give 60%/20%/10%/10%. Chance is this weight divided by the total. Zero disables an outcome; all zero means golden tokens only. Enemy gifts split one 100/150/200/300 gold pot among living enemies and split one equal deduction among your living team, using the collector's age. Gold cannot fall below zero; unpaid shares are not charged to other allies."
 3120,,Tokens: players 1-4
 3122,,Default tokens
 3123,,Golden tokens given to every player at match start unless their lobby-slot override is set. The default is zero.

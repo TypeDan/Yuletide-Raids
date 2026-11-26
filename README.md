@@ -1,6 +1,6 @@
 # Yuletide Raids
 
-**Published version: 2026.11.26.3.** This label also appears at the start of the mod description.
+**Prepared version: 2026.11.26.4; publication pending.** This label also appears at the start of the mod description.
 
 ![Yuletide Raids](assets/mod.png)
 
@@ -22,12 +22,14 @@ The population and compact shop fixes from **2026.11.20.1** remain included: a c
 
 **Version 2026.11.26.3** extends the warning to five seconds with four bell bursts and brings compact Yuletide settings ahead of the inherited advanced controls.
 
+**Version 2026.11.26.4** changes default pickup outcomes to 60% shared team gold, 20% enemy gift, 10% gold ore and 10% stone ore. Existing custom lobby presets keep their selected weights.
+
 ## Presents and convoy
 
 - One Father Christmas trade cart per visit, with nine named reindeer. All ten remain neutral throughout the visit, invulnerable and unselectable, with zero sight and population. No player owns or tracks the convoy. Native movement orders are queued before ownership is relinquished in the same simulation callback. The convoy cannot collect its own gifts.
 - First arrival at **1:00**, then every **three minutes**, with four native bell bursts starting five seconds before arrival. A visit chooses **8–12 gifts** by default; lobby minimum and maximum can each be set to 1–20. Capacity is 80 unopened gifts; each expires after ten minutes. If capacity or safe land is unavailable, arrival retries. Visits continue until the selected gift count is delivered.
 - Santa follows random land destinations. Every gift appears within six world units of the actual cart, separated from earlier sites by a map-scaled 24–80 units. If the convoy stalls or cannot find a valid delivery site for 15 seconds, all ten units phase to a clear location and resume native movement. This is obstruction recovery, not continuous flight through buildings.
-- Every pickup gives the collector **one private golden token**, plus one independently rolled outcome. Default bonus chances: **40% shared team gold, 40% enemy gift, 10% gold ore, 10% stone ore**. Lobby weights are normalized by their total; zero disables an outcome, and all zero means tokens only.
+- Every pickup gives the collector **one private golden token**, plus one independently rolled outcome. Default bonus chances: **60% shared team gold, 20% enemy gift, 10% gold ore, 10% stone ore**. Lobby weights are normalized by their total; zero disables an outcome, and all zero means tokens only.
 - Team gold is a **100/150/200/300** pot by the collector's age, split between the collector and living teammates. Enemy gifts split one **100/150/200/300** gold pot among all living enemies and split one equal deduction among the collector and living teammates, both using the **collector's age**. Each deduction stops at zero; unpaid shares are not redistributed to teammates. Whole-gold remainders follow lobby-slot order. Neither pot increases with team size. No eligible enemies means no payment or deduction.
 - Deposits appear on nearby clear ground, away from units. If no safe site is available, the bonus becomes shared team gold.
 - The lobby puts Santa settings first, followed by compact starting-token groups for players 1-4 and 5-8. Default tokens sets the common starting amount; each player can override it. Default follows the common amount, which starts at zero. Existing wallets are not reset on resume.

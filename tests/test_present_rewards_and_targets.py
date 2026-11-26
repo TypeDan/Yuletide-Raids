@@ -58,9 +58,9 @@ for roll=1,100 do
     Yule_Reward(players[1],{x=0,y=0,z=0},outcome,Yule_LivePlayers())
 end
 assert(rngCalls==100)
-assert(counts[1]==40 and counts[2]==40 and counts[3]==10 and counts[4]==10)
-assert(paid[11]==0 and paid[22]==2000 and paid[33]==2000)
-assert(paid[44]==0 and paid[55]==nil)
+assert(counts[1]==60 and counts[2]==20 and counts[3]==10 and counts[4]==10)
+assert(paid[11]==2000 and paid[22]==1000 and paid[33]==1000)
+assert(paid[44]==2000 and paid[55]==nil)
 assert(deposits.resource_gold_deposit_small==10 and deposits.resource_stone_deposit_small==10)
 assert(YULE_CONFIG.goldenChance==nil)
 
@@ -172,7 +172,7 @@ Yule_RefreshShop(); assert(context.wallet=='Golden presents: 19')
 
 -- Ordinary pickup uses the new weighted draw and is consumed only once.
 paid={}; local pickupRolls=0
-World_GetRand=function(a,b) assert(a==1 and b==100); pickupRolls=pickupRolls+1; return 41 end
+World_GetRand=function(a,b) assert(a==1 and b==100); pickupRolls=pickupRolls+1; return 61 end
 YULE.presents={{id=102,entity=102,position={x=0,z=0},expires=100,golden=false}}
 Yule_Tick(); assert(paid[22]==50 and paid[33]==50 and paid[11]==-50 and paid[44]==-50)
 Yule_Tick(); assert(pickupRolls==1 and paid[22]==50 and YULE.wallets[5]==20)
@@ -194,4 +194,4 @@ for age,total in ipairs({100,150,200,300}) do
     assert(not Yule_PurchaseNetwork(11,'gold:0'))
 end
 ''')
-print('PASS: shared found gold, buyer-only purchased gold in all ages, 40/40/10/10 ordinary rewards, guaranteed tokens plus outcomes, lobby-slot raid targets, wallet and one-time pickups.')
+print('PASS: shared found gold, buyer-only purchased gold in all ages, 60/20/10/10 ordinary rewards, guaranteed tokens plus outcomes, lobby-slot raid targets, wallet and one-time pickups.')
