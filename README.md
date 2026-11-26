@@ -1,6 +1,6 @@
 # Yuletide Raids
 
-**Prepared version: 2026.11.26.3; awaiting native verification and publication.** This label also appears at the start of the mod description.
+**Published version: 2026.11.26.3.** This label also appears at the start of the mod description.
 
 ![Yuletide Raids](assets/mod.png)
 
@@ -20,7 +20,7 @@ The population and compact shop fixes from **2026.11.20.1** remain included: a c
 
 **Version 2026.11.26.2** replaces the pre-arrival notification sound with the game's bell sound (`taunt_007`). See [audio validation](docs/2026-11-26-bells.md).
 
-**Version 2026.11.26.3 (pending)** extends the warning to five seconds with four bell bursts and brings compact Yuletide settings ahead of the inherited advanced controls.
+**Version 2026.11.26.3** extends the warning to five seconds with four bell bursts and brings compact Yuletide settings ahead of the inherited advanced controls.
 
 ## Presents and convoy
 
@@ -55,7 +55,7 @@ Small text with no background or border just above the bottom-left resource box 
 
 ## Installation and source build
 
-[Subscribe through the Age of Empires IV mod catalogue](https://www.ageofempires.com/mods/details/604200/), or search for **Yuletide Raids** by **TypeEkcyall** in the game. Check for version **2026.11.26.2** in the description and start a new match after updating. The publisher created a replacement listing; subscribers to the older listing need this new link.
+[Subscribe through the Age of Empires IV mod catalogue](https://www.ageofempires.com/mods/details/604203/), or search for **Yuletide Raids** by **TypeEkcyall** in the game. Check for version **2026.11.26.3** in the description and start a new match after updating. The publisher created a replacement listing; subscribers to the older listing need this new link.
 
 Download `Yuletide_Raids.sga` from [Releases](https://github.com/TypeDan/Yuletide-Raids/releases). Put it in a `Yuletide Raids` folder inside your AoE IV user-data `mods/extension/local` directory. Select it in **both** lobby selectors: Game Mode and Tuning Pack.
 
