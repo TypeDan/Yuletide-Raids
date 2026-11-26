@@ -1,6 +1,6 @@
 # Yuletide Raids
 
-**Prepared version: 2026.11.26.2; tested; awaiting publication.** This label also appears at the start of the mod description.
+**Published version: 2026.11.26.2.** This label also appears at the start of the mod description.
 
 ![Yuletide Raids](assets/mod.png)
 
@@ -18,7 +18,7 @@ Father Christmas drops presents across the map. Spend golden presents on elf rai
 
 The population and compact shop fixes from **2026.11.20.1** remain included: a configured maximum of 250 preserves normal house requirements, and the shop has centered equal-width tabs and aligned numeric costs. See [housing validation](docs/2026-11-20-housing-update.md).
 
-**Version 2026.11.26.2 (pending)** replaces the pre-arrival notification sound with the game's bell sound (`taunt_007`). See [audio validation](docs/2026-11-26-bells.md).
+**Version 2026.11.26.2** replaces the pre-arrival notification sound with the game's bell sound (`taunt_007`). See [audio validation](docs/2026-11-26-bells.md).
 
 ## Presents and convoy
 
@@ -53,7 +53,7 @@ Small text with no background or border just above the bottom-left resource box 
 
 ## Installation and source build
 
-[Subscribe through the Age of Empires IV mod catalogue](https://www.ageofempires.com/mods/details/604184/), or search for **Yuletide Raids** by **TypeEkcyall** in the game. Check for version **2026.11.26.1** in the description and start a new match after updating. The publisher created a replacement listing; subscribers to the older listing need this new link.
+[Subscribe through the Age of Empires IV mod catalogue](https://www.ageofempires.com/mods/details/604200/), or search for **Yuletide Raids** by **TypeEkcyall** in the game. Check for version **2026.11.26.2** in the description and start a new match after updating. The publisher created a replacement listing; subscribers to the older listing need this new link.
 
 Download `Yuletide_Raids.sga` from [Releases](https://github.com/TypeDan/Yuletide-Raids/releases). Put it in a `Yuletide Raids` folder inside your AoE IV user-data `mods/extension/local` directory. Select it in **both** lobby selectors: Game Mode and Tuning Pack.
 
