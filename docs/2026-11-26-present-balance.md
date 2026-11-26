@@ -6,4 +6,4 @@ All 13 regression scripts passed. The reward test exhausts all 100 default rando
 
 Native Content Editor build: 38.9608692 seconds, zero errors and warnings. Archive verification: 193 entries, all Lua equal to source, no diagnostic markers. SHA256: 5ad21949feb9703dfef68ee83c08531ccdf6dd9b25365df98fe3b5b27751869b.
 
-Publication and installed-download verification pending.
+Published through AoE IV as listing 604232. The public description shows version 2026.11.26.4 and all four new percentages. Superseded listing 604203 was removed; the other three published mods were retained. A fresh in-game catalogue download, obtained after removing local publisher copies, has the exact SHA256 above. The separately downloaded GitHub release archive also matches. Only the new Yuletide subscription remains in the active mod folders.

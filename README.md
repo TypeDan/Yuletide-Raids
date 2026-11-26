@@ -1,6 +1,6 @@
 # Yuletide Raids
 
-**Prepared version: 2026.11.26.4; publication pending.** This label also appears at the start of the mod description.
+**Published version: 2026.11.26.4.** This label also appears at the start of the mod description.
 
 ![Yuletide Raids](assets/mod.png)
 
@@ -57,7 +57,7 @@ Small text with no background or border just above the bottom-left resource box 
 
 ## Installation and source build
 
-[Subscribe through the Age of Empires IV mod catalogue](https://www.ageofempires.com/mods/details/604203/), or search for **Yuletide Raids** by **TypeEkcyall** in the game. Check for version **2026.11.26.3** in the description and start a new match after updating. The publisher created a replacement listing; subscribers to the older listing need this new link.
+[Subscribe through the Age of Empires IV mod catalogue](https://www.ageofempires.com/mods/details/604232/), or search for **Yuletide Raids** by **TypeEkcyall** in the game. Check for version **2026.11.26.4** in the description and start a new match after updating. The publisher created a replacement listing; subscribers to the older listing need this new link.
 
 Download `Yuletide_Raids.sga` from [Releases](https://github.com/TypeDan/Yuletide-Raids/releases). Put it in a `Yuletide Raids` folder inside your AoE IV user-data `mods/extension/local` directory. Select it in **both** lobby selectors: Game Mode and Tuning Pack.
 
