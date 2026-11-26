@@ -11,7 +11,7 @@ Core_RegisterModule("Yule")
 
 YULE_CONFIG = {
     maxActiveRaids = 8,
-    firstVisit = 60, visitInterval = 180, warningSeconds = 3, visitDuration = 36,
+    firstVisit = 60, visitInterval = 180, warningSeconds = 5, visitDuration = 36,
     dropMin = 6, dropMax = 9, maxDropOffset = 6,
     minGiftsPerVisit = 8, giftsPerVisit = 12, openRadius = 5, maxPresents = 80,
     presentLifetime = 600, raidLifetime = 300,
@@ -289,6 +289,19 @@ function Yule_Tick()
         and YULE.warnedVisit ~= YULE.nextVisit then
         YULE.warnedVisit = YULE.nextVisit
         Yule_Notify(2008)
+        YULE.warningBellsRemaining = 3
+        YULE.nextWarningBell = YULE.time + 1
+    end
+    -- Four bursts in total: the announcement bell, then three sound-only
+    -- repeats. The last burst finishes before Santa's arrival.
+    if (YULE.warningBellsRemaining or 0) > 0 and YULE.time >= YULE.nextWarningBell then
+        if YULE.time < YULE.warnedVisit then
+            Sound_Play2D("taunt_007")
+            YULE.warningBellsRemaining = YULE.warningBellsRemaining - 1
+            YULE.nextWarningBell = YULE.time + 1
+        else
+            YULE.warningBellsRemaining = 0
+        end
     end
     if YULE.santa == nil and YULE.time >= YULE.nextVisit then
         if Yule_StartVisit(players) then

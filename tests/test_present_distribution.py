@@ -24,6 +24,7 @@ Yule_RefreshShop=function() end; Yule_UpdateCheer=function() end
 Yule_FindOpener=function() return nil end
 local notices=0
 Yule_Notify=function() notices=notices+1 end
+Sound_Play2D=function() end
 local liveGroups=0; local maxGroups=0; local deployed=0
 SGroup_CreateIfNotFound=function(name) return {name=name,orders={}} end
 UnitEntry_DeploySquads=function(owner,group,units,pos)
@@ -128,4 +129,4 @@ World_GetTerrainCellType=function() return 2 end
 assert(not Yule_StartVisit(players) and YULE.visits==n)
 assert(not Yule_DropAreaClear(nil,players))
 ''')
-print('PASS: first drop at 1:00 with a three-second warning, 12 gifts beside actual Santa positions, stationary cart waits, pairwise spacing after pickups, remote native placement rejected, neutral single convoy, bounded blocked/water handling.')
+print('PASS: first drop at 1:00 with a five-second warning, 12 gifts beside actual Santa positions, stationary cart waits, pairwise spacing after pickups, remote native placement rejected, neutral single convoy, bounded blocked/water handling.')
