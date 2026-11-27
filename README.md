@@ -2,7 +2,7 @@
 
 **Published version: 2026.11.27.1.** This label also appears at the start of the mod description.
 
-**Prepared update: 2026.11.27.2 (not yet built or published).** Clearer lobby groups, related controls together, and explicit starting-housing versus population-limit labels. See [menu changes and validation](docs/2026-11-27-lobby-layout.md).
+**GitHub release: 2026.11.27.2; AoE publication verification pending.** Clearer lobby groups, related controls together, and explicit starting-housing versus population-limit labels. See [menu changes and validation](docs/2026-11-27-lobby-layout.md).
 
 ![Yuletide Raids](assets/mod.png)
 
