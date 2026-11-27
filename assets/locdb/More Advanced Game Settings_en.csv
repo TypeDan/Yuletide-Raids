@@ -1,7 +1,7 @@
 ID,Pipeline,PipelineStage,Notes,TranslationNotes,Tags,Text
 1,,,,Mod Title,,Yuletide Raids
-2,,,,Mod Page Description,,"Version 2026.11.27.1. Father Christmas first arrives at 1:00, then every five minutes by default (configurable in the lobby), with four bell bursts starting five seconds before arrival. Every present gives one golden token plus a random outcome. Set the visit interval, starting tokens, outcome weights and gifts per visit in the lobby; defaults are 8-12 gifts and 60% team gold, 20% enemy gift, 10% gold ore, 10% stone. Team gold is a shared 100/150/200/300 pot by the collector's age. Enemy gifts share one gold pot among living enemies and share one equal deduction across your living team, both using the collector's age. Each share stops at zero without charging teammates extra. Purchases stay yours. Neutral Santa drops beside himself at spaced locations and phases past obstructions if blocked. Spend tokens on elf raids, villagers, resources or Festive Cheer. Includes per-player boosts and population settings, Vikings and Scots. Select as BOTH Game Mode and Tuning Pack. Uses Advanced Game Settings code; source and credits on GitHub: TypeDan, Yuletide-Raids"
-3,,,,Mod Gamemode Description,,"Version 2026.11.27.1. Santa brings gifts at 1:00, then every 5 minutes by default. Four bell bursts warn you 5 seconds beforehand. Set visit interval, gift counts, bonus weights and starting tokens below. Select as BOTH Game Mode and Tuning Pack."
+2,,,,Mod Page Description,,"Version 2026.11.27.2. Father Christmas first arrives at 1:00, then every five minutes by default (configurable in the lobby), with four bell bursts starting five seconds before arrival. Every present gives one golden token plus a random outcome. Set the visit interval, starting tokens, outcome weights and gifts per visit in the lobby; defaults are 8-12 gifts and 60% team gold, 20% enemy gift, 10% gold ore, 10% stone. Team gold is a shared 100/150/200/300 pot by the collector's age. Enemy gifts share one gold pot among living enemies and share one equal deduction across your living team, both using the collector's age. Each share stops at zero without charging teammates extra. Purchases stay yours. Neutral Santa drops beside himself at spaced locations and phases past obstructions if blocked. Spend tokens on elf raids, villagers, resources or Festive Cheer. Includes per-player boosts and population settings, Vikings and Scots. Select as BOTH Game Mode and Tuning Pack. Uses Advanced Game Settings code; source and credits on GitHub: TypeDan, Yuletide-Raids"
+3,,,,Mod Gamemode Description,,"Version 2026.11.27.2. Santa brings gifts at 1:00, then every 5 minutes by default. Four bell bursts warn you 5 seconds beforehand. Set visit interval, gift counts, bonus weights and starting tokens below. Select as BOTH Game Mode and Tuning Pack."
 4,,,,Option Header,,Win Conditions
 5,,,,Annihilation Option,,Annihilation
 6,,,,Annihilation Option,,"Destroy all enemies. This option is required, unless you wish for player to be never eliminated even if he loses everything."
@@ -19,7 +19,7 @@ ID,Pipeline,PipelineStage,Notes,TranslationNotes,Tags,Text
 18,,,,Wonder Option,,Build and defend the Wonder
 19,,,,Score Option,,Score
 20,,,,Score Option,,Achieve highest score before timer ends
-21,,,,Option Header,,Game Conditions
+21,,,,Option Header,,Teams & starting mode
 22,,,,Settlement Option,,Settlement
 23,,,,Settlement Option,,Initial settlement
 24,,,,Settlement Option,,Scattered
@@ -59,7 +59,7 @@ ID,Pipeline,PipelineStage,Notes,TranslationNotes,Tags,Text
 58,,,,Team Victory Option,,Dynamic Teams
 59,,,,Team Solidarity Option,,Team Solidarity
 60,,,,Team Solidarity Option,,If any team member is defeated then that team will immediately lose the game. One for all. All for one.
-61,,,,Option Header,,Win Settings
+61,,,,Option Header,,Victory details
 62,,,,Conquest Option,,Conquest Capital
 63,,,,Conquest Option,,Conquest requires destruction of first town center to eliminate player
 64,,,,Conquest Option,,Conquest Landmarks
@@ -101,7 +101,7 @@ ID,Pipeline,PipelineStage,Notes,TranslationNotes,Tags,Text
 100,,,,Generic,,1000 per player
 101,,,,Generic,,1500 per player
 102,,,,Generic,,2000 per player
-103,,,,Option Header,,Game Settings
+103,,,,Option Header,,Ages & diplomacy
 104,,,,Tribute Option,,Tributes
 105,,,,Tribute Option,,Players can send resources to allies
 106,,,,Diplomacy Option,,Diplomacy
@@ -135,17 +135,17 @@ ID,Pipeline,PipelineStage,Notes,TranslationNotes,Tags,Text
 134,,,,Generic,,Maximum
 135,,,,FOW Option,,Reveal FOW on Elimination
 136,,,,FOW Option,,Removes FOW for eliminated player
-137,,,,Option Header,,Match Settings
+137,,,,Option Header,,Population & rules
 138,,,,Score Visibility Option,,Show Score
 139,,,,Score Visibility Option,,Player Scores are visible when Pinned Player Information is On
 140,,,,Score Option,,Score Show Placement
 141,,,,Score Option,,"Show current solo place in score mode ranking. Team score is evaluated only at the end of the game, if team victory is allowed. Score victory condition does not use same metric as default score."
 142,,,,Score Option,,Score Timer
 143,,,,Score Option,,Time after which will score decide the game
-144,,,,Population Option,,Min Population Capacity
-145,,,,Population Option,,Changes initial population capacity without houses. Will not exceed maximum population capacity.
-146,,,,Population Option,,Max Population Capacity
-147,,,,Population Option,,Changes maximum population capacity. Requires houses to reach it.
+144,,,,Population Option,,Starting housing
+145,,,,Population Option,,Population capacity available before building houses. This is separate from the maximum population limit and cannot exceed it. Leave at the normal value if players should build houses as usual.
+146,,,,Population Option,,Global population limit
+147,,,,Population Option,,Maximum population for players using the global limit. This does not grant housing: players still need houses to reach it. Individual overrides are in Player pop limits.
 148,,,,Number,,0
 149,,,,Number,,25
 150,,,,Number,,50
@@ -194,7 +194,7 @@ ID,Pipeline,PipelineStage,Notes,TranslationNotes,Tags,Text
 193,,,,Number,,45
 194,,,,Keep Option,,Starting Keep
 195,,,,Keep Option,,Every players starts with a Keep near start
-196,,,,Option Header,,Legacy Settings
+196,,,,Option Header,,Advanced rules
 197,,,,King Option,,Starting King
 198,,,,King Option,,Every players starts with a King near start
 199,,,,Ding Option,,Ding
@@ -276,7 +276,7 @@ ID,Pipeline,PipelineStage,Notes,TranslationNotes,Tags,Text
 275,,,ags_conditions_notifications,Wonder,,Building a wonder
 276,,,ags_conditions_notifications,Conquest,,Destroyed Landmark
 277,,,ags_conditions_objectives,Wonder,,Failed to hold the wonder.
-278,,,,Option Header,,Player Settings
+278,,,,Option Header,,Player colours
 279,,,,Colors,,Enforce Colors
 280,,,,Colors,,"Fixes colors for diplomacy. Causes automatic update of colors for each slot, whenever game causes conflicting change. This option disables team colors and makes them unavailable."
 281,,,,Colors,,Used by Enforce Colors to determine which color is used by this slot. Requires Enforce Colors to be allowed.
@@ -387,7 +387,7 @@ ID,Pipeline,PipelineStage,Notes,TranslationNotes,Tags,Text
 386,,,,Nomad Scout Option,,"Spawns scout in addition to villagers, when Scattered Settlement start is selected."
 387,,,,Religious Option,,Religious Single Central Site
 388,,,,Religious Option,,Replaces all sacred sites generated by map generator with single site that is placed as close to center of the map as possible.
-389,,,,House Option,,Add House Capacity
+389,,,,House Option,,Extra capacity per house
 390,,,,House Option,,Additional population capacity for houses.
 391,,,,Tournament Option,,Tournament Balance
 392,,,,Tournament Option,,For full list of changes visit the official GitHub repository.
@@ -413,7 +413,7 @@ ID,Pipeline,PipelineStage,Notes,TranslationNotes,Tags,Text
 423,,,,Handicap Option - Player 7 Military,,Player 7
 424,,,,Handicap Option - Player 8 Economy,,Player 8
 425,,,,Handicap Option - Player 8 Military,,Player 8
-426,,,,Population Override Section,,Population Cap
+426,,,,Population Override Section,,Player pop limits
 427,,,,Population Override - Player 1,,Player 1
 428,,,,Population Override - Player 2,,Player 2
 429,,,,Population Override - Player 3,,Player 3
@@ -422,10 +422,10 @@ ID,Pipeline,PipelineStage,Notes,TranslationNotes,Tags,Text
 432,,,,Population Override - Player 6,,Player 6
 433,,,,Population Override - Player 7,,Player 7
 434,,,,Population Override - Player 8,,Player 8
-435,,,,Population Override,,Use Global Cap
-436,,,,Population Override,,Overrides this player's maximum population. Use Global Cap follows Max Population Capacity in Match Settings.
-437,,,,Handicap Option,,Military Handicap
-438,,,,Handicap Option,,Economic Handicap
+435,,,,Population Override,,Use global limit
+436,,,,Population Override,,"Overrides the maximum population for this lobby player slot, including the host or AI. Houses are still required. Use global limit follows Global population limit in Population & rules."
+437,,,,Handicap Option,,Military bonuses
+438,,,,Handicap Option,,Economy bonuses
 2001,,,,,,The elves are raiding! Protect your villagers.
 2002,,,,,,Father Christmas is arriving! Look for presents scattered across the map.
 2003,,,,,,A present shared gold with the opener and their teammates!

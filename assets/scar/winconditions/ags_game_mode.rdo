@@ -10247,9 +10247,9 @@
           </DataObject>
           <DataValue Name="WinCondition::OptionSectionUIDescriptor">908494137105328147</DataValue>
           <DataValue Name="WinCondition::OptionSectionUIDescriptor">8881894752924620516</DataValue>
-          <DataValue Name="WinCondition::OptionSectionUIDescriptor">10405591708121373191</DataValue>
           <DataValue Name="WinCondition::OptionSectionUIDescriptor">11793620605174209347</DataValue>
           <DataValue Name="WinCondition::OptionSectionUIDescriptor">10496169131691783207</DataValue>
+          <DataValue Name="WinCondition::OptionSectionUIDescriptor">10405591708121373191</DataValue>
           <DataValue Name="WinCondition::OptionSectionUIDescriptor">5358558603533386663</DataValue>
           <DataValue Name="WinCondition::OptionSectionUIDescriptor">9100000100000000000</DataValue>
           <DataValue Name="WinCondition::OptionSectionUIDescriptor">9000000000000000000</DataValue>
@@ -20631,18 +20631,18 @@
             <DataProperty Name="m_featured" Type="Bool" Value="false" />
             <DataProperty Name="m_key" Type="String" Value="section_outer_match_settings" />
             <DataProperty Name="m_options" Type="Object">
-              <DataValue Name="WinCondition::BooleanOptionUIDescriptor">17356123361599626635</DataValue>
               <DataValue Name="WinCondition::EnumerationOptionUIDescriptor">10657568423496406040</DataValue>
               <DataValue Name="WinCondition::EnumerationOptionUIDescriptor">14780382222316629320</DataValue>
               <DataValue Name="WinCondition::EnumerationOptionUIDescriptor">17211295433944097841</DataValue>
               <DataValue Name="WinCondition::EnumerationOptionUIDescriptor">16283934805682962123</DataValue>
               <DataValue Name="WinCondition::BooleanOptionUIDescriptor">4861843079761766698</DataValue>
               <DataValue Name="WinCondition::BooleanOptionUIDescriptor">3262507236346005501</DataValue>
-              <DataValue Name="WinCondition::BooleanOptionUIDescriptor">4344805293583021695</DataValue>
-              <DataValue Name="WinCondition::EnumerationOptionUIDescriptor">7750022204990367862</DataValue>
-              <DataValue Name="WinCondition::BooleanOptionUIDescriptor">5918517894899278685</DataValue>
               <DataValue Name="WinCondition::BooleanOptionUIDescriptor">10330205433582971179</DataValue>
               <DataValue Name="WinCondition::BooleanOptionUIDescriptor">16154829541535613044</DataValue>
+              <DataValue Name="WinCondition::EnumerationOptionUIDescriptor">7750022204990367862</DataValue>
+              <DataValue Name="WinCondition::BooleanOptionUIDescriptor">5918517894899278685</DataValue>
+              <DataValue Name="WinCondition::BooleanOptionUIDescriptor">4344805293583021695</DataValue>
+              <DataValue Name="WinCondition::BooleanOptionUIDescriptor">17356123361599626635</DataValue>
               <DataObject Name="" Type="WinCondition::BooleanOptionUIDescriptor" Id="3262507236346005501" OwnerId="10496169131691783207">
                 <DataProperty Name="#BaseTypes" Type="String" Value="WinCondition::OptionUIDescriptor#0|" />
                 <DataProperty Name="m_key" Type="String" Value="option_match_setting_early_market" />
@@ -25083,15 +25083,15 @@
             <DataProperty Name="m_featured" Type="Bool" Value="false" />
             <DataProperty Name="m_key" Type="String" Value="section_outer_game_settings" />
             <DataProperty Name="m_options" Type="Object">
-              <DataValue Name="WinCondition::BooleanOptionUIDescriptor">5691267365127791138</DataValue>
-              <DataValue Name="WinCondition::BooleanOptionUIDescriptor">10588500970908537875</DataValue>
-              <DataValue Name="WinCondition::EnumerationOptionUIDescriptor">9741233178319719943</DataValue>
-              <DataValue Name="WinCondition::EnumerationOptionUIDescriptor">3914330577593764181</DataValue>
               <DataValue Name="WinCondition::EnumerationOptionUIDescriptor">2355593899757119948</DataValue>
               <DataValue Name="WinCondition::EnumerationOptionUIDescriptor">1146044210904440827</DataValue>
               <DataValue Name="WinCondition::EnumerationOptionUIDescriptor">6912576282065481941</DataValue>
               <DataValue Name="WinCondition::EnumerationOptionUIDescriptor">4870604409650191656</DataValue>
+              <DataValue Name="WinCondition::EnumerationOptionUIDescriptor">3914330577593764181</DataValue>
+              <DataValue Name="WinCondition::EnumerationOptionUIDescriptor">9741233178319719943</DataValue>
               <DataValue Name="WinCondition::BooleanOptionUIDescriptor">3365216589907106613</DataValue>
+              <DataValue Name="WinCondition::BooleanOptionUIDescriptor">5691267365127791138</DataValue>
+              <DataValue Name="WinCondition::BooleanOptionUIDescriptor">10588500970908537875</DataValue>
               <DataObject Name="" Type="WinCondition::EnumerationOptionUIDescriptor" Id="1146044210904440827" OwnerId="11793620605174209347">
                 <DataProperty Name="#BaseTypes" Type="String" Value="WinCondition::OptionUIDescriptor#0|" />
                 <DataProperty Name="m_key" Type="String" Value="option_game_setting_ending_age" />
