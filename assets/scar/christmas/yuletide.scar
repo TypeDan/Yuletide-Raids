@@ -11,7 +11,7 @@ Core_RegisterModule("Yule")
 
 YULE_CONFIG = {
     maxActiveRaids = 8,
-    firstVisit = 60, visitInterval = 180, warningSeconds = 5, visitDuration = 36,
+    firstVisit = 60, visitInterval = 300, warningSeconds = 5, visitDuration = 36,
     dropMin = 6, dropMax = 9, maxDropOffset = 6,
     minGiftsPerVisit = 8, giftsPerVisit = 12, openRadius = 5, maxPresents = 80,
     presentLifetime = 600, raidLifetime = 300,

@@ -37,7 +37,7 @@ AGS_OBJECTIVES_WONDER = {
 	-- "Build a Wonder"
 	title = "$11159068", 
 	-- "Failed to hold the wonder."
-	title_lost = "$64c5019a145c4e4da448dbd3adeea61e:277",
+	title_lost = "$7a91e5eaf5e04afb92278936ca4d8a0c:277",
 	description = Loc_Empty(),
 	icon = "icons\\races\\common\\victory_conditions\\victory_condition_wonder",
 	data_template = "WonderObjectiveTemplate",
@@ -50,7 +50,7 @@ AGS_OBJECTIVES_WONDER = {
 
 AGS_NOTIFICATIONS_WONDER = {
 	-- "%1PLAYER_NAME% couldn't withstand the glory of the wonder"
-	title = "$64c5019a145c4e4da448dbd3adeea61e:274",
+	title = "$7a91e5eaf5e04afb92278936ca4d8a0c:274",
 	sfx = nil,	
 }
 
@@ -64,7 +64,7 @@ AGS_NOTIFICATIONS_WONDER_ATTACKED = {
 
 AGS_NOTIFICATIONS_WONDER_CONSTRUCTION = {
 	-- "Building a Wonder"
-	self_action = "$64c5019a145c4e4da448dbd3adeea61e:275",
+	self_action = "$7a91e5eaf5e04afb92278936ca4d8a0c:275",
 	-- "%1PLAYER_NAME% is building a Wonder"
 	ally_action = 11159074,
 	-- "%1PLAYER_NAME% is building a Wonder"

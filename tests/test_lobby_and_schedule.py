@@ -11,6 +11,7 @@ for name in ('yuletide.scar', 'yuletide_shop.scar', 'yuletide_settings.scar'):
 lua.execute('''
 local function option(value) return {enum_value=17,enum_items={['yule_value_'..value]=17}} end
 Yule_SetupSettings({})
+assert(YULE_CONFIG.visitInterval==300)
 assert(table.concat(YULE_CONFIG.presentWeights,",")=="60,20,10,10")
 assert(YULE_CONFIG.minGiftsPerVisit==8 and YULE_CONFIG.giftsPerVisit==12)
 for slot=1,8 do assert(YULE_CONFIG.startingTokens[slot]==0) end
@@ -55,12 +56,21 @@ UI_CreateEventCue=function(title,description,template,icon,sound,visibility,life
 end
 Yule_StartVisit=function() table.insert(arrivals,YULE.time);YULE.santa={ends=YULE.time+10};return true end
 Yule_UpdateVisit=function() if YULE.santa and YULE.time>=YULE.santa.ends then YULE.santa=nil end end
-for time=1,600 do Yule_Tick() end
-assert(#arrivals==4 and #warnings==4 and #bells==16)
-for i,time in ipairs(arrivals) do
-    assert(time==60+(i-1)*180 and warnings[i]==time-5)
-    for burst=1,4 do assert(bells[(i-1)*4+burst]==time-6+burst) end
+-- Real ticks cover the default, shortest/longest choices and invalid saved values.
+for _,minutes in ipairs({5,1,3,20,0,21}) do
+    Yule_SetupSettings({section_yuletide={visit_interval_minutes=option(minutes)}})
+    local gap=(minutes>=1 and minutes<=20) and minutes*60 or 300
+    assert(YULE_CONFIG.visitInterval==gap)
+    YULE.time=0;YULE.nextVisit=60;YULE.santa=nil;YULE.warnedVisit=nil
+    YULE.warningBellsRemaining=0;warnings={};arrivals={};bells={}
+    for time=1,60+3*gap do Yule_Tick() end
+    assert(#arrivals==4 and #warnings==4 and #bells==16)
+    for i,time in ipairs(arrivals) do
+        assert(time==60+(i-1)*gap and warnings[i]==time-5)
+        for burst=1,4 do assert(bells[(i-1)*4+burst]==time-6+burst) end
+    end
 end
+Yule_SetupSettings({})
 -- Normal announcements retain their notification cue rather than repeating bells.
 UI_CreateEventCue=function(title,description,template,icon,sound)
     assert(sound=='sfx_ui_event_queue_med_priority_play')
@@ -90,7 +100,7 @@ rdo = E.parse(root / 'assets/scar/winconditions/ags_game_mode.rdo')
 objects = list(rdo.iter('DataObject'))
 ids = {o.get('Id') for o in objects}
 assert len(ids) == len(objects)
-for key, expected in [('section_yuletide', 6), ('section_yuletide_wallets', 5), ('section_yuletide_wallets_high', 4)]:
+for key, expected in [('section_yuletide', 7), ('section_yuletide_wallets', 5), ('section_yuletide_wallets_high', 4)]:
     section = next(o for o in objects if o.find(f'./DataProperty[@Name="m_key"][@Value="{key}"]') is not None)
     options = section.findall('./DataProperty[@Name="m_options"]/DataObject')
     assert len(options) == expected
@@ -98,10 +108,10 @@ for key, expected in [('section_yuletide', 6), ('section_yuletide_wallets', 5), 
         items = o.findall('./DataProperty[@Name="m_enumItems"]/DataObject')
         assert sum(i.find('./DataProperty[@Name="m_isDefaultValue"]').get('Value') == 'true' for i in items) == 1
         assert all(i.get('OwnerId') == o.get('Id') for i in items)
-print('PASS: compact lobby groups, old/new eight-slot wallets, four bells at 55/56/57/58, 60-second arrival and 180-second cadence, guaranteed tokens and weighted outcomes.')
+print('PASS: lobby groups, eight-slot wallets, four bells, 60-second first visit, configurable 1-20 minute cadence/default 5, guaranteed tokens and weighted outcomes.')
 
 # Verify the lobby defaults agree with the runtime fallback distribution.
-for key, expected in [('team_gold_weight',60),('enemy_gold_weight',20),('gold_deposit_weight',10),('stone_deposit_weight',10)]:
+for key, expected in [('visit_interval_minutes',5),('team_gold_weight',60),('enemy_gold_weight',20),('gold_deposit_weight',10),('stone_deposit_weight',10)]:
     option=next(o for o in objects if o.find(f'./DataProperty[@Name="m_key"][@Value="{key}"]') is not None)
     default=next(i for i in option.findall('./DataProperty[@Name="m_enumItems"]/DataObject') if i.find('./DataProperty[@Name="m_isDefaultValue"]').get('Value')=='true')
     assert default.find('./DataProperty[@Name="m_key"]').get('Value')==f'yule_value_{expected}'

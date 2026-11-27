@@ -14,7 +14,7 @@ strings = {
     '2004': 'Enemy gift! Enemies share a gold pot; your team shares the deduction, scaled by the collector\'s age.',
     '2008': 'Father Christmas arrives in 5 seconds!',
     '2011': 'Collect one golden token plus a random bonus outcome. Outcome chances are set in the lobby. Deposits appear on nearby clear ground.',
-    '2015': 'Father Christmas and his nine reindeer deliver golden presents. First visit at 1:00, then every three minutes. Blocked convoys phase to clear ground.',
+    '2015': 'Father Christmas and his nine reindeer deliver golden presents. First visit at 1:00; repeat visits default to every five minutes and can be changed in the lobby. Blocked convoys phase to clear ground.',
     '2021': 'Collect one golden token plus a random bonus outcome. Spend the token in the Golden presents menu.',
 }
 
@@ -72,12 +72,15 @@ def option(section, key, label_id, label, help_text, values, default):
     loc(o, 'm_feDescriptionTooltip', label_id + 1, help_text)
 
 visits = section('section_yuletide', 3100, 'Santa & presents')
+option(visits, 'visit_interval_minutes', 3114, 'Visit gap (min)',
+       'Minutes between Santa arrivals: 1-20, default 5. The first visit stays at 1:00. Four bell bursts start five seconds before each arrival. A new visit waits for the previous delivery to finish if necessary.',
+       range(1, 21), 5)
 for key, label_id, label, default in (
     ('minimum_presents', 3102, 'Minimum gifts', 8),
     ('maximum_presents', 3104, 'Maximum gifts', 12),
 ):
     option(visits, key, label_id, label,
-           'Santa first arrives at 1:00, then every three minutes, with four bell bursts starting five seconds beforehand. Choose 1-20 gifts per visit. Reversed minimum/maximum values are swapped. Every pickup gives one golden token plus a bonus outcome.',
+           'Santa first arrives at 1:00; repeat visits use Visit gap (min), default 5. Four bell bursts start five seconds beforehand. Choose 1-20 gifts per visit. Reversed minimum/maximum values are swapped. Every pickup gives one golden token plus a bonus outcome.',
            range(1, 21), default)
 for key, label_id, label, default in (
     ('team_gold_weight', 3106, 'Team gold weight', 60),

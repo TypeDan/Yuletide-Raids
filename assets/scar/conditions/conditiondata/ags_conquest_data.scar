@@ -13,9 +13,9 @@ AGS_OBJECTIVES_CONQUEST = {
 	-- "Destroy all enemy landmarks"
 	title = "$11159056", 
 	-- "Your empire has been conquered."
-	title_lost = "$64c5019a145c4e4da448dbd3adeea61e:268",
+	title_lost = "$7a91e5eaf5e04afb92278936ca4d8a0c:268",
 	-- "Conquered all enemies."
-	title_victory = "$64c5019a145c4e4da448dbd3adeea61e:269",
+	title_victory = "$7a91e5eaf5e04afb92278936ca4d8a0c:269",
 	description = Loc_Empty(),
 	icon = "icons\\races\\common\\victory_conditions\\victory_condition_conquest",
 	data_template = "ConquestObjectiveTemplate",
@@ -28,7 +28,7 @@ AGS_OBJECTIVES_CONQUEST = {
 
 AGS_NOTIFICATIONS_CONQUEST = {
 	-- "%1PLAYER_NAME% conquered"
-	title = "$64c5019a145c4e4da448dbd3adeea61e:267",
+	title = "$7a91e5eaf5e04afb92278936ca4d8a0c:267",
 	sfx = nil,	
 }
 
@@ -42,7 +42,7 @@ AGS_NOTIFICATIONS_CONQUEST_ATTACKED = {
 
 AGS_NOTIFICATIONS_CONQUEST_DESTROYED = {
 	-- "Destroyed Landmark"
-	self_destroyed = "$64c5019a145c4e4da448dbd3adeea61e:276",
+	self_destroyed = "$7a91e5eaf5e04afb92278936ca4d8a0c:276",
 	-- "Enemy destroyed %1PLAYER_NAME%'s Landmark"
 	ally_destroyed = 11198268,
 	-- "Enemy destroyed %1PLAYER_NAME%'s Landmark"

@@ -10,7 +10,7 @@
 
 AGS_OBJECTIVES_CULTURE_SECONDARY = {
 	-- "%1NAMEORNUMBER% City"
-	title = "$64c5019a145c4e4da448dbd3adeea61e:363", 
+	title = "$7a91e5eaf5e04afb92278936ca4d8a0c:363", 
 	data_template = "HolySiteSecondaryObjectiveDataTemplate",
 	data_template_or = "HolySiteSecondaryObjectiveDataTemplate",
 	priority = OT_Secondary,
@@ -20,7 +20,7 @@ AGS_OBJECTIVES_CULTURE_SECONDARY = {
 AGS_OBJECTIVES_CULTURE = {
 	reason = AGS_WR_CULTURE,
 	-- "Control majority of cities"
-	title = "$64c5019a145c4e4da448dbd3adeea61e:362", 
+	title = "$7a91e5eaf5e04afb92278936ca4d8a0c:362", 
 	description = Loc_Empty(),
 	icon = "icons\\races\\common\\victory_conditions\\victory_condition_settlements",
 	data_template = "HolySiteObjectiveDataTemplate",
@@ -33,17 +33,17 @@ AGS_OBJECTIVES_CULTURE = {
 
 AGS_NOTIFICATIONS_CULTURE = {
 	-- "%1PLAYER_NAME% was assimilated"
-	title = "$64c5019a145c4e4da448dbd3adeea61e:364",
+	title = "$7a91e5eaf5e04afb92278936ca4d8a0c:364",
 	sfx = nil,	
 }
 
 AGS_NOTIFICATIONS_CULTURE_APPROACH = {
 	-- "You are approaching Culture Victory"
-	self_action = "$64c5019a145c4e4da448dbd3adeea61e:365",
+	self_action = "$7a91e5eaf5e04afb92278936ca4d8a0c:365",
 	-- "Your team is approaching Culture Victory"
-	ally_action = "$64c5019a145c4e4da448dbd3adeea61e:366",
+	ally_action = "$7a91e5eaf5e04afb92278936ca4d8a0c:366",
 	-- "Enemy is approaching Culture Victory"
-	enemy_action = "$64c5019a145c4e4da448dbd3adeea61e:367",
+	enemy_action = "$7a91e5eaf5e04afb92278936ca4d8a0c:367",
 	self_action_sfx = "sfx_ui_event_queue_religious_player_captured_play",
 	ally_action_sfx = "sfx_ui_event_queue_religious_player_captured_play",
 	enemy_action_sfx = "sfx_ui_event_queue_religious_enemy_captured_play",	
@@ -54,11 +54,11 @@ AGS_NOTIFICATIONS_CULTURE_APPROACH = {
 
 AGS_NOTIFICATIONS_CULTURE_CAPTURING = {
 	-- "Capturing City-State"
-	self_action = "$64c5019a145c4e4da448dbd3adeea61e:368",
+	self_action = "$7a91e5eaf5e04afb92278936ca4d8a0c:368",
 	-- "Ally capturing City-State"
-	ally_action = "$64c5019a145c4e4da448dbd3adeea61e:369",
+	ally_action = "$7a91e5eaf5e04afb92278936ca4d8a0c:369",
 	-- "Enemy capturing City-State"
-	enemy_action = "$64c5019a145c4e4da448dbd3adeea61e:370",	
+	enemy_action = "$7a91e5eaf5e04afb92278936ca4d8a0c:370",	
 	self_action_sfx = "sfx_ui_event_queue_religious_player_capture_start_play",
 	ally_action_sfx = "sfx_ui_event_queue_religious_player_capture_start_play",
 	enemy_action_sfx = "sfx_ui_event_queue_religious_enemy_capture_start_play",	
@@ -69,11 +69,11 @@ AGS_NOTIFICATIONS_CULTURE_CAPTURING = {
 
 AGS_NOTIFICATIONS_CULTURE_CAPTURED = {
 	-- "City-State captured"
-	self_action = "$64c5019a145c4e4da448dbd3adeea61e:371",
+	self_action = "$7a91e5eaf5e04afb92278936ca4d8a0c:371",
 	-- "Ally captured City-State"
-	ally_action = "$64c5019a145c4e4da448dbd3adeea61e:372",
+	ally_action = "$7a91e5eaf5e04afb92278936ca4d8a0c:372",
 	-- "Enemy captured City-State"
-	enemy_action = "$64c5019a145c4e4da448dbd3adeea61e:373",
+	enemy_action = "$7a91e5eaf5e04afb92278936ca4d8a0c:373",
 	self_action_sfx = "sfx_ui_event_queue_religious_player_captured_play",
 	ally_action_sfx = "sfx_ui_event_queue_religious_player_captured_play",
 	enemy_action_sfx = "sfx_ui_event_queue_religious_enemy_captured_play",	
@@ -84,11 +84,11 @@ AGS_NOTIFICATIONS_CULTURE_CAPTURED = {
 
 AGS_NOTIFICATIONS_CULTURE_CONTESTING = {
 	-- "Contesting City-State"
-	self_action = "$64c5019a145c4e4da448dbd3adeea61e:374",
+	self_action = "$7a91e5eaf5e04afb92278936ca4d8a0c:374",
 	-- "Ally contesting City-State"
-	ally_action = "$64c5019a145c4e4da448dbd3adeea61e:375",
+	ally_action = "$7a91e5eaf5e04afb92278936ca4d8a0c:375",
 	-- "Enemy contesting City-State"
-	enemy_action = "$64c5019a145c4e4da448dbd3adeea61e:376",	
+	enemy_action = "$7a91e5eaf5e04afb92278936ca4d8a0c:376",	
 	self_action_sfx = "sfx_ui_holy_site_contesting_start_player_play",
 	ally_action_sfx = "sfx_ui_holy_site_contesting_start_player_play",
 	enemy_action_sfx = "sfx_ui_holy_site_contesting_start_enemy_play",	
@@ -99,11 +99,11 @@ AGS_NOTIFICATIONS_CULTURE_CONTESTING = {
 
 AGS_NOTIFICATIONS_CULTURE_NEUTRALIZING = {
 	-- "Liberating City-State"
-	self_action = "$64c5019a145c4e4da448dbd3adeea61e:380",
+	self_action = "$7a91e5eaf5e04afb92278936ca4d8a0c:380",
 	-- "Ally liberating City-State"
-	ally_action = "$64c5019a145c4e4da448dbd3adeea61e:381",
+	ally_action = "$7a91e5eaf5e04afb92278936ca4d8a0c:381",
 	-- "Enemy liberating City-State"
-	enemy_action = "$64c5019a145c4e4da448dbd3adeea61e:382",
+	enemy_action = "$7a91e5eaf5e04afb92278936ca4d8a0c:382",
 	self_action_sfx = "sfx_ui_holy_site_contesting_start_player_play",
 	ally_action_sfx = "sfx_ui_holy_site_contesting_start_player_play",
 	enemy_action_sfx = "sfx_ui_holy_site_contesting_start_enemy_play",	
@@ -114,11 +114,11 @@ AGS_NOTIFICATIONS_CULTURE_NEUTRALIZING = {
 
 AGS_NOTIFICATIONS_CULTURE_NEUTRALIZED = {
 	-- "Liberated City-State"
-	self_action = "$64c5019a145c4e4da448dbd3adeea61e:377",
+	self_action = "$7a91e5eaf5e04afb92278936ca4d8a0c:377",
 	-- "Ally liberated City-State"
-	ally_action = "$64c5019a145c4e4da448dbd3adeea61e:378",
+	ally_action = "$7a91e5eaf5e04afb92278936ca4d8a0c:378",
 	-- "City-State lost"
-	enemy_action = "$64c5019a145c4e4da448dbd3adeea61e:379",
+	enemy_action = "$7a91e5eaf5e04afb92278936ca4d8a0c:379",
 	self_action_sfx = "sfx_ui_holy_site_neutralized_player_play",
 	ally_action_sfx = "sfx_ui_holy_site_neutralized_player_play",
 	enemy_action_sfx = "sfx_ui_holy_site_neutralized_enemy_play",	

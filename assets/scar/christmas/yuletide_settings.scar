@@ -14,6 +14,7 @@ function Yule_SetupSettings(options)
     local settings = options.section_yuletide or {}
     local starting = options.section_yuletide_wallets or {}
     local startingHigh = options.section_yuletide_wallets_high or {}
+    YULE_CONFIG.visitInterval = 60 * Yule_LobbyNumber(settings.visit_interval_minutes, 5, 1, 20)
     YULE_CONFIG.minGiftsPerVisit = Yule_LobbyNumber(settings.minimum_presents, 8, 1, 20)
     YULE_CONFIG.giftsPerVisit = Yule_LobbyNumber(settings.maximum_presents, 12, 1, 20)
     -- Reversed bounds are swapped, so both selected values are respected.

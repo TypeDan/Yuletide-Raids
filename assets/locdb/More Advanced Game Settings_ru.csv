@@ -1,7 +1,7 @@
 ID,SourceText,TranslatedText
 1,,Yuletide Raids
-2,"Version 2026.11.20.3. Father Christmas drops presents across the map. Spend golden presents on elf raids, villagers or resources, with options for each age. Select Yuletide Raids as both the game mode and tuning pack. Experimental build using Advanced Game Settings code. Source and credits: https://github.com/TypeDan/Yuletide-Raids","Version 2026.11.26.4. Father Christmas first arrives at 1:00, then every three minutes, with four bell bursts starting five seconds before arrival. Every present gives one golden token plus a random outcome. Set starting tokens, outcome weights and gifts per visit in the lobby; defaults are 8-12 gifts and 60% team gold, 20% enemy gift, 10% gold ore, 10% stone. Team gold is a shared 100/150/200/300 pot by the collector's age. Enemy gifts share one gold pot among living enemies and share one equal deduction across your living team, both using the collector's age. Each share stops at zero without charging teammates extra. Purchases stay yours. Neutral Santa drops beside himself at spaced locations and phases past obstructions if blocked. Spend tokens on elf raids, villagers, resources or Festive Cheer. Includes per-player boosts and population settings, Vikings and Scots. Select as BOTH Game Mode and Tuning Pack. Uses Advanced Game Settings code; source and credits on GitHub: TypeDan, Yuletide-Raids"
-3,"Version 2026.11.20.3. Father Christmas drops presents across the map. Spend golden presents on elf raids, villagers or resources. Select Yuletide Raids as both the game mode and tuning pack. Experimental build.","Version 2026.11.26.4. Santa brings gifts at 1:00, then every 3 minutes. Four bell bursts warn you 5 seconds beforehand. Set gift counts, bonus weights and starting tokens below. Select as BOTH Game Mode and Tuning Pack."
+2,"Version 2026.11.20.3. Father Christmas drops presents across the map. Spend golden presents on elf raids, villagers or resources, with options for each age. Select Yuletide Raids as both the game mode and tuning pack. Experimental build using Advanced Game Settings code. Source and credits: https://github.com/TypeDan/Yuletide-Raids","Version 2026.11.27.1. Father Christmas first arrives at 1:00, then every five minutes by default (configurable in the lobby), with four bell bursts starting five seconds before arrival. Every present gives one golden token plus a random outcome. Set the visit interval, starting tokens, outcome weights and gifts per visit in the lobby; defaults are 8-12 gifts and 60% team gold, 20% enemy gift, 10% gold ore, 10% stone. Team gold is a shared 100/150/200/300 pot by the collector's age. Enemy gifts share one gold pot among living enemies and share one equal deduction across your living team, both using the collector's age. Each share stops at zero without charging teammates extra. Purchases stay yours. Neutral Santa drops beside himself at spaced locations and phases past obstructions if blocked. Spend tokens on elf raids, villagers, resources or Festive Cheer. Includes per-player boosts and population settings, Vikings and Scots. Select as BOTH Game Mode and Tuning Pack. Uses Advanced Game Settings code; source and credits on GitHub: TypeDan, Yuletide-Raids"
+3,"Version 2026.11.20.3. Father Christmas drops presents across the map. Spend golden presents on elf raids, villagers or resources. Select Yuletide Raids as both the game mode and tuning pack. Experimental build.","Version 2026.11.27.1. Santa brings gifts at 1:00, then every 5 minutes by default. Four bell bursts warn you 5 seconds beforehand. Set visit interval, gift counts, bonus weights and starting tokens below. Select as BOTH Game Mode and Tuning Pack."
 4,,Условия победы
 5,,Аннигиляция
 6,,Уничтожьте всех врагов. Эта опция обязательна если только вы не хотите чтобы игрок не выбывал даже если он потеряет все.
@@ -424,7 +424,7 @@ ID,SourceText,TranslatedText
 2012,,,,,,Elf Raider
 2013,,,,,,A hostile festive raider. Defend your villagers!
 2014,,,,,,Father Christmas
-2015,,,,,,"Father Christmas and his nine reindeer deliver golden presents. First visit at 1:00, then every three minutes. Blocked convoys phase to clear ground."
+2015,,,,,,Father Christmas and his nine reindeer deliver golden presents. First visit at 1:00; repeat visits default to every five minutes and can be changed in the lobby. Blocked convoys phase to clear ground.
 2020,,Golden Present
 2021,,Collect one golden token plus a random bonus outcome. Spend the token in the Golden presents menu.
 2030,,Dasher
@@ -471,9 +471,9 @@ ID,SourceText,TranslatedText
 4019,,19
 4020,,20
 3102,,Minimum gifts
-3103,,"Santa first arrives at 1:00, then every three minutes, with four bell bursts starting five seconds beforehand. Choose 1-20 gifts per visit. Reversed minimum/maximum values are swapped. Every pickup gives one golden token plus a bonus outcome."
+3103,,"Santa first arrives at 1:00; repeat visits use Visit gap (min), default 5. Four bell bursts start five seconds beforehand. Choose 1-20 gifts per visit. Reversed minimum/maximum values are swapped. Every pickup gives one golden token plus a bonus outcome."
 3104,,Maximum gifts
-3105,,"Santa first arrives at 1:00, then every three minutes, with four bell bursts starting five seconds beforehand. Choose 1-20 gifts per visit. Reversed minimum/maximum values are swapped. Every pickup gives one golden token plus a bonus outcome."
+3105,,"Santa first arrives at 1:00; repeat visits use Visit gap (min), default 5. Four bell bursts start five seconds beforehand. Choose 1-20 gifts per visit. Reversed minimum/maximum values are swapped. Every pickup gives one golden token plus a bonus outcome."
 4000,,0
 4025,,25
 4030,,30
@@ -521,3 +521,5 @@ ID,SourceText,TranslatedText
 3139,,"Starting golden tokens for lobby slot 8, including the host and AI. Default uses the Default tokens amount in the players 1-4 group."
 2008,,Father Christmas arrives in 5 seconds!
 3140,,Tokens: players 5-8
+3114,,Visit gap (min)
+3115,,"Minutes between Santa arrivals: 1-20, default 5. The first visit stays at 1:00. Four bell bursts start five seconds before each arrival. A new visit waits for the previous delivery to finish if necessary."

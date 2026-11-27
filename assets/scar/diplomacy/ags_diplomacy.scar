@@ -225,7 +225,7 @@ function AGS_Diplomacy_Create(relations)
 			players = {},
 			increment = 100,						-- Amount by which one button click increments/decrements tribute
 			IsMultiPage = false,
-			headerRelations = Loc_FormatText("$64c5019a145c4e4da448dbd3adeea61e:234"),
+			headerRelations = Loc_FormatText("$7a91e5eaf5e04afb92278936ca4d8a0c:234"),
 		},
 		cue = {							-- Event cue template (shown when player changes relationship or receives tribute) 
 			lifetime = 10.0,
@@ -263,9 +263,9 @@ function AGS_Diplomacy_Create(relations)
 			{ resource_type = RT_Stone,image = "pack://application:,,,/WPFGUI;component/icons/resources/resource_stone_icon.png", help = 11164970},
 		},
 		relations = {
-			{ relation_type = R_ALLY, image = "pack://application:,,,/WPFGUI;component/icons/common/orders/rally.png", help = "$64c5019a145c4e4da448dbd3adeea61e:239", title = "$64c5019a145c4e4da448dbd3adeea61e:235" },
-			{ relation_type = R_NEUTRAL, image = "pack://application:,,,/WPFGUI;component/icons/races/common/buildings/market.png", help = "$64c5019a145c4e4da448dbd3adeea61e:240", title = "$64c5019a145c4e4da448dbd3adeea61e:236" },
-			{ relation_type = R_ENEMY, image = "pack://application:,,,/WPFGUI;component/icons/races/common/buildings/barracks.png", help = "$64c5019a145c4e4da448dbd3adeea61e:241", title = "$64c5019a145c4e4da448dbd3adeea61e:237" },
+			{ relation_type = R_ALLY, image = "pack://application:,,,/WPFGUI;component/icons/common/orders/rally.png", help = "$7a91e5eaf5e04afb92278936ca4d8a0c:239", title = "$7a91e5eaf5e04afb92278936ca4d8a0c:235" },
+			{ relation_type = R_NEUTRAL, image = "pack://application:,,,/WPFGUI;component/icons/races/common/buildings/market.png", help = "$7a91e5eaf5e04afb92278936ca4d8a0c:240", title = "$7a91e5eaf5e04afb92278936ca4d8a0c:236" },
+			{ relation_type = R_ENEMY, image = "pack://application:,,,/WPFGUI;component/icons/races/common/buildings/barracks.png", help = "$7a91e5eaf5e04afb92278936ca4d8a0c:241", title = "$7a91e5eaf5e04afb92278936ca4d8a0c:237" },
 		},
 		age = {						-- Loc_string lookup table (indexed by age)
 			Loc_GetString(11180928),					-- I

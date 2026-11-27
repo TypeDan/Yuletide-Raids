@@ -11,7 +11,7 @@
 AGS_OBJECTIVES_SURRENDER = {
 	reason = AGS_WR_SURRENDER,
 	-- "Fight until the bitter end."
-	title = "$64c5019a145c4e4da448dbd3adeea61e:252", 
+	title = "$7a91e5eaf5e04afb92278936ca4d8a0c:252", 
 	description = Loc_Empty(),
 	icon = "icons\\objectives\\objectives_generic",
 	data_template = DT_PRIMARY_DEFAULT,
