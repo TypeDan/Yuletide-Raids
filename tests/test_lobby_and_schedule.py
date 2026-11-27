@@ -41,7 +41,7 @@ assert(YULE_CONFIG.startingTokens[6]==7 and YULE_CONFIG.startingTokens[8]==0)
 
 Yule_SetupSettings({})
 YULE={running=true,time=0,nextVisit=YULE_CONFIG.firstVisit,presents={},raids={},wallets={}}
-Yule_RefreshShop=function() end;Yule_UpdateCheer=function() end
+Yule_RefreshShop=function() end;Yule_UpdateCheer=function() end; Yule_UpdateChampions=function() end
 Yule_LivePlayers=function() return players end
 local warnings={};local arrivals={};local bells={}
 Sound_Play2D=function(sound)

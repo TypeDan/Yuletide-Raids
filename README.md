@@ -1,8 +1,8 @@
 # Yuletide Raids
 
-**Published version: 2026.11.27.1.** This label also appears at the start of the mod description.
+**Published version: 2026.11.27.3.** This label also appears at the start of the mod description.
 
-**GitHub release: 2026.11.27.2; AoE publication verification pending.** Clearer lobby groups, related controls together, and explicit starting-housing versus population-limit labels. See [menu changes and validation](docs/2026-11-27-lobby-layout.md).
+**GitHub and AoE release: 2026.11.27.3.** Clearer lobby groups, related controls together, and explicit starting-housing versus population-limit labels. See [menu changes and validation](docs/2026-11-27-lobby-layout.md).
 
 ![Yuletide Raids](assets/mod.png)
 
@@ -27,6 +27,12 @@ The population and compact shop fixes from **2026.11.20.1** remain included: a c
 **Version 2026.11.26.4** changes default pickup outcomes to 60% shared team gold, 20% enemy gift, 10% gold ore and 10% stone ore. Existing custom lobby presets keep their selected weights.
 
 **Version 2026.11.27.1** fixes 72 inherited text references that still pointed to another mod, so English objectives and notices resolve from Yuletide alone. Adds **Visit gap (min)** to the lobby: 1-20 minutes, default 5. First arrival remains 1:00; existing presets without this option use 5 minutes.
+
+## Winter Champion (2026.11.27.4, publication pending)
+
+Select exactly one of your military units and buy **Winter Champion** from Buffs for **3 golden presents**. It gains permanent **+20% weapon damage, movement speed and existing melee/ranged/fire armour**. Zero armour stays zero. Maximum **five living champions per player**, with no repeated purchases on the same unit. Death frees the slot. Conversion removes the blessing; it cannot transfer a sixth champion to another owner. Invalid selections, insufficient tokens and failed modifier application do not spend tokens.
+
+Winter Champion passes automated purchase, modifier and slot-limit checks. Further native gameplay testing of this new buff was skipped at the owner's request.
 
 ## Presents and convoy
 
@@ -61,7 +67,7 @@ Small text with no background or border just above the bottom-left resource box 
 
 ## Installation and source build
 
-[Subscribe through the Age of Empires IV mod catalogue](https://www.ageofempires.com/mods/details/604296/), or search for **Yuletide Raids** by **TypeEkcyall** in the game. Check for version **2026.11.27.1** in the description and start a new match after updating. The publisher created a replacement listing; subscribers to the older listing need this new link.
+[Subscribe through the Age of Empires IV mod catalogue](https://www.ageofempires.com/mods/details/604307/), or search for **Yuletide Raids** by **TypeEkcyall** in the game. Check for version **2026.11.27.3** in the description and start a new match after updating. The publisher created a replacement listing; subscribers to the older listing need this new link.
 
 Download `Yuletide_Raids.sga` from [Releases](https://github.com/TypeDan/Yuletide-Raids/releases). Put it in a `Yuletide Raids` folder inside your AoE IV user-data `mods/extension/local` directory. Select it in **both** lobby selectors: Game Mode and Tuning Pack.
 

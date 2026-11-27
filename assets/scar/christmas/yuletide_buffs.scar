@@ -90,3 +90,88 @@ end
 function Yule_ClearAllCheer()
     for slot=1,8 do Yule_ClearCheer(slot) end
 end
+
+-- Permanent, per-entity purchases. Store stable entity IDs in synchronized state.
+function Yule_ChampionAlive(entry)
+    if not Entity_IsValid(entry.id) then return false end
+    local entity=Entity_FromID(entry.id)
+    return Entity_IsAlive(entity) and not World_OwnsEntity(entity)
+        and Entity_GetPlayerOwner(entity)==entry.player
+end
+
+function Yule_ChampionCount(player)
+    local count=0
+    for _,entry in ipairs(YULE.champions or {}) do
+        if entry.player==player and Yule_ChampionAlive(entry) then count=count+1 end
+    end
+    return count
+end
+
+function Yule_CanBlessUnit(player,id)
+    if not id or not Entity_IsValid(id) then return false end
+    local entity=Entity_FromID(id)
+    if not Entity_IsAlive(entity) or World_OwnsEntity(entity) or Entity_GetPlayerOwner(entity)~=player
+        or not Entity_IsOfType(entity,AGS_BP_MILITARY) or Entity_IsOfType(entity,AGS_BP_BUILDING)
+        or Entity_IsOfType(entity,AGS_BP_VILLAGER) then return false end
+    for _,entry in ipairs(YULE.champions or {}) do if entry.id==id then return false end end
+    return Yule_ChampionCount(player)<5
+end
+
+-- UI-only selection is converted to an ID and sent over the network. Never
+-- query local selection in the simulation's purchase receiver.
+function Yule_SelectedChampionTarget(player)
+    local selected=nil
+    local count=0
+    EGroup_ForEach(Player_GetAllEntities(player),function(group,index,entity)
+        if Entity_IsAlive(entity) and Misc_IsEntitySelected(entity) then
+            count=count+1; selected=Entity_GetID(entity)
+        end
+    end)
+    if count~=1 or not Yule_CanBlessUnit(player,selected) then return nil end
+    return selected
+end
+
+function Yule_UpdateChampions()
+    for i=#(YULE.champions or {}),1,-1 do
+        local entry=YULE.champions[i]
+        -- Conversion removes the blessing instead of transferring a sixth slot.
+        if not Yule_ChampionAlive(entry) then
+            if Entity_IsValid(entry.id) then Modifier_Remove(entry.modifiers) end
+            table.remove(YULE.champions,i)
+        end
+    end
+end
+
+function Yule_BlessUnit(player,id)
+    Yule_UpdateChampions()
+    if not Yule_CanBlessUnit(player,id) then return false end
+    local entity=Entity_FromID(id)
+    local modifiers={}
+    local ok=pcall(function()
+        local function apply(scope,name,target)
+            local mod=Modifier_Create(scope,name,MUT_Multiplication,false,1.2,target)
+            local applied=Modifier_ApplyToEntity(mod,entity,0)
+            if applied==nil then error("Winter Champion modifier failed") end
+            table.insert(modifiers,applied)
+        end
+        apply(MAT_Entity,"speed_maximum_modifier",nil)
+        apply(MAT_Entity,"armor_scalar_for_melee_damage",nil)
+        apply(MAT_Entity,"armor_scalar_for_ranged_damage",nil)
+        apply(MAT_Entity,"armor_scalar_for_fire_damage",nil)
+        -- Include alternate melee, ranged and torch weapons, not just hardpoint 1.
+        for hardpoint=1,Entity_GetWeaponHardpointCount(entity) do
+            apply(MAT_Weapon,"damage_weapon_modifier",string.format("hardpoint_%02d",hardpoint))
+        end
+    end)
+    if not ok then Modifier_Remove(modifiers); return false end
+    YULE.champions=YULE.champions or {}
+    table.insert(YULE.champions,{id=id,player=player,modifiers=modifiers})
+    return true
+end
+
+function Yule_ClearChampions()
+    for _,entry in ipairs(YULE.champions or {}) do
+        if Entity_IsValid(entry.id) then Modifier_Remove(entry.modifiers) end
+    end
+    YULE.champions={}
+end

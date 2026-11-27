@@ -20,7 +20,7 @@ World_GetRand=function(a,b)
 end
 local players={{id=2},{id=1}}
 Yule_LivePlayers=function() return players end
-Yule_RefreshShop=function() end; Yule_UpdateCheer=function() end
+Yule_RefreshShop=function() end; Yule_UpdateCheer=function() end; Yule_UpdateChampions=function() end
 Yule_FindOpener=function() return nil end
 local notices=0
 Yule_Notify=function() notices=notices+1 end

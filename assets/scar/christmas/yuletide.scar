@@ -78,6 +78,7 @@ end
 function Yule_OnGameOver()
     YULE.running = false
     Yule_ClearAllCheer()
+    Yule_ClearChampions()
     Rule_Remove(Yule_Tick)
     Rule_Remove(Yule_Flight)
     Yule_EndVisit()
@@ -284,6 +285,7 @@ function Yule_Tick()
     Yule_RefreshShop()
     local players = Yule_LivePlayers()
     Yule_UpdateCheer(players)
+    Yule_UpdateChampions()
     if #players == 0 then return end
     if YULE.time >= YULE.nextVisit - YULE_CONFIG.warningSeconds and YULE.time < YULE.nextVisit
         and YULE.warnedVisit ~= YULE.nextVisit then
